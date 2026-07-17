@@ -1,7 +1,7 @@
 # Queries for Yair Cohen Mortgage Website
 
 # Get a page by its ID
-query GetPage($pageId: String!) @auth(level: PUBLIC) {
+query GetPage($pageId: String!) @auth(level: PUBLIC, insecureReason: "Public reading is required for visitors") {
   page(key: { pageId: $pageId }) {
     pageId
     content
@@ -9,7 +9,7 @@ query GetPage($pageId: String!) @auth(level: PUBLIC) {
 }
 
 # List all blog posts sorted by creation date descending
-query ListBlogPosts @auth(level: PUBLIC) {
+query ListBlogPosts @auth(level: PUBLIC, insecureReason: "Public reading is required for visitors") {
   blogPosts(orderBy: [{ createdAt: DESC }]) {
     id
     title
@@ -30,7 +30,7 @@ query ListBlogPosts @auth(level: PUBLIC) {
 }
 
 # Get a specific blog post by its ID
-query GetBlogPost($id: String!) @auth(level: PUBLIC) {
+query GetBlogPost($id: String!) @auth(level: PUBLIC, insecureReason: "Public reading is required for visitors") {
   blogPost(id: $id) {
     id
     title
@@ -51,7 +51,7 @@ query GetBlogPost($id: String!) @auth(level: PUBLIC) {
 }
 
 # Get a specific blog post by its unique slug
-query GetBlogPostBySlug($slug: String!) @auth(level: PUBLIC) {
+query GetBlogPostBySlug($slug: String!) @auth(level: PUBLIC, insecureReason: "Public reading is required for visitors") {
   blogPosts(where: { slug: { eq: $slug } }) {
     id
     title

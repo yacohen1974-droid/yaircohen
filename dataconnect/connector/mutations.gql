@@ -1,19 +1,19 @@
 # Mutations for Yair Cohen Mortgage Website
 
-# Create or update a page
-mutation UpsertPage($pageId: String!, $content: Any!) @auth(level: PUBLIC) {
+# Create or update a page (requires authenticated user)
+mutation UpsertPage($pageId: String!, $content: Any!) @auth(level: USER) {
   page_upsert(data: {
     pageId: $pageId
     content: $content
   })
 }
 
-# Delete a page by ID
-mutation DeletePage($pageId: String!) @auth(level: PUBLIC) {
+# Delete a page by ID (requires authenticated user)
+mutation DeletePage($pageId: String!) @auth(level: USER) {
   page_delete(key: { pageId: $pageId })
 }
 
-# Create or update a blog post
+# Create or update a blog post (requires authenticated user)
 mutation UpsertBlogPost(
   $id: String!
   $title: String!
@@ -28,7 +28,7 @@ mutation UpsertBlogPost(
   $author: String
   $seoTitle: String
   $seoDescription: String
-) @auth(level: PUBLIC) {
+) @auth(level: USER) {
   blogPost_upsert(data: {
     id: $id
     title: $title
@@ -47,7 +47,7 @@ mutation UpsertBlogPost(
   })
 }
 
-# Delete a blog post by ID
-mutation DeleteBlogPost($id: String!) @auth(level: PUBLIC) {
+# Delete a blog post by ID (requires authenticated user)
+mutation DeleteBlogPost($id: String!) @auth(level: USER) {
   blogPost_delete(id: $id)
 }
