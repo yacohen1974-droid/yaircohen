@@ -1,0 +1,72 @@
+# Queries for Yair Cohen Mortgage Website
+
+# Get a page by its ID
+query GetPage($pageId: String!) @auth(level: PUBLIC) {
+  page(key: { pageId: $pageId }) {
+    pageId
+    content
+  }
+}
+
+# List all blog posts sorted by creation date descending
+query ListBlogPosts @auth(level: PUBLIC) {
+  blogPosts(orderBy: [{ createdAt: DESC }]) {
+    id
+    title
+    content
+    slug
+    createdAt
+    updatedAt
+    category
+    tags
+    published
+    excerpt
+    heroImageUrlDesktop
+    heroImageUrlMobile
+    author
+    seoTitle
+    seoDescription
+  }
+}
+
+# Get a specific blog post by its ID
+query GetBlogPost($id: String!) @auth(level: PUBLIC) {
+  blogPost(id: $id) {
+    id
+    title
+    content
+    slug
+    createdAt
+    updatedAt
+    category
+    tags
+    published
+    excerpt
+    heroImageUrlDesktop
+    heroImageUrlMobile
+    author
+    seoTitle
+    seoDescription
+  }
+}
+
+# Get a specific blog post by its unique slug
+query GetBlogPostBySlug($slug: String!) @auth(level: PUBLIC) {
+  blogPosts(where: { slug: { eq: $slug } }) {
+    id
+    title
+    content
+    slug
+    createdAt
+    updatedAt
+    category
+    tags
+    published
+    excerpt
+    heroImageUrlDesktop
+    heroImageUrlMobile
+    author
+    seoTitle
+    seoDescription
+  }
+}

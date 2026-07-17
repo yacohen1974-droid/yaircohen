@@ -1,0 +1,53 @@
+# Mutations for Yair Cohen Mortgage Website
+
+# Create or update a page
+mutation UpsertPage($pageId: String!, $content: Any!) @auth(level: PUBLIC) {
+  page_upsert(data: {
+    pageId: $pageId
+    content: $content
+  })
+}
+
+# Delete a page by ID
+mutation DeletePage($pageId: String!) @auth(level: PUBLIC) {
+  page_delete(key: { pageId: $pageId })
+}
+
+# Create or update a blog post
+mutation UpsertBlogPost(
+  $id: String!
+  $title: String!
+  $content: String!
+  $slug: String!
+  $category: String
+  $tags: [String!]
+  $published: Boolean!
+  $excerpt: String
+  $heroImageUrlDesktop: String
+  $heroImageUrlMobile: String
+  $author: String
+  $seoTitle: String
+  $seoDescription: String
+) @auth(level: PUBLIC) {
+  blogPost_upsert(data: {
+    id: $id
+    title: $title
+    content: $content
+    slug: $slug
+    category: $category
+    tags: $tags
+    published: $published
+    excerpt: $excerpt
+    heroImageUrlDesktop: $heroImageUrlDesktop
+    heroImageUrlMobile: $heroImageUrlMobile
+    author: $author
+    seoTitle: $seoTitle
+    seoDescription: $seoDescription
+    updatedAt_expr: "request.time"
+  })
+}
+
+# Delete a blog post by ID
+mutation DeleteBlogPost($id: String!) @auth(level: PUBLIC) {
+  blogPost_delete(id: $id)
+}
