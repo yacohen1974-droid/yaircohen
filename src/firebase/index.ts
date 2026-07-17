@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { GoogleAuthProvider, signInWithPopup, signOut as fbSignOut } from 'firebase/auth';
 import { app, db, authInstance } from './init';
+import { ALLOWED_ADMIN_EMAILS } from '@/lib/site-config';
 
 export function initializeFirebase() {
   return { app, firestore: db, auth: authInstance };
@@ -37,7 +38,7 @@ export const useAuth = () => {
     provider.setCustomParameters({ prompt: 'select_account' });
     try {
       const result = await signInWithPopup(authInstance, provider);
-      const allowedEmails = ['amirher@gmail.com', 'yairmashkantaot@gmail.com'];
+      const allowedEmails = ALLOWED_ADMIN_EMAILS;
       if (result.user && result.user.email && allowedEmails.includes(result.user.email)) {
         return result.user;
       } else {
