@@ -1,0 +1,676 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%; /* Snowfall White */
+    --foreground: 220 50% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 50% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 50% 10%;
+
+    --primary: 213 75% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 213 30% 93%;
+    --secondary-foreground: 213 50% 20%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 20% 45%;
+
+    --accent: 220 60% 18%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 213 25% 87%;
+    --input: 213 25% 87%;
+    --ring: 213 75% 35%;
+
+    --radius: 0.75rem;
+    --gold: 42 70% 48%;
+  }
+
+  body {
+    background-color: #ffffff;
+    background-image: 
+      radial-gradient(#0D2347 0.5px, transparent 0.5px),
+      linear-gradient(to right, #f8fafc 1px, transparent 1px),
+      linear-gradient(to bottom, #f8fafc 1px, transparent 1px);
+    background-size: 40px 40px, 100px 100px, 100px 100px;
+    background-attachment: fixed;
+  }
+}
+
+
+@layer base {
+  html {
+    overflow-x: hidden;
+  }
+  * {
+    @apply border-border;
+    min-width: 0; /* Prevent grid/flex children from overflowing their containers */
+  }
+  body {
+    @apply bg-background text-foreground font-body overflow-x-hidden w-full;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    /* Never auto-hyphenate — always wrap whole words naturally */
+    hyphens: none;
+    -webkit-hyphens: none;
+    word-break: normal;
+    overflow-wrap: break-word; /* Last-resort: only break if word is truly unbreakable (e.g. long URLs) */
+    word-spacing: normal;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline font-light tracking-tight;
+    line-height: 1.2;
+    hyphens: none;
+    -webkit-hyphens: none;
+    word-break: normal;
+  }
+}
+
+/* Luxury Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.8s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger Delays for Grid Items */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.25s; }
+.stagger-3 { transition-delay: 0.4s; }
+.stagger-4 { transition-delay: 0.55s; }
+.stagger-5 { transition-delay: 0.7s; }
+
+.mashrabiya-divider {
+  width: 100%;
+  height: 40px;
+  background-image: radial-gradient(circle, currentColor 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  opacity: 0.15;
+  @apply text-primary;
+}
+
+.boutique-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  @apply sm:text-xs uppercase font-bold;
+}
+
+.boutique-title {
+  @apply text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-light leading-tight tracking-tight text-foreground;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.hero-title-shadow {
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.hero-para-shadow {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.boutique-para {
+  @apply text-base sm:text-xl lg:text-2xl font-light text-stone-700 leading-relaxed max-w-4xl mx-auto;
+}
+
+.image-zoom-container {
+  @apply overflow-hidden relative;
+}
+
+.image-zoom-container img {
+  transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-zoom-container:hover img {
+  transform: scale(1.08);
+}
+
+.boutique-card {
+  @apply bg-white/90 backdrop-blur-sm text-foreground p-8 sm:p-10 flex flex-col items-center text-center justify-center min-h-[300px] relative overflow-hidden transition-all duration-700 border border-primary/10 shadow-sm rounded-2xl;
+}
+
+.boutique-card:hover {
+  @apply bg-white shadow-2xl border-primary/30 -translate-y-2;
+}
+
+.art-icon {
+  @apply absolute top-8 right-8 opacity-10 text-primary transition-all duration-1000 group-hover:opacity-30 group-hover:scale-110;
+}
+
+/* Rich Text Content Container - Strictly enforcing fonts */
+.blog-content-container {
+  @apply font-headline text-lg md:text-xl lg:text-2xl leading-[1.8] text-stone-700 text-right;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.blog-content-container p {
+  @apply mb-10 md:mb-12 font-headline font-light;
+}
+
+.blog-content-container h1, 
+.blog-content-container h2, 
+.blog-content-container h3 {
+  @apply text-accent font-bold mt-16 md:mt-24 mb-8 md:mb-10 leading-tight text-center font-headline;
+}
+
+.blog-content-container h1 { @apply text-3xl md:text-4xl lg:text-5xl; }
+.blog-content-container h2 { @apply text-2xl md:text-3xl lg:text-4xl; }
+.blog-content-container h3 { @apply text-xl md:text-2xl lg:text-3xl; }
+
+.blog-content-container ul, 
+.blog-content-container ol {
+  @apply mb-12 md:mb-16 pr-8 md:pr-10 space-y-4 md:space-y-6 font-headline;
+}
+
+.blog-content-container ul {
+  @apply list-disc;
+}
+
+.blog-content-container ol {
+  @apply list-decimal;
+}
+
+.blog-content-container a {
+  @apply text-primary underline underline-offset-4 hover:text-accent transition-colors;
+}
+
+.blog-content-container blockquote {
+  @apply border-r-4 border-primary/20 pr-8 md:pr-12 my-12 md:my-20 italic text-2xl md:text-4xl lg:text-5xl text-stone-500 text-center font-handwriting;
+  line-height: 1.4;
+}
+
+/* Admin editor preview — compact spacing (not blog spacing) */
+.prose-preview p {
+  margin-bottom: 0.5em;
+  margin-top: 0;
+  line-height: 1.7;
+}
+.prose-preview h1, .prose-preview h2, .prose-preview h3 {
+  font-weight: 700;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
+}
+.prose-preview img { max-width: 100%; height: auto; }
+.prose-preview ul, .prose-preview ol { padding-right: 1.5em; margin-bottom: 0.5em; }
+
+/* ── Page content (non-blog): mirrors Quill editor preview spacing ────────── */
+/* Used on all regular pages (home, about, tivon, etc.) for introContent       */
+.page-content-container {
+  line-height: 1.8;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Bulletproof text wrapping: 
+   1. white-space: pre-wrap only on paragraphs to preserve editor spaces/newlines
+   2. Ensure text wrapping is completely natural without forcing breaks inside short words
+*/
+.page-content-container p {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.page-content-container * {
+  max-width: 100%;
+}
+
+/* Paragraphs — compact, matching Quill editor default */
+.page-content-container p {
+  margin-bottom: 0.6em !important;
+  margin-top: 0 !important;
+  line-height: 1.8;
+}
+
+/* Quill empty paragraph (br-only) — keep same height */
+.page-content-container p:has(> br:only-child) {
+  margin-bottom: 0.3em !important;
+}
+
+/* Quill alignment classes */
+.page-content-container .ql-align-center,
+.page-content-container p.ql-align-center { text-align: center !important; }
+.page-content-container .ql-align-right,
+.page-content-container p.ql-align-right  { text-align: right !important; }
+.page-content-container .ql-align-left,
+.page-content-container p.ql-align-left   { text-align: left !important; }
+
+/* Justify disabled — creates unnatural word-gaps in Hebrew, especially on small screens */
+.page-content-container .ql-align-justify,
+.page-content-container p.ql-align-justify { text-align: right !important; }
+
+/* Quill direction */
+.page-content-container .ql-direction-rtl { direction: rtl !important; }
+
+/* Headings */
+.page-content-container h1,
+.page-content-container h2,
+.page-content-container h3 {
+  font-weight: 700;
+  margin-top: 1.4em !important;
+  margin-bottom: 0.5em !important;
+  line-height: 1.3;
+  white-space: pre-wrap !important;
+}
+
+/* Lists */
+.page-content-container ul,
+.page-content-container ol {
+  padding-right: 1.5em;
+  margin-bottom: 0.6em;
+  white-space: normal !important;
+}
+.page-content-container ul { list-style: disc; }
+.page-content-container ol { list-style: decimal; }
+
+/* Bold / italic */
+.page-content-container strong { font-weight: 700; }
+.page-content-container em { font-style: italic; }
+.page-content-container u  { text-decoration: underline; }
+
+/* Links */
+.page-content-container a {
+  @apply text-primary underline underline-offset-4 hover:text-accent transition-colors;
+  overflow-wrap: anywhere !important;
+}
+
+
+/* Quill Editor Custom Styling for Boutique Feel */
+.prose-editor .ql-container {
+  font-family: 'Assistant', sans-serif !important;
+  font-size: 1.125rem !important;
+  min-height: 450px;
+  border-color: #f5f5f4 !important;
+}
+
+.prose-editor .ql-toolbar {
+  border-color: #f5f5f4 !important;
+  background: #fafaf9;
+}
+
+.prose-editor .ql-editor {
+  text-align: right;
+  direction: rtl;
+  line-height: 1.7;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+  min-height: 280px;
+  padding: 16px 20px;
+}
+
+.prose-editor .ql-editor p {
+  margin-bottom: 0.4em;
+  margin-top: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Empty paragraph (Quill uses <p><br></p> for blank lines) — keep compact */
+.prose-editor .ql-editor p:empty,
+.prose-editor .ql-editor p br {
+  line-height: 1.4;
+}
+
+.prose-editor .ql-editor h1,
+.prose-editor .ql-editor h2,
+.prose-editor .ql-editor h3 {
+  line-height: 1.4;
+  margin-top: 1.5em;
+  margin-bottom: 0.6em;
+  font-weight: 700;
+}
+
+.prose-editor .ql-editor ul,
+.prose-editor .ql-editor ol {
+  padding-right: 2em;
+  padding-left: 0;
+}
+
+.prose-editor .ql-editor img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin: 1em 0;
+}
+
+.prose-editor .ql-editor.ql-blank::before {
+  right: 20px;
+  left: auto;
+}
+
+/* Quill Toolbar Translations (Hebrew) */
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: 'רגיל' !important;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+  content: 'קטן' !important;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
+  content: 'גדול' !important;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
+  content: 'ענק' !important;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: 'רגיל' !important;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=serif]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
+  content: 'סריף' !important;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
+  content: 'קוד' !important;
+}
+
+/* Ensure toolbar picker text is aligned correctly for RTL */
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  left: 5px !important;
+  right: auto !important;
+}
+.ql-snow .ql-picker-label {
+  padding-left: 18px !important;
+  padding-right: 12px !important;
+  text-align: right;
+}
+.ql-snow .ql-picker-item {
+  text-align: right;
+}
+
+/* Global Quill Render Support */
+.ql-size-small { font-size: 0.75em !important; }
+.ql-size-large { font-size: 1.5em !important; }
+.ql-size-huge { font-size: 2.5em !important; }
+.ql-font-serif { font-family: serif !important; }
+.ql-font-monospace { font-family: monospace !important; }
+
+/* 3D & Glassmorphism Utilities */
+.btn-3d {
+  position: relative;
+  transition: all 0.2s;
+  box-shadow: 0 6px 0 0 rgba(0,0,0,0.15);
+  transform: translateY(0);
+}
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 0 rgba(0,0,0,0.15);
+}
+.btn-3d-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%);
+}
+.glass-3d-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.glass-3d-card:hover {
+  transform: translateY(-5px);
+}
+.icon-3d-wrapper {
+  background: rgba(255,255,255,0.5);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+}
+
+/* Finance / Mortgage theme utilities */
+.finance-gradient {
+  background: linear-gradient(135deg, hsl(220, 60%, 18%) 0%, hsl(213, 75%, 35%) 100%);
+}
+
+.finance-card {
+  @apply bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-500 border border-border/50 flex flex-col items-center text-center;
+}
+
+.stat-badge {
+  @apply bg-primary/10 text-primary rounded-full px-4 py-1.5 text-sm font-bold;
+}
+
+.pill-cta {
+  @apply px-6 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all duration-300 shadow-md;
+}
+
+/* Counter number animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.stat-enter {
+  animation: countUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Slide in from right (for RTL cards) */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Fade up with scale — for stat numbers */
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.85) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.pop-in {
+  animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Pulse glow for CTA highlight */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4); }
+  50%       { box-shadow: 0 0 0 12px hsl(var(--primary) / 0); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* ── Gradient text ─────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(213, 75%, 35%) 0%, hsl(42, 70%, 55%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Shimmer loading/highlight ──────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg,
+    hsl(var(--primary) / 0.08) 0%,
+    hsl(var(--primary) / 0.18) 50%,
+    hsl(var(--primary) / 0.08) 100%);
+  background-size: 200% auto;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* ── Glass card ────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(30, 58, 138, 0.08);
+}
+
+/* ── Feature card number bg ────────────────────────────────── */
+.feature-num {
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: hsl(var(--primary) / 0.05);
+  position: absolute;
+  left: -0.1em;
+  top: 0.05em;
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.4s;
+}
+
+.group:hover .feature-num {
+  color: hsl(var(--primary) / 0.09);
+}
+
+/* ── Diagonal section dividers ─────────────────────────────── */
+.section-wave-top {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.section-wave-top svg {
+  display: block;
+  width: 100%;
+}
+
+/* ── Stats section separator dots ─────────────────────────── */
+.stats-sep {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
+}
+
+/* ── Floating badge ────────────────────────────────────────── */
+.float-badge {
+  animation: floatBadge 3s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0px);   }
+  50%       { transform: translateY(-6px);  }
+}
+
+/* ── 3D & Premium Design System ── */
+.btn-3d {
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 0 0 hsl(var(--primary) / 0.8),
+              0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-3d:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 0 hsl(var(--primary) / 0.8),
+              0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-3d-gold {
+  box-shadow: 0 4px 0 0 hsl(42, 70%, 35%),
+              0 8px 15px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, hsl(42, 70%, 55%) 0%, hsl(42, 80%, 45%) 100%) !important;
+  color: white !important;
+}
+
+.btn-3d-gold:active {
+  box-shadow: 0 0 0 0 hsl(42, 70%, 35%);
+}
+
+.glass-3d-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+.glass-3d-card:hover {
+  transform: translateY(-10px) scale(1.02) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
+}
+
+.icon-3d-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  box-shadow: 4px 4px 8px #d9d9d9, -4px -4px 8px #ffffff;
+  transition: all 0.4s ease;
+}
+
+.group:hover .icon-3d-wrapper {
+  transform: rotateY(15deg) rotateX(10deg) translateZ(10px);
+  background: hsl(var(--primary));
+  color: white;
+  box-shadow: 8px 8px 16px rgba(0,0,0,0.1), -4px -4px 12px #ffffff;
+}
+
+/* ── Testimonials Slider ── */
+@keyframes slideInfinite {
+  from { transform: translateX(0); }
+  to { transform: translateX(50%); }
+}
+
+.testimonials-track {
+  display: flex;
+  width: max-content;
+  gap: 2rem;
+  animation: slideInfinite 40s linear infinite;
+}
+
+.testimonials-track:hover {
+  animation-play-state: paused;
+}
+
+.finance-3d-text {
+  text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 1px rgba(0,0,0,.1);
+}
+
+.finance-3d-text-light {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2),
+               0 2px 0 rgba(255,255,255,0.1),
+               0 4px 10px rgba(0,0,0,0.3);
+}

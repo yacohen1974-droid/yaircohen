@@ -1,0 +1,874 @@
+{
+  "pages": {},
+  "blog": {
+    "pageId": "blog",
+    "metaTitle": "בלוג משכנתאות – יאיר כהן יועץ משכנתאות",
+    "metaDescription": "מאמרים, טיפים ומדריכים מעולם המשכנתאות מאת יאיר כהן. כל מה שצריך לדעת כדי לחסוך עשרות אלפי שקלים.",
+    "blocks": [
+      {
+        "id": "blog-hero",
+        "type": "hero",
+        "heroHeight": "70vh",
+        "heroTextAlign": "center",
+        "heroCloudiness": 40,
+        "imageUrl": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "בלוג משכנתאות",
+          "subtitle": "ממרחב של השראה, מחשבה ושיפור",
+          "fontSize": "text-5xl md:text-8xl",
+          "fontFamily": "font-handwriting",
+          "align": "center",
+          "color": "#ffffff"
+        }
+      },
+      {
+        "id": "blog-list",
+        "type": "blog-grid",
+        "titleSettings": {
+          "text": "השראה ושיתופים",
+          "subtitle": "Journal",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        }
+      }
+    ]
+  },
+  "global": {
+    "primaryColor": "213 75% 35%",
+    "siteName": "יאיר כהן",
+    "siteSubtitle": "יועץ משכנתאות ופיננסים",
+    "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
+    "siteEmail": "yairmashkantaot@gmail.com",
+    "sitePhone": "050-628-5476",
+    "siteAddress": "רחוב דיזנגוף 99, תל אביב",
+    "facebookLink": "https://www.facebook.com",
+    "instagramLink": "https://www.instagram.com/yair_cohen_44",
+    "linkedinLink": "",
+    "navItems": [
+      {
+        "label": "ראשי",
+        "href": "/"
+      },
+      {
+        "label": "אודות",
+        "href": "/about"
+      },
+      {
+        "label": "שירותים",
+        "href": "/services"
+      },
+      {
+        "label": "מדריכי משכנתא",
+        "href": "/blog"
+      },
+      {
+        "label": "צור קשר",
+        "href": "/contact"
+      }
+    ],
+    "footerItems": [
+      {
+        "label": "דירה ראשונה",
+        "href": "/first-apartment"
+      },
+      {
+        "label": "מחזור משכנתא",
+        "href": "/refinancing"
+      },
+      {
+        "label": "נדל\"ן להשקעה",
+        "href": "/investment"
+      },
+      {
+        "label": "שאלות נפוצות",
+        "href": "/faq-mortgage"
+      },
+      {
+        "label": "מדריכי משכנתא",
+        "href": "/blog"
+      }
+    ],
+    "metaTitle": "יאיר כהן – יועץ משכנתאות מוסמך",
+    "metaDescription": "יועץ משכנתאות בלתי תלוי | 15+ שנות ניסיון | ייעוץ ראשוני חינם | חיסכון של עשרות אלפי שקלים",
+    "blocks": [],
+    "sectionOrder": [
+      "hero",
+      "stats",
+      "intro",
+      "features",
+      "video",
+      "testimonials",
+      "faqs",
+      "cta",
+      "contact"
+    ],
+    "ctaLabel": "לייעוץ ראשוני חינם",
+    "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
+    "pageId": "global",
+    "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
+  },
+  "home": {
+    "primaryColor": "213 75% 35%",
+    "siteName": "יאיר כהן",
+    "siteSubtitle": "יועץ משכנתאות ופיננסים",
+    "siteDescription": "",
+    "siteEmail": "",
+    "sitePhone": "",
+    "siteAddress": "",
+    "facebookLink": "",
+    "instagramLink": "",
+    "linkedinLink": "",
+    "navItems": [],
+    "footerItems": [],
+    "metaTitle": "יאיר כהן – יועץ משכנתאות | ייעוץ ראשוני חינם",
+    "metaDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של 15 שנה. חיסכון של עשרות אלפי שקלים. קבל ייעוץ ראשוני חינם.",
+    "blocks": [
+      {
+        "id": "hero-main",
+        "type": "hero",
+        "heroHeight": "90vh",
+        "heroTextAlign": "center",
+        "heroCloudiness": 25,
+        "imageUrl": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&auto=format&fit=crop&q=80",
+        "imageUrlMobile": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "משכנתא חכמה מתחילה כאן",
+          "fontSize": "text-5xl sm:text-7xl lg:text-8xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "#ffffff"
+        },
+        "subtitleSettings": {
+          "text": "הגעתם הביתה – אפשר להפסיק לחפש. יאיר כהן, יועץ משכנתאות ופיננסים בלתי תלוי, מוביל אתכם צעד אחר צעד עד למפתחות.",
+          "fontSize": "text-base md:text-xl lg:text-2xl",
+          "fontFamily": "font-headline",
+          "align": "right",
+          "color": "rgba(255,255,255,0.9)"
+        }
+      },
+      {
+        "id": "stats-main",
+        "type": "stats",
+        "statsBg": "navy",
+        "stats": [
+          {
+            "value": "500",
+            "suffix": "+",
+            "label": "לקוחות מרוצים"
+          },
+          {
+            "prefix": "",
+            "value": "22",
+            "suffix": "מיליון ₪",
+            "label": "נפח משכנתאות"
+          },
+          {
+            "value": "15",
+            "suffix": "+",
+            "label": "שנות ניסיון"
+          },
+          {
+            "value": "100%",
+            "label": "ייעוץ בלתי תלוי"
+          }
+        ]
+      },
+      {
+        "id": "intro-main",
+        "type": "intro",
+        "bg": "bg-[hsl(213,30%,97%)]",
+        "portraitImageUrl": "https://69ef5d7cabe5326bdb422710.imgix.net/%D7%99%D7%90%D7%99%D7%A8%20%D7%9B%D7%94%D7%9F1.png?w=2048&h=2048",
+        "portraitShape": "rectangle",
+        "portraitPosition": "right",
+        "titleSettings": {
+          "text": "אני יאיר כהן – יועץ המשכנתאות שלכם",
+          "fontSize": "text-3xl sm:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "left",
+          "color": "text-accent",
+          "subtitle": "מוסמך • בלתי תלוי • מחויב אך ורק לכם"
+        },
+        "content": "<p class=\"ql-align-right ql-direction-rtl\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-align-right ql-direction-rtl\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-align-right ql-direction-rtl\"><strong>ההבטחה&nbsp;שלי:</strong>&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
+        "title": "אני יאיר כהן – יועץ המשכנתאות שלכם"
+      },
+      {
+        "id": "features-services",
+        "type": "features",
+        "bg": "stone-50",
+        "titleSettings": {
+          "text": "השירותים שלנו",
+          "subtitle": "פתרונות משכנתא מקיפים",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        },
+        "features": [
+          {
+            "title": "ייעוץ ראשוני חינם",
+            "icon": "HouseSearch",
+            "description": "פגישת היכרות ללא עלות – נבין את הצרכים, נסקור את המצב הפיננסי ונתכנן יחד את מסלול המשכנתא הנכון עבורכם."
+          },
+          {
+            "title": "השוואת כל הבנקים",
+            "icon": "BankColumns",
+            "description": "פנייה לכלל הבנקים והמלווים, השוואת הצעות ומשא ומתן מקצועי להשגת הריבית הנמוכה ביותר בשוק."
+          },
+          {
+            "title": "ליווי מלא עד מפתחות",
+            "icon": "JourneyFlag",
+            "description": "מהגשת הבקשה ועד קבלת הכספים – מטפלים בכל הניירת והביורוקרטיה ומנהלים את התהליך עבורכם לחלוטין."
+          },
+          {
+            "title": "מחזור משכנתא",
+            "icon": "Refinance",
+            "description": "בחינת כדאיות כלכלית ומחזור משכנתא קיימת לתנאים טובים יותר – עשרות אלפי שקלים חיסכון פוטנציאלי."
+          }
+        ]
+      },
+      {
+        "id": "calculator-main",
+        "type": "calculator",
+        "titleSettings": {
+          "text": "כמה תוכלו לחסוך?",
+          "subtitle": "מחשבון משכנתא",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        }
+      },
+      {
+        "id": "insight-why-lose",
+        "type": "insight",
+        "insightBg": "light-blue",
+        "insightImagePosition": "left",
+        "insightImageUrl": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "למה רוב האנשים מפסידים",
+          "subtitle": "טעות נפוצה",
+          "fontSize": "text-3xl md:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "right",
+          "color": "text-accent"
+        },
+        "insightTitleBold": "מאות אלפי שקלים במשכנתא?",
+        "insightPoints": [
+          {
+            "text": "הם הולכים ישירות לבנק ומקבלים הצעה שנועדה לשרת את הבנק – לא אותם",
+            "type": "negative"
+          },
+          {
+            "text": "יועצים פרטיים שמטפלים בתיקים בודדים לא נחשבים כלל מול מנהלי הבנקים",
+            "type": "negative"
+          },
+          {
+            "text": "הם חותמים על חוזה מבלי להשוות בין הצעות מתחרות – ומשלמים על כך שנים",
+            "type": "negative"
+          }
+        ],
+        "insightConclusion": "התוצאה? עסקה בינונית במקרה הטוב – הפסד של מאות אלפי שקלים במקרה הרע.",
+        "ctaButtons": [
+          {
+            "variant": "primary",
+            "size": "default",
+            "href": "https://wa.me/972506285476?text=היי%20יאיר%20לפרטים%20איך%20לחסוך%20מאות%20אלפי%20ש״ח",
+            "label": "יאיר, אני רוצה לשמוע איך לקחת משכנתא חכמה"
+          }
+        ]
+      },
+      {
+        "id": "logos-banks",
+        "type": "logos",
+        "bg": "white",
+        "titleSettings": {
+          "text": "עובדים מול כל הבנקים",
+          "subtitle": "",
+          "fontSize": "text-2xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        },
+        "logoSize": "md",
+        "logoShape": "square",
+        "logos": [
+          {
+            "id": "yjoucv37w",
+            "imageUrl": "/logos/leumi.svg"
+          },
+          {
+            "id": "bcx2mx4sp",
+            "imageUrl": "/logos/mizrahi.svg"
+          },
+          {
+            "id": "96sp5j0sd",
+            "imageUrl": "/logos/discount.svg"
+          },
+          {
+            "id": "djf3u5l98",
+            "imageUrl": "/logos/jerusalem.webp"
+          }
+        ]
+      },
+      {
+        "id": "insight-advisor-vs-banker",
+        "type": "insight",
+        "insightBg": "white",
+        "insightImagePosition": "right",
+        "insightImageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "הבנקאי לא עובד בשבילך –",
+          "subtitle": "ידעת?",
+          "fontSize": "text-3xl md:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "right",
+          "color": "text-accent"
+        },
+        "insightTitleBold": "זה פשוט לא תפקידו",
+        "insightPoints": [
+          {
+            "text": "הבנקאי מחויב ליעדי הבנק ולא לאינטרסים שלך – גם אם הוא אדיב ונחמד",
+            "type": "negative"
+          },
+          {
+            "text": "יועץ עצמאי פונה לכל הבנקים ומביא לך תחרות אמיתית על הריבית",
+            "type": "positive"
+          },
+          {
+            "text": "עם יועץ עצמאי, החיסכון הממוצע עומד על 80,000–200,000 ₪ לאורך חיי המשכנתא",
+            "type": "positive"
+          }
+        ],
+        "insightConclusion": "יאיר כהן פועל אך ורק עבורך – ללא קשר לבנק כלשהו, ללא ניגוד עניינים."
+      },
+      {
+        "id": "testimonials-main",
+        "type": "testimonials",
+        "titleSettings": {
+          "text": "לקוחות מספרים",
+          "subtitle": "מה אומרים עלינו",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        },
+        "testimonials": [
+          {
+            "text": "הגענו ליאיר אחרי שהבנק הציע לנו ריבית של 4.5%. יאיר השיג לנו 3.8% – חיסכון של מעל 180,000 ₪ לאורך חיי המשכנתא. מקצועי, מסור ואמין לחלוטין.",
+            "author": "דן ורחל לוי",
+            "location": "פתח תקווה"
+          },
+          {
+            "text": "כרוכשים ראשונים לא ידענו מאיפה להתחיל. יאיר לקח אותנו יד ביד בכל התהליך, הסביר בסבלנות, ודאג שנקבל את התנאים הכי טובים. ממליצים בחום!",
+            "author": "נועה ואיתי כהן",
+            "location": "ראשון לציון"
+          },
+          {
+            "text": "יאיר עזר לנו למחזר את המשכנתא הישנה וחסך לנו 2,500 ₪ בחודש. שירות מעולה, מקצועיות ברמה הגבוהה ביותר. ממליצים לכל אחד!",
+            "author": "משפחת גולדברג",
+            "location": "הרצליה פיתוח"
+          }
+        ]
+      },
+      {
+        "id": "video-main",
+        "type": "video",
+        "videoUrl": "https://www.facebook.com/reel/624770380071041",
+        "videoTitle": "הכירו את יאיר כהן – יועץ המשכנתאות שלכם",
+        "titleSettings": {
+          "text": "שמעו מאיתנו ישירות",
+          "subtitle": "הכירו את יאיר ולמדו על תהליך ייעוץ המשכנתא",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        }
+      },
+      {
+        "id": "faqs-main",
+        "type": "faqs",
+        "bg": "stone-50",
+        "titleSettings": {
+          "text": "שאלות נפוצות",
+          "subtitle": "כל מה שרצאים לדעת על משכנתא",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        },
+        "faqs": [
+          {
+            "question": "מה ההבדל בין יועץ משכנתאות עצמאי לבין בנקאי?",
+            "answer": "יועץ משכנתאות עצמאי פועל אך ורק עבורכם ואינו קשור לבנק כלשהו. הוא פונה לכל הבנקים בשוק, משווה הצעות ומנהל מו\"מ מטעמכם. בנקאי מייצג את הבנק שלו בלבד ולא את האינטרסים שלכם."
+          },
+          {
+            "question": "כמה עולה ייעוץ משכנתאות?",
+            "answer": "הייעוץ הראשוני הוא חינם לחלוטין ללא כל התחייבות. שכר הטרחה עבור הליווי המלא נקבע מראש ובשקיפות מוחלטת, ובדרך כלל מהווה שבריר קטן מסכום החיסכון שנוצר עבורכם."
+          },
+          {
+            "question": "מתי כדאי לפנות ליועץ משכנתאות?",
+            "answer": "מוקדם ככל האפשר! אידיאלי לפנות לפני חתימה על חוזה רכישה. כך תדעו מראש מה התקציב שלכם, תמנעו עיכובים ואכזבות, ותוכלו לנהל משא ומתן מול המוכר בביטחון."
+          },
+          {
+            "question": "כמה זמן לוקח תהליך אישור המשכנתא?",
+            "answer": "תהליך סטנדרטי נמשך 2–4 שבועות מרגע הגשת הבקשה. עם ליווי מקצועי ניתן לייעל ולזרז את התהליך משמעותית ולמנוע עיכובים מיותרים בביורוקרטיה."
+          },
+          {
+            "question": "האם כדאי למחזר משכנתא קיימת?",
+            "answer": "במקרים רבים – כן! אם ריבית השוק נמוכה מהריבית שאתם משלמים, מחזור עשוי לחסוך עשרות ואף מאות אלפי שקלים. נבחן את הכדאיות הכלכלית בחינם ובמלא הדיוק בפגישה הראשונה."
+          },
+          {
+            "question": "מה היתרון שלך על פני יועצים אחרים?",
+            "answer": "אני מביא לשולחן שילוב נדיר של ניסיון של כ-15 שנה בעולם הנדל\"ן וההשקעות לצד ליווי אישי ומחויבות מלאה לכל לקוח. המטרה שלי היא לא רק להשיג את הריבית הנמוכה ביותר, אלא לבנות תמהיל משכנתא שמתאים באמת לחיים שלכם – היום ובעוד עשר שנים."
+          },
+          {
+            "question": "האם אתה יכול להשיג לי תנאים שאני לא הייתי משיג לבד?",
+            "answer": "כן, ובגדול. הבנקים אינם פועלים כמקשה אחת – יש שונות משמעותית בין הבנקים בעלויות גיוס הכסף ובאטרקטיביות שלהם לכל סוג עסקה (רוכש ראשון, משפר דיור, מסורב, משקיע ועוד). אני מכיר את ההזדמנויות האלו ומנצל אותן לטובתכם, ומגיש את התיק לבנק הנכון עבור המקרה הספציפי שלכם – מה שלרוב מייצר תנאים שקשה מאוד להשיג באופן עצמאי."
+          },
+          {
+            "question": "עם אילו בנקים אתה עובד, ואיך בנוי שכר הטרחה?",
+            "answer": "אני פועל מול כלל הבנקים והגופים המלווים בשוק, ללא זיקה לבנק ספציפי – כך שההמלצה שתקבלו תמיד תשרת אתכם בלבד. מבנה שכר הטרחה מוצג במלואו ובשקיפות מוחלטת כבר בשיחת ההיכרות הראשונה, כדי שתדעו בדיוק על מה אתם משלמים ולמה."
+          },
+          {
+            "question": "השירות שלך יקר לי – זה שווה את זה?",
+            "answer": "המטרה שלי היא שתקבלו ערך גבוה משמעותית ממה שהייעוץ עולה לכם. ברוב המקרים החיסכון בריבית ובתנאי המשכנתא לאורך זמן גבוה בהרבה משכר הטרחה. בשיחת ההיכרות החינמית וללא התחייבות נבחן ביחד כמה באמת ניתן לחסוך במקרה הספציפי שלכם, לפני כל החלטה."
+          }
+        ]
+      },
+      {
+        "id": "cta-main",
+        "type": "cta",
+        "ctaAlign": "center",
+        "ctaButtons": [
+          {
+            "label": "לייעוץ ראשוני חינם",
+            "href": "#contact",
+            "variant": "primary",
+            "size": "lg"
+          },
+          {
+            "label": "חייגו: 050-628-5476",
+            "href": "tel:0506285476",
+            "variant": "outline",
+            "size": "lg"
+          }
+        ]
+      },
+      {
+        "id": "contact-main",
+        "type": "contact",
+        "titleSettings": {
+          "text": "צרו קשר",
+          "subtitle": "נשמח לשמוע מכם",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        }
+      }
+    ],
+    "sectionOrder": [
+      "hero",
+      "stats",
+      "intro",
+      "features",
+      "video",
+      "testimonials",
+      "faqs",
+      "cta",
+      "contact"
+    ],
+    "pageId": "home"
+  },
+  "about": {
+    "primaryColor": "213 75% 35%",
+    "siteName": "יאיר כהן",
+    "siteSubtitle": "יועץ משכנתאות ופיננסים",
+    "siteDescription": "",
+    "siteEmail": "",
+    "sitePhone": "",
+    "siteAddress": "",
+    "facebookLink": "",
+    "instagramLink": "",
+    "linkedinLink": "",
+    "navItems": [],
+    "footerItems": [],
+    "metaTitle": "אודות יאיר כהן – יועץ משכנתאות מוסמך",
+    "metaDescription": "הכירו את יאיר כהן – יועץ משכנתאות בלתי תלוי עם 15+ שנות ניסיון, מחויבות מלאה ורקורד מוכח.",
+    "blocks": [
+      {
+        "id": "about-hero",
+        "type": "hero",
+        "heroHeight": "70vh",
+        "heroTextAlign": "center",
+        "heroCloudiness": 30,
+        "imageUrl": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&auto=format&fit=crop&q=80",
+        "imageUrlMobile": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "אודות יאיר כהן",
+          "fontSize": "text-5xl sm:text-6xl lg:text-7xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "#ffffff"
+        },
+        "subtitleSettings": {
+          "text": "15+ שנות ניסיון • מוסמך • בלתי תלוי • מחויב אך ורק לכם",
+          "fontSize": "text-base md:text-xl lg:text-2xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "rgba(255,255,255,0.9)"
+        }
+      },
+      {
+        "id": "about-intro",
+        "type": "intro",
+        "bg": "bg-[hsl(213,30%,97%)]",
+        "portraitImageUrl": "https://69ef5d7cabe5326bdb422710.imgix.net/%D7%99%D7%90%D7%99%D7%A8%20%D7%9B%D7%94%D7%9F.png",
+        "portraitShape": "circle",
+        "portraitPosition": "left",
+        "titleSettings": {
+          "text": "הסיפור שלי",
+          "fontSize": "text-3xl sm:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "left",
+          "color": "text-accent",
+          "subtitle": "מאהבת נדל\"ן למקצוע חיים"
+        },
+        "content": "<p class=\"ql-align-right ql-direction-rtl\">תמיד&nbsp;הייתה&nbsp;לי&nbsp;&quot;רגל&nbsp;קטנה&quot;&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות&nbsp;–&nbsp;עוד&nbsp;לפני&nbsp;שהפכתי&nbsp;את&nbsp;זה&nbsp;למקצוע.&nbsp;השילוב&nbsp;בין&nbsp;החיבור&nbsp;העמוק&nbsp;שלי&nbsp;לעולם&nbsp;הכלכלה&nbsp;וההשקעות&nbsp;לבין&nbsp;הרצון&nbsp;האמיתי&nbsp;לעזור&nbsp;לאנשים&nbsp;–&nbsp;במיוחד&nbsp;זוגות&nbsp;צעירים&nbsp;בתחילת&nbsp;הדרך&nbsp;ומשקיעים&nbsp;שרוצים&nbsp;למקסם&nbsp;את&nbsp;האפשרויות&nbsp;שלהם&nbsp;–&nbsp;הוביל&nbsp;אותי&nbsp;לתחום&nbsp;ייעוץ&nbsp;המשכנתאות.</p><p class=\"ql-align-right ql-direction-rtl\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;אני&nbsp;אוהב&nbsp;את&nbsp;האתגר&nbsp;שבמציאת&nbsp;פתרונות&nbsp;יצירתיים&nbsp;במקומות&nbsp;שבהם&nbsp;הבנק&nbsp;אומר&nbsp;&quot;לא&quot;&nbsp;–&nbsp;ולנצח&nbsp;את&nbsp;המערכת&nbsp;הבנקאית&nbsp;במגרש&nbsp;שלה.&nbsp;כל&nbsp;תיק&nbsp;מקבל&nbsp;תשומת&nbsp;לב&nbsp;אישית&nbsp;מלאה,&nbsp;ניתוח&nbsp;מעמיק&nbsp;ולחימה&nbsp;אמיתית&nbsp;עבור&nbsp;האינטרסים&nbsp;שלכם&nbsp;–&nbsp;עם&nbsp;אחוזי&nbsp;הצלחה&nbsp;גבוהים&nbsp;במיוחד&nbsp;גם&nbsp;בתיקים&nbsp;מורכבים&nbsp;ובתיקים&nbsp;שסורבו&nbsp;בעבר&nbsp;בבנקים.</p><p class=\"ql-align-right ql-direction-rtl\"><strong>ההשכלה&nbsp;וההכשרה:</strong>&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון),&nbsp;תואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;והכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;בתחום&nbsp;המשכנתאות&nbsp;המורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-align-right ql-direction-rtl\"><strong>הגישה&nbsp;שלי:</strong>&nbsp;שקיפות&nbsp;מוחלטת,&nbsp;ייעוץ&nbsp;אובייקטיבי&nbsp;ומחויבות&nbsp;אישית&nbsp;לכל&nbsp;לקוח.&nbsp;אני&nbsp;מתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ולא&nbsp;מתפשר&nbsp;על&nbsp;פחות&nbsp;מהטוב&nbsp;ביותר&nbsp;עבורכם.</p>",
+        "portraitSize": 300,
+        "title": "הסיפור שלי"
+      },
+      {
+        "id": "insight-right-time",
+        "type": "insight",
+        "insightBg": "white",
+        "insightImagePosition": "right",
+        "insightImageUrl": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "מתי הזמן הנכון לפנות",
+          "subtitle": "תזמון קריטי",
+          "fontSize": "text-3xl md:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "right",
+          "color": "text-accent"
+        },
+        "insightTitleBold": "ליועץ משכנתאות?",
+        "insightPoints": [
+          {
+            "text": "לפני חתימה על חוזה רכישה – כדי לדעת בדיוק מה התקציב שלך",
+            "type": "positive"
+          },
+          {
+            "text": "כשאתה שוקל לרכוש דירה – גם אם זה עוד חודשים קדימה",
+            "type": "positive"
+          },
+          {
+            "text": "כשיש לך משכנתא קיימת ואתה לא זוכר מה הריבית שאתה משלם",
+            "type": "neutral"
+          },
+          {
+            "text": "לאחר שינוי מצב משפחתי או כלכלי שמשפיע על ההחזרים החודשיים",
+            "type": "neutral"
+          }
+        ],
+        "insightConclusion": "הייעוץ הראשוני הוא חינם לחלוטין – אין סיבה לחכות."
+      },
+      {
+        "id": "about-values",
+        "type": "features",
+        "bg": "stone-50",
+        "titleSettings": {
+          "text": "הערכים שמנחים אותי",
+          "subtitle": "למה לקוחות בוחרים ביאיר כהן",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        },
+        "features": [
+          {
+            "title": "שקיפות",
+            "icon": "ShieldGuarantee",
+            "description": "אין עמלות נסתרות, אין הפתעות. שכר הטרחה ידוע מראש, וכל צעד בתהליך מוסבר בשקיפות מלאה."
+          },
+          {
+            "title": "אמינות",
+            "icon": "TrustHands",
+            "description": "אתייחס למשכנתא שלכם כאילו היא שלי. אתם יכולים לסמוך עליי שאני האיש שלכם למשימה הזו."
+          },
+          {
+            "title": "מקצועיות",
+            "icon": "BankColumns",
+            "description": "ידע נרחב ומתעדכן ברגולציה ובדרכי הפעולה השונות של הבנקים, שמתורגם לפתרונות מדויקים ולחיסכון אמיתי."
+          },
+          {
+            "title": "השגיות",
+            "icon": "InvestmentGrowth",
+            "description": "המטרה שלי היא לא רק להשיג את המשכנתא הטובה ביותר, אלא לבנות פתרון שיתאים באמת לחיים שלכם."
+          },
+          {
+            "title": "שירותיות",
+            "icon": "JourneyFlag",
+            "description": "זמין עבורכם בכל שלב של התהליך – שאלות, דאגות ועדכונים תמיד מקבלים מענה אישי ומיידי."
+          }
+        ]
+      },
+      {
+        "id": "about-cta",
+        "type": "cta",
+        "ctaAlign": "center",
+        "ctaButtons": [
+          {
+            "label": "לייעוץ ראשוני חינם",
+            "href": "/contact",
+            "variant": "primary",
+            "size": "lg"
+          },
+          {
+            "label": "חזרה לעמוד הבית",
+            "href": "/",
+            "variant": "outline",
+            "size": "lg"
+          }
+        ]
+      }
+    ],
+    "sectionOrder": [
+      "hero",
+      "intro",
+      "features",
+      "cta"
+    ],
+    "pageId": "about"
+  },
+  "services": {
+    "primaryColor": "213 75% 35%",
+    "siteName": "יאיר כהן",
+    "siteSubtitle": "יועץ משכנתאות ופיננסים",
+    "siteDescription": "",
+    "siteEmail": "",
+    "sitePhone": "",
+    "siteAddress": "",
+    "facebookLink": "",
+    "instagramLink": "",
+    "navItems": [],
+    "footerItems": [],
+    "metaTitle": "שירותים – יאיר כהן יועץ משכנתאות",
+    "metaDescription": "כל שירותי ייעוץ המשכנתא של יאיר כהן – ייעוץ ראשוני, השוואת בנקים, מחזור משכנתא, ליווי מלא.",
+    "pageId": "services",
+    "sectionOrder": [],
+    "blocks": [
+      {
+        "id": "srv-hero",
+        "type": "hero",
+        "heroHeight": "60vh",
+        "heroTextAlign": "center",
+        "heroCloudiness": 50,
+        "imageUrl": "https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=1920&auto=format&fit=crop&q=80",
+        "imageUrlMobile": "https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "השירותים שלנו",
+          "fontSize": "text-5xl sm:text-6xl lg:text-7xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "#ffffff"
+        },
+        "subtitleSettings": {
+          "text": "פתרונות משכנתא מקיפים – מהייעוץ הראשון ועד קבלת המפתחות, בפריסה ארצית מלאה ופגישות וידאו מכל מקום בארץ",
+          "fontSize": "text-base md:text-xl lg:text-2xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "rgba(255,255,255,0.9)"
+        }
+      },
+      {
+        "id": "srv-stats",
+        "type": "stats",
+        "statsBg": "navy",
+        "stats": [
+          {
+            "value": "500",
+            "suffix": "+",
+            "label": "לקוחות מרוצים"
+          },
+          {
+            "prefix": "₪",
+            "value": "9",
+            "suffix": " מיליארד",
+            "label": "נפח משכנתאות"
+          },
+          {
+            "value": "15",
+            "suffix": "+",
+            "label": "שנות ניסיון"
+          },
+          {
+            "value": "100%",
+            "label": "ייעוץ בלתי תלוי"
+          }
+        ]
+      },
+      {
+        "id": "srv-features",
+        "type": "features",
+        "bg": "white",
+        "titleSettings": {
+          "text": "מה כולל הליווי שלנו?",
+          "subtitle": "שירות מקצועי ומקיף",
+          "fontSize": "text-4xl",
+          "fontFamily": "font-headline",
+          "align": "center",
+          "color": "text-accent"
+        },
+        "features": [
+          {
+            "title": "ייעוץ ראשוני חינם",
+            "icon": "HouseSearch",
+            "description": "פגישת היכרות ללא עלות – נבין את הצרכים, נסקור את המצב הפיננסי ונתכנן יחד את מסלול המשכנתא הנכון עבורכם."
+          },
+          {
+            "title": "השוואת כל הבנקים",
+            "icon": "BankColumns",
+            "description": "פנייה לכלל הבנקים והמלווים, השוואת הצעות ומשא ומתן מקצועי להשגת הריבית הנמוכה ביותר בשוק."
+          },
+          {
+            "title": "ליווי מלא עד מפתחות",
+            "icon": "JourneyFlag",
+            "description": "מהגשת הבקשה ועד קבלת הכספים – מטפלים בכל הניירת, הביורוקרטיה ומנהלים את התהליך עבורכם לחלוטין."
+          },
+          {
+            "title": "מחזור משכנתא",
+            "icon": "Refinance",
+            "description": "בחינת כדאיות כלכלית ומחזור משכנתא קיימת – עשרות אלפי שקלים חיסכון פוטנציאלי."
+          },
+          {
+            "title": "דירה ראשונה",
+            "icon": "FirstHomeKey",
+            "description": "ליווי מיוחד לרוכשים לראשונה – הסברים, בירוקרטיה, מענקים ממשלתיים וניהול ציפיות."
+          },
+          {
+            "title": "נדל\"ן להשקעה",
+            "icon": "InvestmentGrowth",
+            "description": "בניית אסטרטגיית מימון נכונה לרכישת נכסי השקעה – מינוף חכם להגדלת תיק הנכסים."
+          },
+          {
+            "title": "משכנתא למסורבים ותיקים מורכבים",
+            "icon": "TrustHands",
+            "description": "ליווי ייעודי לרוכשים שסורבו בעבר בבנקים ולפושטי רגל. כ-90% מהתיקים המורכבים שאני מטפל בהם מקבלים אישור, בזכות ניסיון בבניית תיק מחדש ואיתור הבנק המתאים ביותר לכל מקרה."
+          },
+          {
+            "title": "עצמאים, בעלי חברות ומשכנתא עסקית",
+            "icon": "CompareScales",
+            "description": "פתרונות מימון מותאמים לעצמאים ובעלי עסקים, כולל משכנתא עסקית והצגת מקורות ההכנסה בצורה הנכונה מול הבנקים."
+          },
+          {
+            "title": "משכנתא הפוכה",
+            "icon": "SavingsPlan",
+            "description": "פתרון מימון לבעלי דירה בגיל הפרישה, המאפשר שחרור הון מהנכס ללא צורך בהחזר חודשי – תוך שמירה מלאה על הבעלות על הבית."
+          },
+          {
+            "title": "משכנתא לתושבי חוץ",
+            "icon": "ShieldGuarantee",
+            "description": "ליווי ייעודי לתושבי חוץ המעוניינים לרכוש נכס בישראל, עם התאמת מסלול המימון לדרישות הבנקים הייחודיות לאוכלוסייה זו."
+          }
+        ]
+      },
+      {
+        "id": "insight-5-mistakes",
+        "type": "insight",
+        "insightBg": "light-blue",
+        "insightImagePosition": "left",
+        "insightImageUrl": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&auto=format&fit=crop&q=80",
+        "titleSettings": {
+          "text": "5 טעויות שרוכשי דירה עושים",
+          "subtitle": "שווה לדעת",
+          "fontSize": "text-3xl md:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "right",
+          "color": "text-accent"
+        },
+        "insightTitleBold": "ועולות להם ביוקר",
+        "insightPoints": [
+          {
+            "text": "מבקשים הצעה מבנק אחד בלבד ומקבלים אותה כ\"עובדה\"",
+            "type": "negative"
+          },
+          {
+            "text": "בוחרים את ההחזר החודשי הנמוך ביותר מבלי להבין את עלות הריבית הכוללת",
+            "type": "negative"
+          },
+          {
+            "text": "פונים לייעוץ רק אחרי חתימת החוזה – כשחלק מהאפשרויות כבר נסגרו",
+            "type": "negative"
+          },
+          {
+            "text": "לא בודקים זכאות למענקים ממשלתיים לרוכשים ראשונים",
+            "type": "neutral"
+          },
+          {
+            "text": "מחזיקים משכנתא ישנה עם ריבית גבוהה מבלי לבדוק כדאיות מחזור",
+            "type": "neutral"
+          }
+        ],
+        "insightConclusion": "ייעוץ נכון לפני החתימה יכול לחסוך לכם עשרות ואף מאות אלפי שקלים."
+      },
+      {
+        "id": "srv-intro",
+        "type": "intro",
+        "bg": "stone-50",
+        "portraitImageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&auto=format&fit=crop&q=80",
+        "portraitShape": "rectangle",
+        "portraitPosition": "right",
+        "titleSettings": {
+          "text": "איך התהליך עובד?",
+          "fontSize": "text-3xl sm:text-4xl",
+          "fontFamily": "font-headline",
+          "align": "right",
+          "color": "text-accent",
+          "subtitle": "4 שלבים ברורים"
+        },
+        "content": "<p><strong>שלב 1 – שיחת היכרות (כ-30 דקות, חינם):</strong> נקבל תמונה ראשונית של הפרופיל הפיננסי שלכם ושל העסקה שאתם מתכננים.</p><p><strong>שלב 2 – איסוף מסמכים ואיפיון צרכים:</strong> אעביר רשימת מסמכים מסודרת, ונבצע יחד איפיון צרכים כדי להתאים את תמהיל המשכנתא לצרכים הספציפיים שלכם – תוך התחשבות גם בתוכניות העתידיות שלכם, לא רק במצב הנוכחי.</p><p><strong>שלב 3 – בניית תמהיל והגשה לבנקים:</strong> אפרט בפניכם את אבני הדרך לתהליך, ולאחר מכן נגיש את התיק לאישור הבנקים הרלוונטיים, תוך ניהול מו\"מ מקצועי מטעמכם.</p><p><strong>שלב 4 – ליווי עד הסגירה ומעבר לה:</strong> לכל אורך התהליך אני בחזית מולכם אל מול הבנקים, ועד לקבלת כספי המשכנתא. הליווי ממשיך גם לאחר מכן – טיפול בביטחונות ובשעבוד הנכס לבנק, תיאום מול עורך הדין והשמאי, וסיוע בהתאמת ביטוח מבנה וביטוח חיים בתנאים אטרקטיביים.</p>"
+      },
+      {
+        "id": "srv-cta",
+        "type": "cta",
+        "ctaAlign": "center",
+        "ctaButtons": [
+          {
+            "label": "לייעוץ ראשוני חינם",
+            "href": "/contact",
+            "variant": "primary",
+            "size": "lg"
+          },
+          {
+            "label": "חזרה לעמוד הבית",
+            "href": "/",
+            "variant": "outline",
+            "size": "lg"
+          }
+        ]
+      }
+    ]
+  },
+  "blogPosts": [
+    {
+      "title": "משכנתא בראש שקט: המדריך המלא לשלבי לקיחת משכנתא",
+      "subtitle": "הדרך לבית עוברת בתכנון חכם: כל מה שצריך לדעת מההון העצמי ועד החתימה",
+      "summary": "מתכננים לקנות בית? המדריך של יאיר כהן עושה לכם סדר בתהליך לקיחת המשכנתא. שלב אחרי שלב, בדרך להחלטה הכלכלית החשובה בחייכם.",
+      "slug": "mortgage-process-guide-israel",
+      "content": "<p></p><p>רכישת בית היא כנראה העסקה הכלכלית הגדולה והמשמעותית ביותר שתבצעו בחייכם. בתוך בליל המושגים המפחידים כמו &quot;ריבית פריים&quot;, &quot;מדד המחירים לצרכן&quot; ו&quot;לוח שפיצר&quot;, קל מאוד ללכת לאיבוד ולהרגיש שהשליטה יוצאת לכם מהידיים.</p><p>החדשות הטובות? כשמפרקים את התהליך לשלבים ברורים, הדרקון הפיננסי הזה הופך למסלול מוסדר ובטוח. הנה מפת הדרכים שתעזור לכם להגיע לחתימה עם חיוך וביטחון.</p><h3>1. השלב הקריטי: בירור הון עצמי ואישור עקרוני</h3><p>עוד לפני שמתחילים לחפש נכסים באתרי הנדל&quot;ן, חייבים להבין מה &quot;מרחב התמרון&quot; שלכם.</p><ul><li><strong>הון עצמי:</strong> כמה כסף באמת יש לכם? זה הזמן לסכום קרנות השתלמות, חסכונות ועזרה משפחתית.</li><li><strong>אישור עקרוני:</strong> זהו מסמך מהבנק המאשר כי עקרונית הוא מוכן להלוות לכם סכום מסוים. זהו כלי המיקוח החזק ביותר שלכם מול המוכרים – אל תצאו לדרך בלעדיו.</li></ul><h3>2. תכנון התמהיל – הלב של המשכנתא</h3><p>זהו השלב שבו רוב האנשים עושים טעויות יקרות. הבנק נוטה להציע תמהילים שטובים לרווחיות שלו. יועץ משכנתאות אובייקטיבי, לעומת זאת, יבנה לכם <strong>תמהיל מותאם אישית</strong>. התמהיל צריך להתחשב בתכניות העתידיות שלכם: האם אתם מתכננים להרחיב את המשפחה? האם צפויה להיפתח קרן השתלמות? המטרה היא ליצור החזר חודשי שמאפשר לכם להמשיך לחיות ברווחה, ולא רק &quot;לשרוד&quot; את המשכנתא.</p><h3>3. &quot;שופינג&quot; בין בנקים ומו&quot;מ</h3><p>לאחר שיש לנו תמהיל מנצח, יוצאים למכרז ריביות. לא כל הבנקים מתמחרים את הסיכון באותה צורה, ולעיתים הבדל קטן של שבריר אחוז בריבית יכול להצטבר לעשרות ומאות אלפי שקלים לאורך השנים. כאן נכנס לתמונה הניסיון בניהול מו&quot;מ מקצועי וחסר פשרות מול המערכת הבנקאית.</p><h3>4. פתיחת תיק ובירוקרטיה</h3><p>סגרתם עם בנק? בשעה טובה. עכשיו מתחיל שלב איסוף המסמכים: צילומי תעודות זהות, דפי בנק, תלושי שכר ואישורי הכנסה. סדר וארגון בשלב זה הם קריטיים כדי למנוע עיכובים מיותרים שעלולים להשפיע על מועדי התשלום למוכר.</p><h3>5. שמאות וביטוחים</h3><p>הבנק רוצה לוודא שהנכס שאתם קונים אכן שווה את הסכום שסוכם. שמאי מטעם הבנק יבקר בנכס וייתן את הערכתו המקצועית. במקביל, תצטרכו להנפיק ביטוח מבנה וביטוח חיים – הגנה הכרחית עבורכם ועבור משפחתכם.</p><h3>6. שלב החתימות והעברת הכספים</h3><p>הרגע הגדול הגיע. נפגשים בבנק, חותמים על מסמכי ההלוואה (חשוב לוודא שוב שהכל תואם את מה שסוכם במו&quot;מ), והכסף מועבר למוכר או לקבלן. הבית שלכם.</p><h3>למה חשוב שיהיה לכם יועץ לצידכם?</h3><p>משכנתא היא לא רק מספרים – היא העתיד והשקט הנפשי שלכם. יועץ משכנתאות מעניק לכם:</p><ul><li><strong>חיסכון כספי:</strong> אופטימיזציה של מסלולים שחוסכת הון לאורך זמן.</li><li><strong>ביטחון:</strong> מישהו שדובר את ה&quot;בנקאית&quot; השוטפת ושומר על האינטרסים שלכם.</li><li><strong>ליווי אנושי:</strong> הבנה עמוקה של הצרכים, החלומות והיכולות האמיתיות שלכם.</li></ul><p><strong>מחפשים להתחיל את התהליך ברגל ימין? אני מזמין אתכם לשיחת ייעוץ ראשונית שתעשה לכם סדר בבלגן ותבנה לכם מסלול בטוח לבית החדש.</strong></p><h4></h4>",
+      "heroImageUrlDesktop": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&auto=format&fit=crop&q=80",
+      "heroImageUrlMobile": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&auto=format&fit=crop&q=80",
+      "category": "מדריכי משכנתא",
+      "date": "2026-04-27",
+      "ctaTitle": "",
+      "ctaSubtitle": "",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "id": "6ragdq43r",
+      "updatedAt": 1777294955472
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-home-desktop",
+      "description": "Hero desktop image for Brand Name home page",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775219723/version_2_npvleo.png",
+      "imageHint": "professional workspace"
+    },
+    {
+      "id": "hero-home-mobile",
+      "description": "Hero mobile image for Brand Name home page",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775213285/WhatsApp_Image_2026-04-03_at_13.24.35_btcdy5.jpg",
+      "imageHint": "moran portrait vertical"
+    },
+    {
+      "id": "hero-about-desktop",
+      "description": "Brand Name About page Hero Desktop",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775209370/brandname_9676b2.png",
+      "imageHint": "moran professional desktop"
+    },
+    {
+      "id": "hero-about-mobile",
+      "description": "Brand Name About page Hero Mobile",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775213284/WhatsApp_Image_2026-04-03_at_13.24.34_fks4kw.jpg",
+      "imageHint": "moran portrait mobile"
+    },
+    {
+      "id": "hero-practice",
+      "description": "Close up of a curated professional library",
+      "imageUrl": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "bookshelf detail"
+    },
+    {
+      "id": "hero-practice-mobile",
+      "description": "Brand Name Practice page Hero Mobile",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775213394/WhatsApp_Image_2026-04-03_at_13.24.35_2_oqmxij.jpg",
+      "imageHint": "moran inspiration mobile"
+    },
+    {
+      "id": "hero-blog-desktop",
+      "description": "Serene tea corner with a green plant and soft light",
+      "imageUrl": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "tea corner"
+    },
+    {
+      "id": "hero-blog-mobile",
+      "description": "Brand Name Blog page Hero Mobile",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775213394/WhatsApp_Image_2026-04-03_at_13.24.35_2_oqmxij.jpg",
+      "imageHint": "moran inspiration mobile"
+    },
+    {
+      "id": "hero-contact",
+      "description": "Abstract safe space with soft textures and light",
+      "imageUrl": "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "serene interior"
+    },
+    {
+      "id": "moran-portrait",
+      "description": "Portrait of Brand Name",
+      "imageUrl": "https://res.cloudinary.com/dcdadfrpi/image/upload/v1775213284/WhatsApp_Image_2026-04-03_at_13.24.34_fks4kw.jpg",
+      "imageHint": "moran portrait"
+    },
+    {
+      "id": "hero-online",
+      "description": "Serene connected laptop with soft morning light",
+      "imageUrl": "https://images.unsplash.com/photo-1516302752625-fbb3ad59c34f?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "serene laptop"
+    },
+    {
+      "id": "hero-tivon",
+      "description": "Serene green garden in Tivon",
+      "imageUrl": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "serene garden"
+    },
+    {
+      "id": "hero-emeq",
+      "description": "Wide view of a peaceful valley with soft light",
+      "imageUrl": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "peaceful valley"
+    },
+    {
+      "id": "space-tivon",
+      "description": "Softly lit professional space with plants",
+      "imageUrl": "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "calm interior"
+    },
+    {
+      "id": "online-service-atmo",
+      "description": "A focused therapist on a digital call in a warm office",
+      "imageUrl": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1920&auto=format&fit=crop",
+      "imageHint": "digital service"
+    }
+  ]
+}

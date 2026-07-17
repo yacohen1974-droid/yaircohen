@@ -1,0 +1,11 @@
+specVersion: "v1"
+serviceId: "yaircohen-7823a-service"
+location: "europe-west3"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "yaircohen-7823a-instance"
+connectorDirs: ["./connector"]

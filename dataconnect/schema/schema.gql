@@ -1,0 +1,24 @@
+# Firebase SQL Connect Schema
+
+type Page @table(key: "pageId") {
+  pageId: String!
+  content: Any!
+}
+
+type BlogPost @table(key: "id") {
+  id: String!
+  title: String!
+  content: String!
+  slug: String! @unique
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp
+  category: String
+  tags: [String]
+  published: Boolean! @default(value: false)
+  excerpt: String
+  heroImageUrlDesktop: String
+  heroImageUrlMobile: String
+  author: String
+  seoTitle: String
+  seoDescription: String
+}

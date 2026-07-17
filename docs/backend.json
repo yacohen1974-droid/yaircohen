@@ -1,0 +1,99 @@
+
+{
+  "entities": {
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "A dynamic article for the BeinMe blog.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The main headline of the post." },
+        "subtitle": { "type": "string", "description": "A secondary sub-headline." },
+        "summary": { "type": "string", "description": "A short excerpt shown in the blog list." },
+        "slug": { "type": "string", "description": "URL-friendly version of the title." },
+        "content": { "type": "string", "description": "The main body content of the article (HTML)." },
+        "heroImageUrlDesktop": { "type": "string" },
+        "heroImageUrlMobile": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "category": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["title", "slug", "content", "date", "category"]
+    },
+    "PageContent": {
+      "title": "Page Content",
+      "description": "Dynamic content for specific site pages.",
+      "type": "object",
+      "properties": {
+        "pageId": { "type": "string", "description": "Unique ID for the page." },
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "introTitle": { "type": "string" },
+        "introContent": { "type": "string" },
+        "heroImageUrlDesktop": { "type": "string" },
+        "heroImageUrlMobile": { "type": "string" },
+        "primaryColor": { "type": "string", "description": "Primary theme color in HSL format (e.g., '155 15% 45%')." },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "navItems": { "type": "array" },
+        "ctaButtons": { 
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "href": { "type": "string" },
+              "variant": { "type": "string", "enum": ["primary", "outline"] }
+            }
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "icon": { "type": "string" }
+            }
+          }
+        },
+        "testimonials": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": { "type": "string" },
+              "author": { "type": "string" },
+              "location": { "type": "string" }
+            }
+          }
+        },
+        "faqs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": { "type": "string" },
+              "answer": { "type": "string" }
+            }
+          }
+        },
+        "updatedAt": { "type": "number" }
+      }
+    }
+  },
+  "auth": {
+    "providers": ["password"]
+  },
+  "firestore": {
+    "/blogPosts/{postId}": {
+      "schema": { "$ref": "#/entities/BlogPost" },
+      "description": "Public Blog Posts."
+    },
+    "/siteContent/{pageId}": {
+      "schema": { "$ref": "#/entities/PageContent" },
+      "description": "Dynamic content for site pages."
+    }
+  }
+}
