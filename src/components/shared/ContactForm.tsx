@@ -21,7 +21,8 @@ export function ContactForm({ isLight = false }: { isLight?: boolean }) {
     const formData = new FormData(form);
     
     try {
-      const response = await fetch("https://formspree.io/f/maqlpnkl", {
+      const formId = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID || "maqlpnkl";
+      const response = await fetch(`https://formspree.io/f/${formId}`, {
         method: "POST",
         body: formData,
         headers: {
