@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getPageContent } from '@/firebase/db-actions';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -9,7 +11,14 @@ export async function GET(request: Request) {
 
     const content = await getPageContent(pageId);
     
-    return NextResponse.json({ success: true, content });
+    return NextResponse.json(
+      { success: true, content },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (error) {
     console.error('Error in get-content:', error);
     return NextResponse.json({ success: false, error: 'Failed to get content' }, { status: 500 });

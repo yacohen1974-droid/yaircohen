@@ -12,7 +12,7 @@ export default function BlogPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const pageRes = await fetch('/api/get-content?pageId=blog');
+        const pageRes = await fetch('/api/get-content?pageId=blog', { cache: 'no-store' });
         const pageData = await pageRes.json();
         if (pageData.success) setPageContent(pageData.content);
       } catch (err) {

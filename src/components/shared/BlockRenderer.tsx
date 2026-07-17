@@ -73,7 +73,7 @@ function BlogGrid({ titleSettings }: { titleSettings?: any }) {
   React.useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch('/api/blog/list-posts');
+        const res = await fetch('/api/blog/list-posts', { cache: 'no-store' });
         const data = await res.json();
         if (data.success) {
           const sorted = (data.posts || []).sort((a: any, b: any) => {

@@ -23,7 +23,7 @@ export function usePageContent(pageId: string) {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`/api/get-content?pageId=${pageId}`);
+        const res = await fetch(`/api/get-content?pageId=${pageId}`, { cache: 'no-store' });
         const data = await res.json();
         if (data.success && data.content) {
           setContent({

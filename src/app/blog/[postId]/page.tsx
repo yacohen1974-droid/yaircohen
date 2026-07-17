@@ -21,7 +21,7 @@ export default function BlogPostPage() {
   React.useEffect(() => {
     async function fetchPost() {
       try {
-        const res = await fetch('/api/blog/list-posts');
+        const res = await fetch('/api/blog/list-posts', { cache: 'no-store' });
         const data = await res.json();
         if (data.success) {
           const found = data.posts?.find((p: any) => p.slug === postId || p.id === postId);
