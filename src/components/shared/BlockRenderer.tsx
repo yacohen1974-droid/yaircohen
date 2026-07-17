@@ -9,7 +9,7 @@ import { FaqSection } from './FaqSection';
 import { PortraitImage } from './PortraitImage';
 import { DynamicSections } from './DynamicSections';
 import { Orbit, Heart, Sparkles, Compass, Users, Star, MessageSquare, HelpCircle, ChevronDown, ArrowLeft, Loader2, Check, X, ShieldCheck, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, safeEncodeURI } from '@/lib/utils';
 import { DynamicSection } from '@/config/page-defaults';
 import Link from 'next/link';
 import { MORTGAGE_ICON_MAP } from './MortgageIcons';
@@ -125,7 +125,7 @@ function BlogGrid({ titleSettings }: { titleSettings?: any }) {
                      <>
                        <div className="hidden md:block absolute inset-0">
                          <Image 
-                           src={post.heroImageUrlDesktop} 
+                           src={safeEncodeURI(post.heroImageUrlDesktop)} 
                            alt={post.title} 
                            fill 
                            className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
@@ -133,7 +133,7 @@ function BlogGrid({ titleSettings }: { titleSettings?: any }) {
                        </div>
                        <div className="md:hidden absolute inset-0">
                          <Image 
-                           src={post.heroImageUrlMobile || post.heroImageUrlDesktop} 
+                           src={safeEncodeURI(post.heroImageUrlMobile || post.heroImageUrlDesktop)} 
                            alt={post.title} 
                            fill 
                            className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
@@ -180,7 +180,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                   {block.imageUrl && (
                     <div className="hidden md:block absolute inset-0">
                       <Image 
-                        src={block.imageUrl} 
+                        src={safeEncodeURI(block.imageUrl)} 
                         alt={block.title || "Hero"} 
                         fill 
                         className="object-cover" 
@@ -192,7 +192,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                   {(block.imageUrlMobile || block.imageUrl) && (
                     <div className="md:hidden absolute inset-0">
                       <Image 
-                        src={block.imageUrlMobile || block.imageUrl || ''} 
+                        src={safeEncodeURI(block.imageUrlMobile || block.imageUrl || '')} 
                         alt={block.title || "Hero"} 
                         fill 
                         className="object-cover"
@@ -547,7 +547,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                     {/* ── Image ── */}
                     <div className={cn("relative min-h-[280px] md:min-h-[420px]", imgLeft ? 'md:order-2' : 'md:order-1')}>
                       {block.insightImageUrl ? (
-                        <Image src={block.insightImageUrl} alt={block.title || 'Insight'} fill className="object-cover" />
+                        <Image src={safeEncodeURI(block.insightImageUrl)} alt={block.title || 'Insight'} fill className="object-cover" />
                       ) : (
                         <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
                           <span className="boutique-label text-primary/40">הוסיפו תמונה</span>

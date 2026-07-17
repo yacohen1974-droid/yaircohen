@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, safeEncodeURI } from '@/lib/utils';
 
 export type PortraitShape = 'circle' | 'rectangle' | 'square';
 
@@ -44,7 +44,7 @@ export function PortraitImage({
       {loading ? (
         <div className="absolute inset-0 bg-stone-200 animate-pulse" />
       ) : src ? (
-        <Image src={src} alt={alt} fill className="object-cover" />
+        <Image src={safeEncodeURI(src)} alt={alt} fill className="object-cover" />
       ) : (
         <div className="absolute inset-0 bg-stone-100" />
       )}

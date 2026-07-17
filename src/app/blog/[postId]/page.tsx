@@ -10,6 +10,7 @@ import { useFirestore, useCollection } from '@/firebase';
 import { collection, query, where, limit } from 'firebase/firestore';
 import { Loader2, ArrowRight, Calendar, Tag, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { safeEncodeURI } from '@/lib/utils';
 
 export default function BlogPostPage() {
   const { postId } = useParams();
@@ -79,7 +80,7 @@ export default function BlogPostPage() {
             <>
               <div className="hidden md:block absolute inset-0">
                 <Image 
-                  src={post.heroImageUrlDesktop} 
+                  src={safeEncodeURI(post.heroImageUrlDesktop)} 
                   alt={post.title} 
                   fill 
                   className="object-cover opacity-60 brightness-75"
@@ -88,7 +89,7 @@ export default function BlogPostPage() {
               </div>
               <div className="md:hidden absolute inset-0">
                 <Image 
-                  src={post.heroImageUrlMobile || post.heroImageUrlDesktop} 
+                  src={safeEncodeURI(post.heroImageUrlMobile || post.heroImageUrlDesktop)} 
                   alt={post.title} 
                   fill 
                   className="object-cover opacity-60 brightness-75"

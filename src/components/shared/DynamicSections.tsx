@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, safeEncodeURI } from '@/lib/utils';
 import { SectionTitle } from './SectionTitle';
 import { Heart, Sparkles, Orbit, Compass, Users, Star, MessageSquare, HelpCircle } from 'lucide-react';
 
@@ -56,7 +56,7 @@ export function DynamicSections({ sections, className }: DynamicSectionsProps) {
                   )}>
                     {sec.imageUrl && (
                       <Image 
-                        src={sec.imageUrl} 
+                        src={safeEncodeURI(sec.imageUrl)} 
                         alt={sec.title || "Section image"} 
                         fill 
                         className="object-cover" 
@@ -88,7 +88,7 @@ export function DynamicSections({ sections, className }: DynamicSectionsProps) {
                     >
                       {logo.imageUrl && (
                         <Image
-                          src={logo.imageUrl}
+                          src={safeEncodeURI(logo.imageUrl)}
                           alt="Client Logo"
                           fill
                           unoptimized
