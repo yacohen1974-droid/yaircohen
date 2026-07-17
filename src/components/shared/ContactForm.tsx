@@ -10,8 +10,8 @@ export function ContactForm({ isLight = false }: { isLight?: boolean }) {
   const revealRef = useReveal();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-  // Portrait image of Yair
-  const yairPortrait = "https://69ef5d7cabe5326bdb422710.imgix.net/%D7%99%D7%90%D7%99%D7%A8%20%D7%9B%D7%94%D7%9F1.png";
+  // Portrait image of Yair (local public folder asset)
+  const yairPortrait = "/yair-portrait.png";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

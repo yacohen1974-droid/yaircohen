@@ -179,7 +179,7 @@
         "id": "intro-main",
         "type": "intro",
         "bg": "bg-[hsl(213,30%,97%)]",
-        "portraitImageUrl": "https://69ef5d7cabe5326bdb422710.imgix.net/%D7%99%D7%90%D7%99%D7%A8%20%D7%9B%D7%94%D7%9F1.png?w=2048&h=2048",
+        "portraitImageUrl": "/yair-portrait.png",
         "portraitShape": "rectangle",
         "portraitPosition": "right",
         "titleSettings": {
@@ -525,7 +525,7 @@
         "id": "about-intro",
         "type": "intro",
         "bg": "bg-[hsl(213,30%,97%)]",
-        "portraitImageUrl": "https://69ef5d7cabe5326bdb422710.imgix.net/%D7%99%D7%90%D7%99%D7%A8%20%D7%9B%D7%94%D7%9F.png",
+        "portraitImageUrl": "/yair-portrait.png",
         "portraitShape": "circle",
         "portraitPosition": "left",
         "titleSettings": {
