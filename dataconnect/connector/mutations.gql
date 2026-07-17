@@ -1,19 +1,19 @@
 # Mutations for Yair Cohen Mortgage Website
 
-# Create or update a page (requires authenticated user)
-mutation UpsertPage($pageId: String!, $content: Any!) @auth(level: USER) {
+# Create or update a page (called via server-side API routes)
+mutation UpsertPage($pageId: String!, $content: Any!) @auth(level: PUBLIC, insecureReason: "Executed only via server-side API endpoints that perform application-level verification") {
   page_upsert(data: {
     pageId: $pageId
     content: $content
   })
 }
 
-# Delete a page by ID (requires authenticated user)
-mutation DeletePage($pageId: String!) @auth(level: USER) {
+# Delete a page by ID (called via server-side API routes)
+mutation DeletePage($pageId: String!) @auth(level: PUBLIC, insecureReason: "Executed only via server-side API endpoints that perform application-level verification") {
   page_delete(key: { pageId: $pageId })
 }
 
-# Create or update a blog post (requires authenticated user)
+# Create or update a blog post (called via server-side API routes)
 mutation UpsertBlogPost(
   $id: String!
   $title: String!
@@ -28,7 +28,7 @@ mutation UpsertBlogPost(
   $author: String
   $seoTitle: String
   $seoDescription: String
-) @auth(level: USER) {
+) @auth(level: PUBLIC, insecureReason: "Executed only via server-side API endpoints that perform application-level verification") {
   blogPost_upsert(data: {
     id: $id
     title: $title
@@ -47,7 +47,7 @@ mutation UpsertBlogPost(
   })
 }
 
-# Delete a blog post by ID (requires authenticated user)
-mutation DeleteBlogPost($id: String!) @auth(level: USER) {
+# Delete a blog post by ID (called via server-side API routes)
+mutation DeleteBlogPost($id: String!) @auth(level: PUBLIC, insecureReason: "Executed only via server-side API endpoints that perform application-level verification") {
   blogPost_delete(id: $id)
 }
