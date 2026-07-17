@@ -56,6 +56,7 @@ export async function savePageContent(pageId: string, content: any) {
       await upsertPage(dataConnect, { pageId, content });
     } catch (e) {
       console.warn(`DataConnect savePageContent failed for ${pageId}:`, e);
+      throw e;
     }
   }
 
@@ -89,6 +90,7 @@ export async function deletePageContent(pageId: string) {
       await deletePage(dataConnect, { pageId });
     } catch (e) {
       console.warn(`DataConnect deletePageContent failed for ${pageId}:`, e);
+      throw e;
     }
   }
 
@@ -158,6 +160,7 @@ export async function saveBlogPost(post: any) {
       });
     } catch (e) {
       console.warn(`DataConnect saveBlogPost failed for ${savedPost.id}:`, e);
+      throw e;
     }
   }
 
@@ -189,6 +192,7 @@ export async function deleteBlogPost(id: string) {
       await sdkDeleteBlogPost(dataConnect, { id });
     } catch (e) {
       console.warn(`DataConnect deleteBlogPost failed for ${id}:`, e);
+      throw e;
     }
   }
 
