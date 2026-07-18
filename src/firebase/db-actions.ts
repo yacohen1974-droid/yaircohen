@@ -214,7 +214,7 @@ export async function deleteBlogPost(id: string) {
 }
 
 async function fetchDbInitialData() {
-  const pages = ['global', 'blog', 'home', 'about', 'services'];
+  const pages = ['global', 'blog', 'home', 'about', 'services', 'privacy', 'terms', 'accessibility'];
   const data: any = { pages: {} };
 
   const [pageResults, posts] = await Promise.all([
