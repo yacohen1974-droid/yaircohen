@@ -1,6 +1,7 @@
 import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
+import Script from 'next/script';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -94,6 +95,19 @@ export default async function RootLayout({
         "font-body antialiased bg-background text-foreground selection:bg-primary/20 overflow-x-hidden",
         SITE_THEME === 'masculine' && "theme-masculine"
       )}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CTGVLV3791"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-CTGVLV3791');
+          `}
+        </Script>
         <InitialDataProvider initialData={initialData}>
           {children}
           <FloatingWhatsApp />
