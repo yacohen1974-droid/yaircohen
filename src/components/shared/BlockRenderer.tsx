@@ -466,7 +466,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                   {block.videoUrl && (
                     <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl border border-slate-100">
                       <iframe
-                        src={block.videoUrl}
+                        src={getEmbedUrl(block.videoUrl)}
                         title={block.videoTitle || block.title || 'Video'}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -733,4 +733,44 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
       })}
     </>
   );
+}
+
+function getEmbedUrl(url: string | null | undefined): string {
+  if (!url) return "";
+  
+  let cleanUrl = url.trim();
+  
+  // YouTube
+  if (cleanUrl.includes('youtube.com') || cleanUrl.includes('youtu.be')) {
+    let videoId = "";
+    
+    if (cleanUrl.includes('youtu.be/')) {
+      videoId = cleanUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
+    } else if (cleanUrl.includes('embed/')) {
+      return cleanUrl;
+    } else if (cleanUrl.includes('v=')) {
+      videoId = cleanUrl.split('v=')[1]?.split(/[&#]/)[0];
+    } else if (cleanUrl.includes('watch/')) {
+      videoId = cleanUrl.split('watch/')[1]?.split(/[?#]/)[0];
+    } else if (cleanUrl.includes('shorts/')) {
+      videoId = cleanUrl.split('shorts/')[1]?.split(/[?#]/)[0];
+    }
+    
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+  }
+  
+  // Vimeo
+  if (cleanUrl.includes('vimeo.com')) {
+    if (cleanUrl.includes('player.vimeo.com/video/')) {
+      return cleanUrl;
+    }
+    const match = cleanUrl.match(/vimeo\.com\/(\d+)/);
+    if (match && match[1]) {
+      return `https://player.vimeo.com/video/${match[1]}`;
+    }
+  }
+
+  return cleanUrl;
 }
