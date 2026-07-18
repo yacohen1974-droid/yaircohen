@@ -64,6 +64,7 @@ const QUILL_FORMATS = [
 
 const DEFAULT_PAGES = [
   { id: 'home', name: '🏠 ראשי' },
+  { id: 'services', name: '💼 שירותים' },
   { id: 'about', name: '👤 אודות' },
   { id: 'contact', name: '📩 צור קשר' },
   { id: 'blog', name: '📝 בלוג' },
