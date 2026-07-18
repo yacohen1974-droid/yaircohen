@@ -12,13 +12,28 @@ import { Loader2, ArrowRight, Calendar, Tag, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { safeEncodeURI } from '@/lib/utils';
 
+import { useInitialData } from '@/components/providers/InitialDataProvider';
+
 export default function BlogPostPage() {
   const { postId } = useParams();
   const router = useRouter();
-  const [post, setPost] = React.useState<any>(null);
-  const [loading, setLoading] = React.useState(true);
+  const initialDataMap = useInitialData();
+
+  // Find post in initial SSR data if available
+  const initialPost = useMemo(() => {
+    if (!initialDataMap?.blogPosts) return null;
+    return initialDataMap.blogPosts.find((p: any) => p.slug === postId || p.id === postId) || null;
+  }, [postId, initialDataMap]);
+
+  const [post, setPost] = React.useState<any>(initialPost);
+  const [loading, setLoading] = React.useState(!initialPost);
 
   React.useEffect(() => {
+    if (initialPost) {
+      setLoading(false);
+      return;
+    }
+
     async function fetchPost() {
       try {
         const res = await fetch('/api/blog/list-posts', { cache: 'no-store' });
@@ -34,7 +49,7 @@ export default function BlogPostPage() {
       }
     }
     fetchPost();
-  }, [postId]);
+  }, [postId, initialPost]);
 
   const formatDisplayDate = (dateStr: string) => {
     if (!dateStr) return '';
