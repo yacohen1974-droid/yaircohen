@@ -31,6 +31,11 @@ export function usePageContent(pageId: string) {
   const [loading, setLoading] = useState(!hasInitialData);
 
   useEffect(() => {
+    if (hasInitialData) {
+      setLoading(false);
+      return;
+    }
+
     async function load() {
       try {
         const res = await fetch(`/api/get-content?pageId=${pageId}`, { cache: 'no-store' });
@@ -50,7 +55,7 @@ export function usePageContent(pageId: string) {
     
     // Only fetch if we don't already have initial data or to refresh
     load();
-  }, [pageId]);
+  }, [pageId, hasInitialData]);
 
   return {
     content,
