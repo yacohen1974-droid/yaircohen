@@ -7,18 +7,28 @@ export function usePageContent(pageId: string) {
   
   // Use server-side data for initial state if available
   const initialContent = useMemo(() => {
-    if (initialDataMap && initialDataMap[pageId]) {
+    if (!initialDataMap) return getInitialPageContent(pageId);
+    
+    const pageData = (pageId === 'global' || pageId === 'blog')
+      ? initialDataMap[pageId]
+      : initialDataMap.pages?.[pageId];
+      
+    if (pageData) {
       return {
         ...getInitialPageContent(pageId),
-        ...initialDataMap[pageId]
+        ...pageData
       };
     }
     // Fallback to defaults
     return getInitialPageContent(pageId);
   }, [pageId, initialDataMap]);
 
+  const hasInitialData = !!((pageId === 'global' || pageId === 'blog')
+    ? initialDataMap?.[pageId]
+    : initialDataMap?.pages?.[pageId]);
+
   const [content, setContent] = useState<ContentState>(initialContent);
-  const [loading, setLoading] = useState(!initialDataMap?.[pageId]);
+  const [loading, setLoading] = useState(!hasInitialData);
 
   useEffect(() => {
     async function load() {

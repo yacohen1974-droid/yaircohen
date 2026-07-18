@@ -150,12 +150,13 @@ export function ContactForm({ isLight = false }: { isLight?: boolean }) {
               </div>
 
               <div className="space-y-2">
-                <label className="text-white/50 text-[11px] font-bold mr-2 uppercase tracking-widest block">יעד הפנייה</label>
+                <label htmlFor="contact-service" className="text-white/50 text-[11px] font-bold mr-2 uppercase tracking-widest block">יעד הפנייה</label>
                 <div className="relative group">
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors pointer-events-none">
                     <Star size={16} />
                   </div>
                   <select 
+                    id="contact-service"
                     name="service" 
                     required
                     className="w-full bg-white/5 border border-white/10 focus:border-primary/40 focus:bg-white/10 rounded-xl py-3.5 pr-11 pl-4 text-white placeholder:text-white/15 outline-none transition-all duration-300 appearance-none text-sm"
