@@ -2,18 +2,20 @@
 
 import React, { useState } from 'react';
 import { useReveal } from '@/hooks/use-reveal';
-import { cn } from '@/lib/utils';
+import { cn, safeEncodeURI } from '@/lib/utils';
 import { CheckCircle2, AlertCircle, ArrowLeft, Phone, User, MessageSquare, ShieldCheck, Star } from 'lucide-react';
 import Image from 'next/image';
 
 export function ContactForm({ 
   isLight = false,
   title,
-  description
+  description,
+  imageUrl
 }: { 
   isLight?: boolean;
   title?: string;
   description?: string;
+  imageUrl?: string;
 }) {
   const revealRef = useReveal();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -88,14 +90,16 @@ export function ContactForm({
           
           <div className="absolute inset-0 flex items-end justify-center">
             <div className="relative w-full h-[95%] transition-transform duration-1000 group-hover:scale-105">
-              <Image 
-                src={yairPortrait} 
-                alt="יאיר כהן - מומחה למשכנתאות ומימון נדל״ן" 
-                fill 
-                unoptimized={true}
-                className="object-contain object-bottom drop-shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
-                priority
-              />
+              {(imageUrl || yairPortrait) && (
+                <Image 
+                  src={safeEncodeURI(imageUrl || yairPortrait)} 
+                  alt="יאיר כהן - מומחה למשכנתאות ומימון נדל״ן" 
+                  fill 
+                  unoptimized={true}
+                  className="object-contain object-bottom drop-shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
+                  priority
+                />
+              )}
             </div>
           </div>
 

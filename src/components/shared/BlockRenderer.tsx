@@ -435,6 +435,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                   <ContactForm 
                     title={block.titleSettings?.text}
                     description={block.titleSettings?.subtitle}
+                    imageUrl={block.imageUrl}
                   />
                 </div>
               </section>

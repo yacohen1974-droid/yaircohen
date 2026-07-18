@@ -505,8 +505,17 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
 
         {/* Contact */}
         {section.type === 'contact' && (
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 space-y-6">
             <TitleEditor label="כותרת טופס" settings={section.titleSettings} onChange={s => onChange({ ...section, titleSettings: s })} />
+            <Field label="קישור לתמונת פורטרט (בצד הטופס)">
+              <Input 
+                value={section.imageUrl || ''} 
+                onChange={e => onChange({ ...section, imageUrl: e.target.value })} 
+                placeholder="https://..." 
+                className="bg-stone-50 border-none h-12 font-sans" 
+                dir="ltr" 
+              />
+            </Field>
           </div>
         )}
 
