@@ -66,7 +66,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">וואטסאפ</p>
-                <p className="text-xl font-headline text-[#25D366] font-bold">שיחה ישירה</p>
+                <p className="text-xl font-headline text-[#25D366] font-bold">שלחו הודעה בוואטסאפ</p>
               </div>
             </a>
           </div>

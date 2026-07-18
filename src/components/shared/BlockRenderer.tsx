@@ -288,9 +288,17 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
               </section>
             );
 
-          case 'features':
+          case 'features': {
+            const columnsClass = 
+              block.featuresColumns === 'md:grid-cols-3' ? 'md:grid-cols-3' :
+              block.featuresColumns === 'md:grid-cols-4' ? 'md:grid-cols-2 lg:grid-cols-4' :
+              'md:grid-cols-2';
+
+            const bgStyle = block.featuresBg || 'white';
+            const sizeStyle = block.featuresSize || 'comfortable';
+
             return (
-              <section key={block.id} id="services" className={cn("py-24 md:py-40 px-6 md:px-12 border-y border-slate-100", block.bg === 'white' ? 'bg-white' : 'bg-slate-50')}>
+              <section key={block.id} id="services" className={cn("py-16 md:py-32 px-6 md:px-12 border-y border-slate-100", block.bg === 'white' ? 'bg-white' : 'bg-slate-50')}>
                 <div className="max-w-7xl mx-auto">
                   <SectionTitle
                     subtitle={block.titleSettings?.subtitle || ""}
@@ -301,39 +309,94 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                     color={block.titleSettings?.color}
                     align={block.titleSettings?.align || 'center'}
                   />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 sm:mt-24">
+                  <div className={cn("grid grid-cols-1 gap-6 mt-12 sm:mt-20", columnsClass)}>
                     {(block.features || []).map((point, i) => {
                       const Icon = ICON_MAP[point.icon] || Heart;
                       const num = String(i + 1).padStart(2, '0');
+
+                      // Define card bg style classes
+                      const cardBgClass = 
+                        bgStyle === 'slate' ? 'bg-slate-50 border border-slate-100 shadow-sm' :
+                        bgStyle === 'navy' ? 'bg-[#0D2347] border border-white/5 shadow-2xl text-white' :
+                        bgStyle === 'glass' ? 'bg-white/40 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(31,38,135,0.04)]' :
+                        bgStyle === 'border' ? 'bg-transparent border border-slate-200 hover:border-primary/40 shadow-sm' :
+                        'bg-white shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/80';
+
+                      const titleColorClass = bgStyle === 'navy' ? 'text-white' : 'text-accent';
+                      const descColorClass = bgStyle === 'navy' ? 'text-white/70' : 'text-slate-600';
+                      const numColorClass = bgStyle === 'navy' ? 'text-white/[0.02] group-hover:text-white/[0.05]' : 'text-primary/[0.03] group-hover:text-primary/[0.06]';
+                      const iconBgClass = 
+                        bgStyle === 'navy' ? 'text-white bg-white/10' : 
+                        bgStyle === 'glass' ? 'text-primary bg-white/50 backdrop-blur-sm' : 
+                        'text-primary bg-primary/5';
+
+                      // Define card size style classes
+                      const cardPaddingClass = 
+                        sizeStyle === 'compact' ? 'p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem]' :
+                        sizeStyle === 'large' ? 'p-8 sm:p-12 rounded-[2rem] sm:rounded-[3rem]' :
+                        'p-6 sm:p-10 rounded-[1.8rem] sm:rounded-[2.5rem]';
+
+                      const gapClass = 
+                        sizeStyle === 'compact' ? 'gap-4 sm:gap-6' :
+                        sizeStyle === 'large' ? 'gap-8 sm:gap-10' :
+                        'gap-6 sm:gap-8';
+
+                      const titleSizeClass = 
+                        sizeStyle === 'compact' ? 'text-lg sm:text-xl' :
+                        sizeStyle === 'large' ? 'text-2xl sm:text-3xl lg:text-4xl' :
+                        'text-xl sm:text-2xl lg:text-3xl';
+
+                      const descSizeClass = 
+                        sizeStyle === 'compact' ? 'text-xs sm:text-sm max-w-xs' :
+                        sizeStyle === 'large' ? 'text-base sm:text-lg lg:text-xl max-w-md' :
+                        'text-sm sm:text-base lg:text-lg max-w-sm';
+
+                      const numSizeClass = 
+                        sizeStyle === 'compact' ? 'text-[60px] sm:text-[80px]' :
+                        sizeStyle === 'large' ? 'text-[100px] sm:text-[140px]' :
+                        'text-[80px] sm:text-[120px]';
+
+                      const iconSizeClass = 
+                        sizeStyle === 'compact' ? 'w-12 h-12' :
+                        sizeStyle === 'large' ? 'w-20 h-20' :
+                        'w-16 h-16';
+
+                      const iconSvgSize = 
+                        sizeStyle === 'compact' ? 24 :
+                        sizeStyle === 'large' ? 40 :
+                        32;
+
                       return (
                         <div key={i} className={cn(
-                          "group relative glass-3d-card rounded-[2.5rem] p-10 cursor-default flex flex-col items-center text-center",
+                          "group relative cursor-default flex flex-col items-center text-center transition-all duration-500 hover:shadow-xl hover:-translate-y-1",
+                          cardBgClass,
+                          cardPaddingClass,
                           `stagger-${Math.min(i + 1, 5)}`
                         )}>
                           {/* Pattern Background */}
-                          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+                          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
                                style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '24px 24px' }} />
                           
-                          {/* Big faded number - repositioned for centering */}
-                          <span className="absolute top-6 right-8 text-[120px] font-black text-primary/[0.03] leading-none select-none pointer-events-none group-hover:text-primary/[0.06] transition-all duration-700 font-sans italic">{num}</span>
+                          {/* Big faded number */}
+                          <span className={cn("absolute top-4 right-6 font-black leading-none select-none pointer-events-none transition-all duration-700 font-sans italic", numSizeClass, numColorClass)}>{num}</span>
                           
-                          <div className="flex flex-col items-center gap-8 relative z-10 w-full">
-                            <div className="icon-3d-wrapper text-primary shadow-2xl group-hover:scale-110 transition-all duration-500">
-                              <Icon size={32} strokeWidth={1.5} />
+                          <div className={cn("flex flex-col items-center relative z-10 w-full", gapClass)}>
+                            <div className={cn("rounded-full flex items-center justify-center relative shadow-sm group-hover:scale-110 transition-transform duration-500", iconSizeClass, iconBgClass)}>
+                              <Icon size={iconSvgSize} strokeWidth={1.5} />
                               <div className="absolute -inset-2 bg-primary/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
                             
-                            <div className="space-y-4 w-full">
-                              <h3 className="text-2xl sm:text-3xl font-headline font-black text-accent tracking-tight group-hover:text-primary transition-colors duration-300">
+                            <div className="space-y-3 w-full">
+                              <h3 className={cn("font-headline font-black tracking-tight group-hover:text-primary transition-colors duration-300", titleSizeClass, titleColorClass)}>
                                 {point.title}
                               </h3>
-                              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full group-hover:w-24 group-hover:bg-primary transition-all duration-500" />
-                              <p className="text-base sm:text-lg font-light text-slate-600 leading-relaxed max-w-sm mx-auto">
+                              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full group-hover:w-20 group-hover:bg-primary transition-all duration-500" />
+                              <p className={cn("font-light leading-relaxed mx-auto", descSizeClass, descColorClass)}>
                                 {point.description}
                               </p>
                             </div>
 
-                            <div className="pt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                            <div className="pt-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-3 group-hover:translate-y-0">
                                 <div className="text-primary font-bold text-sm flex items-center gap-2">
                                   גלו עוד על השירות
                                   <ArrowLeft size={14} />
@@ -347,6 +410,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                 </div>
               </section>
             );
+          }
 
           case 'testimonials':
             return (

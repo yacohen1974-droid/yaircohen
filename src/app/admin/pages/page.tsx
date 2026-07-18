@@ -710,6 +710,40 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
               settings={section.titleSettings} 
               onChange={s => onChange({ ...section, titleSettings: s, title: s.text })} 
             />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-stone-50 p-6 border border-stone-100 rounded-none mb-6">
+              <Field label="פריסת עמודות (דסקטופ)">
+                <Select value={section.featuresColumns || 'md:grid-cols-2'} onValueChange={v => onChange({ ...section, featuresColumns: v })}>
+                  <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="md:grid-cols-2">2 עמודות</SelectItem>
+                    <SelectItem value="md:grid-cols-3">3 עמודות</SelectItem>
+                    <SelectItem value="md:grid-cols-4">4 עמודות</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="צבע מילוי (רקע קובייה)">
+                <Select value={section.featuresBg || 'white'} onValueChange={v => onChange({ ...section, featuresBg: v })}>
+                  <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="white">לבן בוטיק (White)</SelectItem>
+                    <SelectItem value="slate">אפור בהיר (Slate)</SelectItem>
+                    <SelectItem value="navy">כחול עמוק (Navy)</SelectItem>
+                    <SelectItem value="glass">זכוכית מודרנית (Glassmorphism)</SelectItem>
+                    <SelectItem value="border">רקע שקוף עם מסגרת (Border)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="גודל קוביות">
+                <Select value={section.featuresSize || 'comfortable'} onValueChange={v => onChange({ ...section, featuresSize: v })}>
+                  <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="compact">קומפקטי (קטן)</SelectItem>
+                    <SelectItem value="comfortable">רגיל (נוח)</SelectItem>
+                    <SelectItem value="large">גדול (מרווח)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </div>
             <div className="grid grid-cols-1 gap-6">
               {(section.features || []).map((feat: any, idx: number) => (
                 <div key={idx} className="bg-stone-50 p-6 border border-stone-100 rounded-none space-y-4">
