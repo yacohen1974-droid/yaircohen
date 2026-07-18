@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { deletePageContent } from '@/firebase/db-actions';
+import { revalidateTag } from 'next/cache';
+import { deletePageContent, SITE_CONTENT_CACHE_TAG } from '@/firebase/db-actions';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -12,6 +13,7 @@ export async function POST(request: Request) {
 
     // 1. Remove from database
     await deletePageContent(pageId);
+    revalidateTag(SITE_CONTENT_CACHE_TAG);
 
     // 2. Try to remove directory in src/app if it exists
     const pagePath = path.join(process.cwd(), 'src/app', pageId);

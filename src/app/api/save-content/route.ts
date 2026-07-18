@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { savePageContent } from '@/firebase/db-actions';
+import { revalidateTag } from 'next/cache';
+import { savePageContent, SITE_CONTENT_CACHE_TAG } from '@/firebase/db-actions';
 
 export async function POST(request: Request) {
   try {
@@ -14,7 +15,8 @@ export async function POST(request: Request) {
     }
 
     await savePageContent(pageId, content);
-    
+    revalidateTag(SITE_CONTENT_CACHE_TAG);
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error saving content:', error);

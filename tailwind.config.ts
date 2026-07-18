@@ -11,9 +11,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Assistant', 'sans-serif'],
-        headline: ['Assistant', 'sans-serif'],
-        handwriting: ['Amatic SC', 'cursive'],
+        body: ['var(--font-assistant)', 'sans-serif'],
+        headline: ['var(--font-assistant)', 'sans-serif'],
+        handwriting: ['var(--font-amatic)', 'cursive'],
         code: ['monospace'],
       },
       colors: {

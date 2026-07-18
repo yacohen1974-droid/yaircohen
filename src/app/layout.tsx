@@ -2,9 +2,24 @@ import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
 import Script from 'next/script';
+import { Assistant, Amatic_SC } from 'next/font/google';
 
 import type { Metadata } from 'next';
 import './globals.css';
+
+const assistant = Assistant({
+  subsets: ['latin', 'hebrew'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
+  variable: '--font-assistant',
+  display: 'swap',
+});
+
+const amaticSC = Amatic_SC({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-amatic',
+  display: 'swap',
+});
 
 import { Toaster } from '@/components/ui/toaster';
 import { InitialDataProvider } from '@/components/providers/InitialDataProvider';
@@ -62,11 +77,8 @@ export default async function RootLayout({
   const initialData = await getInitialData();
 
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning>
+    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable)}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet" />
         <meta name="google-site-verification" content="uZtRayPCUnA35YVD2gPquUAz34V0WlSF1jaUI3kYYnM" />
         <meta name="google-site-verification" content="Z7Bp-hEfMFwQYW9oYF0qdSdhJumMFlhsp246MOYQFP0" />
         <script

@@ -1,14 +1,17 @@
 import { dataConnect } from './init';
-import { 
-  getPage, 
-  upsertPage, 
-  deletePage, 
-  listBlogPosts, 
-  upsertBlogPost, 
+import {
+  getPage,
+  upsertPage,
+  deletePage,
+  listBlogPosts,
+  upsertBlogPost,
   deleteBlogPost as sdkDeleteBlogPost
 } from '@/lib/dataconnect';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { unstable_cache } from 'next/cache';
+
+export const SITE_CONTENT_CACHE_TAG = 'site-content';
 
 const getLocalFallback = async (pageId: string) => {
   try {
@@ -210,32 +213,44 @@ export async function deleteBlogPost(id: string) {
   }
 }
 
-export async function getDbInitialData() {
+async function fetchDbInitialData() {
   const pages = ['global', 'blog', 'home', 'about', 'services'];
   const data: any = { pages: {} };
-  
-  for (const pageId of pages) {
-    try {
-      const content = await getPageContent(pageId);
-      if (content) {
-        if (pageId === 'global' || pageId === 'blog') {
-          data[pageId] = content;
-        } else {
-          data.pages[pageId] = content;
-        }
+
+  const [pageResults, posts] = await Promise.all([
+    Promise.all(pages.map(async (pageId) => {
+      try {
+        return { pageId, content: await getPageContent(pageId) };
+      } catch (e) {
+        console.warn(`Failed to fetch initial data for page ${pageId}:`, e);
+        return { pageId, content: null };
       }
-    } catch (e) {
-      console.warn(`Failed to fetch initial data for page ${pageId}:`, e);
+    })),
+    getBlogPosts().catch((e) => {
+      console.warn("Failed to fetch initial blog posts:", e);
+      return [];
+    }),
+  ]);
+
+  for (const { pageId, content } of pageResults) {
+    if (!content) continue;
+    if (pageId === 'global' || pageId === 'blog') {
+      data[pageId] = content;
+    } else {
+      data.pages[pageId] = content;
     }
   }
-  
-  try {
-    const posts = await getBlogPosts();
-    data.blogPosts = posts || [];
-  } catch (e) {
-    console.warn("Failed to fetch initial blog posts:", e);
-    data.blogPosts = [];
-  }
-  
+  data.blogPosts = posts || [];
+
   return data;
 }
+
+// Fetches all page/blog content for the root layout in one pass. The six
+// underlying reads run in parallel (was a sequential loop, ~6x request
+// latency on every page load) and the result is cached across requests;
+// save-content/save-post revalidate this tag so edits show up immediately.
+export const getDbInitialData = unstable_cache(
+  fetchDbInitialData,
+  ['db-initial-data'],
+  { tags: [SITE_CONTENT_CACHE_TAG], revalidate: 300 }
+);

@@ -432,7 +432,10 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
             return (
               <section key={block.id} id="contact" className="py-24 md:py-48 px-6 bg-slate-50">
                 <div className="w-full">
-                  <ContactForm />
+                  <ContactForm 
+                    title={block.titleSettings?.text}
+                    description={block.titleSettings?.subtitle}
+                  />
                 </div>
               </section>
             );

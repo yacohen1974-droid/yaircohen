@@ -6,7 +6,15 @@ import { cn } from '@/lib/utils';
 import { CheckCircle2, AlertCircle, ArrowLeft, Phone, User, MessageSquare, ShieldCheck, Star } from 'lucide-react';
 import Image from 'next/image';
 
-export function ContactForm({ isLight = false }: { isLight?: boolean }) {
+export function ContactForm({ 
+  isLight = false,
+  title,
+  description
+}: { 
+  isLight?: boolean;
+  title?: string;
+  description?: string;
+}) {
   const revealRef = useReveal();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
@@ -107,10 +115,10 @@ export function ContactForm({ isLight = false }: { isLight?: boolean }) {
         <div className="lg:col-span-7 p-8 md:p-14 lg:p-16 flex flex-col justify-center relative bg-white/[0.02] backdrop-blur-sm">
           <div className="mb-10 max-w-3xl">
             <h3 className="text-3xl md:text-5xl font-headline font-bold text-white mb-6 leading-tight">
-              הגיע הזמן שהבנקים יעבדו בשבילכם
+              {title || "הגיע הזמן שהבנקים יעבדו בשבילכם"}
             </h3>
             <p className="text-primary-foreground/70 text-lg md:text-xl font-light leading-relaxed">
-              השאירו פרטים ותנו לי להפוך את המשא ומתן המתיש מול הבנקים לחיסכון של מאות אלפי שקלים בתיק המשכנתא שלכם.
+              {description || "השאירו פרטים ותנו לי להפוך את המשא ומתן המתיש מול הבנקים לחיסכון של מאות אלפי שקלים בתיק המשכנתא שלכם."}
             </p>
           </div>
 
