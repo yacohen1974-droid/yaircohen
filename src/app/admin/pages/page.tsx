@@ -272,10 +272,10 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
   isLast: boolean
 }) {
   return (
-    <div className="bg-white p-6 border border-stone-100 rounded-none shadow-sm space-y-6 mb-8 relative group">
-      <div className="flex justify-between items-center border-b border-stone-50 pb-4">
+    <div className="bg-stone-50/80 p-6 md:p-8 border border-stone-200/85 rounded-2xl shadow-sm space-y-6 mb-8 relative group hover:border-primary/20 hover:bg-stone-50 transition-all duration-300">
+      <div className="flex justify-between items-center border-b border-stone-200/60 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-1.5 h-6 bg-accent" />
+          <div className="w-2 h-6 bg-primary rounded-full" />
           <Label className="boutique-label text-accent text-lg">
             {section.type === 'hero' ? 'כותרת גדולה (Hero)' :
              section.type === 'intro' ? 'אודות / פורטרט' :
@@ -746,7 +746,7 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
             </div>
             <div className="grid grid-cols-1 gap-6">
               {(section.features || []).map((feat: any, idx: number) => (
-                <div key={idx} className="bg-stone-50 p-6 border border-stone-100 rounded-none space-y-4">
+                <div key={idx} className="bg-white p-6 border border-stone-200/80 rounded-xl space-y-4 shadow-sm hover:border-primary/10 transition-colors">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-accent">קובייה #{idx + 1}</span>
                     <Button 
@@ -895,7 +895,7 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
             <Label className="boutique-label">נקודות (✗ שלילי / ✓ חיובי / → מידע)</Label>
             <div className="space-y-3">
               {(section.insightPoints || []).map((pt: any, idx: number) => (
-                <div key={idx} className="bg-stone-50 p-3 border border-stone-100 grid grid-cols-[120px_1fr_32px] gap-2 items-center">
+                <div key={idx} className="bg-white p-4 border border-stone-200/80 rounded-xl grid grid-cols-[120px_1fr_32px] gap-3 items-center shadow-sm hover:border-primary/10 transition-colors">
                   <Select value={pt.type || 'negative'} onValueChange={v => { const next = [...(section.insightPoints || [])]; next[idx] = { ...next[idx], type: v }; onChange({ ...section, insightPoints: next }); }}>
                     <SelectTrigger className="bg-white h-9 text-xs"><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -972,7 +972,7 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
             <Label className="boutique-label">מספרים / סטטיסטיקות</Label>
             <div className="space-y-3">
               {(section.stats || []).map((s: any, idx: number) => (
-                <div key={idx} className="bg-stone-50 p-4 border border-stone-100 grid grid-cols-4 gap-2 items-center">
+                <div key={idx} className="bg-white p-5 border border-stone-200/80 rounded-xl grid grid-cols-4 gap-3 items-center shadow-sm hover:border-primary/10 transition-colors">
                   <Input value={s.prefix || ''} onChange={e => { const next = [...(section.stats || [])]; next[idx] = {...next[idx], prefix: e.target.value}; onChange({...section, stats: next}); }} placeholder="קידומת (₪)" className="bg-white col-span-1 text-center" />
                   <Input value={s.value || ''} onChange={e => { const next = [...(section.stats || [])]; next[idx] = {...next[idx], value: e.target.value}; onChange({...section, stats: next}); }} placeholder="ערך (500+)" className="bg-white col-span-1 text-center font-bold" />
                   <Input value={s.suffix || ''} onChange={e => { const next = [...(section.stats || [])]; next[idx] = {...next[idx], suffix: e.target.value}; onChange({...section, stats: next}); }} placeholder="סיומת (%)" className="bg-white col-span-1 text-center" />

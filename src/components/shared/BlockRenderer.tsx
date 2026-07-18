@@ -190,8 +190,11 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                         src={safeEncodeURI(block.imageUrl)} 
                         alt={block.title || "Hero"} 
                         fill 
-                        className="object-cover" 
-                        style={{ opacity: (100 - (block.heroCloudiness ?? 30)) / 100 }}
+                        className="object-cover object-top" 
+                        style={{ 
+                          opacity: (100 - (block.heroCloudiness ?? 30)) / 100,
+                          objectPosition: 'center top'
+                        }}
                         priority 
                       />
                     </div>
@@ -212,9 +215,6 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                   <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-background via-background/30 to-transparent z-0 pointer-events-none" style={{ opacity: (block.heroCloudiness ?? 30) / 100 }} />
                   {/* Floating decorative elements */}
                   <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
-                    <div className="absolute top-[10%] left-[10%] w-24 h-24 opacity-[0.07] hover:opacity-10 transition-opacity duration-700">
-                      <Image src="/logo.png" alt="" fill className="object-contain brightness-0 invert" />
-                    </div>
                     <div className="absolute top-1/4 left-[6%] text-white/[0.04] text-[220px] font-black select-none leading-none">₪</div>
                     <div className="absolute bottom-1/3 right-[8%] w-40 h-40 rounded-full border border-white/[0.06]" />
                     <div className="absolute top-[15%] right-[20%] w-5 h-5 rounded-full bg-white/10" />

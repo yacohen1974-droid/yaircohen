@@ -98,7 +98,8 @@ export default function BlogPostPage() {
                   src={safeEncodeURI(post.heroImageUrlDesktop)} 
                   alt={post.title} 
                   fill 
-                  className="object-cover opacity-60 brightness-75"
+                  className="object-cover object-top opacity-60 brightness-75"
+                  style={{ objectPosition: 'center top' }}
                   priority
                 />
               </div>

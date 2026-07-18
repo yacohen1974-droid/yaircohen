@@ -36,6 +36,9 @@ export type DynamicSection = {
   logoSize?: 'sm' | 'md' | 'lg';
   logoShape?: 'circle' | 'square';
   features?: Feature[];
+  featuresColumns?: string;
+  featuresBg?: string;
+  featuresSize?: string;
   testimonials?: Testimonial[];
   faqs?: Faq[];
   ctaButtons?: CtaButton[];
