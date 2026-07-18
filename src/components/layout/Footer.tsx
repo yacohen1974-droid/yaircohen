@@ -35,6 +35,7 @@ export function Footer() {
   const email = globalSettings?.siteEmail || 'yairmashkantaot@gmail.com';
   const telHref = `tel:${phone.replace(/-/g, '')}`;
   const waHref = `https://wa.me/${phone.replace(/-/g, '').replace(/^0/, '972')}`;
+  const youtubeUrl = globalSettings?.youtubeLink || 'https://www.youtube.com/channel/UCIU3xxQ5o4nDttcVD17q8QQ';
 
   return (
     <footer className="bg-[#0D2347] text-white" dir="rtl">
@@ -110,9 +111,9 @@ export function Footer() {
                   <Linkedin size={18} />
                 </a>
               )}
-              {globalSettings?.youtubeLink && (
+              {youtubeUrl && (
                 <a
-                  href={globalSettings.youtubeLink}
+                  href={youtubeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
