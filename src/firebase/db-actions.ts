@@ -209,3 +209,33 @@ export async function deleteBlogPost(id: string) {
     console.error('Error deleting blog post from local fallback:', e);
   }
 }
+
+export async function getDbInitialData() {
+  const pages = ['global', 'blog', 'home', 'about', 'services'];
+  const data: any = { pages: {} };
+  
+  for (const pageId of pages) {
+    try {
+      const content = await getPageContent(pageId);
+      if (content) {
+        if (pageId === 'global' || pageId === 'blog') {
+          data[pageId] = content;
+        } else {
+          data.pages[pageId] = content;
+        }
+      }
+    } catch (e) {
+      console.warn(`Failed to fetch initial data for page ${pageId}:`, e);
+    }
+  }
+  
+  try {
+    const posts = await getBlogPosts();
+    data.blogPosts = posts || [];
+  } catch (e) {
+    console.warn("Failed to fetch initial blog posts:", e);
+    data.blogPosts = [];
+  }
+  
+  return data;
+}

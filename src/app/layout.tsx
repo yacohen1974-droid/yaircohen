@@ -1,7 +1,6 @@
 import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
-import fs from 'fs/promises';
-import path from 'path';
+import { getDbInitialData } from '@/firebase/db-actions';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -51,13 +50,7 @@ export const metadata: Metadata = {
 };
 
 async function getInitialData() {
-  try {
-    const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-    const content = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(content);
-  } catch (e) {
-    return {};
-  }
+  return getDbInitialData();
 }
 
 export default async function RootLayout({
