@@ -53,13 +53,20 @@ function StatItem({ prefix = '', value, suffix = '', label, light = true }: {
   }, [isNumeric, numeric]);
 
   const display = isNumeric ? String(count) : value;
+  const fullText = `${prefix}${display}${suffix}`;
 
   return (
     <div ref={ref} className="text-center pop-in">
-      <div className={cn("text-4xl sm:text-5xl md:text-6xl font-bold leading-none mb-3 tabular-nums", light ? 'text-white finance-3d-text-light' : 'text-primary finance-3d-text')}>
+      <div className={cn(
+        "font-bold leading-none mb-3 tabular-nums whitespace-nowrap",
+        fullText.length > 8 ? "text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl" :
+        fullText.length > 5 ? "text-3xl sm:text-5xl md:text-6xl" :
+        "text-4xl sm:text-5xl md:text-6xl",
+        light ? 'text-white finance-3d-text-light' : 'text-primary finance-3d-text'
+      )}>
         {prefix}{display}{suffix}
       </div>
-      <div className={cn("text-sm md:text-base font-semibold tracking-wide", light ? 'text-white/65' : 'text-slate-500')}>
+      <div className={cn("text-xs sm:text-sm md:text-base font-semibold tracking-wide", light ? 'text-white/65' : 'text-slate-500')}>
         {label}
       </div>
     </div>
