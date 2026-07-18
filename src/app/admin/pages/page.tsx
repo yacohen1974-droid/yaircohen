@@ -197,12 +197,12 @@ function TitleEditor({ settings, onChange, label }: { settings?: TitleSettings, 
 function SectionCard({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
   return (
     <Card className="border-none shadow-xl rounded-none overflow-hidden">
-      <CardHeader className="bg-stone-50/80 border-b border-stone-100 py-4 md:py-6">
-        <CardTitle className="font-headline text-xl md:text-2xl flex items-center gap-3">
+      <CardHeader className="bg-slate-800 border-b border-slate-700 py-4 md:py-6">
+        <CardTitle className="font-headline text-xl md:text-2xl flex items-center gap-3 text-white">
           <span className="text-primary">{icon}</span> {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-6 md:pt-8 space-y-5">{children}</CardContent>
+      <CardContent className="pt-6 md:pt-8 space-y-5 bg-slate-50">{children}</CardContent>
     </Card>
   );
 }
@@ -272,11 +272,11 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
   isLast: boolean
 }) {
   return (
-    <div className="bg-stone-50/80 p-6 md:p-8 border border-stone-200/85 rounded-2xl shadow-sm space-y-6 mb-8 relative group hover:border-primary/20 hover:bg-stone-50 transition-all duration-300">
-      <div className="flex justify-between items-center border-b border-stone-200/60 pb-4">
+    <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-md space-y-0 mb-8 relative group hover:border-primary/40 transition-all duration-300 overflow-hidden">
+      <div className="flex justify-between items-center border-b border-slate-700 px-6 py-4 md:px-8 md:py-5">
         <div className="flex items-center gap-3">
           <div className="w-2 h-6 bg-primary rounded-full" />
-          <Label className="boutique-label text-accent text-lg">
+          <Label className="boutique-label text-slate-100 text-lg">
             {section.type === 'hero' ? 'כותרת גדולה (Hero)' :
              section.type === 'intro' ? 'אודות / פורטרט' :
              section.type === 'text' ? 'בלוק טקסט' :
@@ -288,7 +288,7 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
              section.type === 'contact' ? 'טופס יצירת קשר' :
              section.type === 'map' ? 'מפת מיקום' :
              section.type === 'logos' ? 'לוגואים (גריד)' :
-             section.type === 'video' ? 'וידאו (YouTube/Vimeo)' :
+             section.type === 'video' ? 'וידאו (גריד)' :
              section.type === 'blog-grid' ? 'רשימת מאמרים (Blog Grid)' :
              section.type === 'stats' ? 'סטטיסטיקות / מספרים' :
              section.type === 'insight' ? 'כרטיס תובנה' :
@@ -300,12 +300,13 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
           <button 
             type="button" 
             onClick={onRemove} 
-            className="text-red-400 hover:text-red-600 transition-colors h-8 w-8 flex items-center justify-center"
+            className="text-red-400 hover:text-red-300 transition-colors h-8 w-8 flex items-center justify-center"
           >
             <Trash2 size={16} />
           </button>
         </div>
       </div>
+      <div className="bg-slate-50 p-6 md:p-8 space-y-6">
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Field label="סוג הבלוק">
@@ -948,9 +949,100 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
         {section.type === 'video' && (
           <div className="md:col-span-2 space-y-6">
             <TitleEditor label="כותרת (אופציונלי)" settings={section.titleSettings} onChange={s => onChange({ ...section, titleSettings: s })} />
-            <Field label="קישור וידאו (YouTube embed / Vimeo embed)">
-              <Input value={section.videoUrl || ''} onChange={e => onChange({ ...section, videoUrl: e.target.value })} placeholder="https://www.youtube.com/embed/..." className="font-sans" dir="ltr" />
+            <Field label="פריסת עמודות (דסקטופ)">
+              <Select value={section.videoColumns || 'md:grid-cols-2'} onValueChange={v => onChange({ ...section, videoColumns: v })}>
+                <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="md:grid-cols-2">2 עמודות</SelectItem>
+                  <SelectItem value="md:grid-cols-3">3 עמודות</SelectItem>
+                  <SelectItem value="md:grid-cols-4">4 עמודות</SelectItem>
+                </SelectContent>
+              </Select>
             </Field>
+            <Label className="boutique-label">סרטונים</Label>
+            <div className="grid grid-cols-1 gap-4">
+              {(section.videos && section.videos.length > 0
+                ? section.videos
+                : section.videoUrl
+                  ? [{ id: section.id, url: section.videoUrl, title: section.videoTitle }]
+                  : []
+              ).map((video: any, idx: number) => (
+                <div key={video.id || idx} className="bg-stone-50 p-4 border border-stone-200/80 rounded-xl space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-accent">סרטון #{idx + 1}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        const current = section.videos && section.videos.length > 0
+                          ? section.videos
+                          : section.videoUrl
+                            ? [{ id: section.id, url: section.videoUrl, title: section.videoTitle }]
+                            : [];
+                        const nextVideos = [...current];
+                        nextVideos.splice(idx, 1);
+                        onChange({ ...section, videos: nextVideos, videoUrl: '', videoTitle: '' });
+                      }}
+                      className="text-red-400 h-8 w-8"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
+                  <Field label="קישור וידאו (YouTube embed / Vimeo embed)">
+                    <Input
+                      value={video.url || ''}
+                      onChange={e => {
+                        const current = section.videos && section.videos.length > 0
+                          ? section.videos
+                          : section.videoUrl
+                            ? [{ id: section.id, url: section.videoUrl, title: section.videoTitle }]
+                            : [];
+                        const nextVideos = [...current];
+                        nextVideos[idx] = { ...nextVideos[idx], url: e.target.value };
+                        onChange({ ...section, videos: nextVideos, videoUrl: '', videoTitle: '' });
+                      }}
+                      placeholder="https://www.youtube.com/embed/..."
+                      className="bg-white font-sans"
+                      dir="ltr"
+                    />
+                  </Field>
+                  <Field label="כותרת הסרטון (אופציונלי)">
+                    <Input
+                      value={video.title || ''}
+                      onChange={e => {
+                        const current = section.videos && section.videos.length > 0
+                          ? section.videos
+                          : section.videoUrl
+                            ? [{ id: section.id, url: section.videoUrl, title: section.videoTitle }]
+                            : [];
+                        const nextVideos = [...current];
+                        nextVideos[idx] = { ...nextVideos[idx], title: e.target.value };
+                        onChange({ ...section, videos: nextVideos, videoUrl: '', videoTitle: '' });
+                      }}
+                      className="bg-white"
+                    />
+                  </Field>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  const current = section.videos && section.videos.length > 0
+                    ? section.videos
+                    : section.videoUrl
+                      ? [{ id: section.id, url: section.videoUrl, title: section.videoTitle }]
+                      : [];
+                  const id = Math.random().toString(36).slice(2, 11);
+                  const nextVideos = [...current, { id, url: '', title: '' }];
+                  onChange({ ...section, videos: nextVideos, videoUrl: '', videoTitle: '' });
+                }}
+                className="border-dashed border-primary/20 h-12"
+              >
+                <Plus size={14} className="ml-2" /> הוספת סרטון
+              </Button>
+            </div>
             <p className="text-xs text-slate-400">השתמשו בקישור embed — ב-YouTube: לחצו שיתוף → הטמעה, והדביקו את ה-URL מתוך src="..."</p>
           </div>
         )}
@@ -1000,6 +1092,7 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
             </p>
           </div>
         )}
+      </div>
       </div>
     </div>
   );
@@ -1694,7 +1787,7 @@ export default function AdminPages() {
                       type="button"
                       onClick={() => {
                         const id = Math.random().toString(36).substr(2, 9);
-                        const next = [...(content.blocks || []), { id, type: 'video', videoUrl: '', title: '', statsBg: 'navy' }];
+                        const next = [...(content.blocks || []), { id, type: 'video', videos: [], videoColumns: 'md:grid-cols-2', title: '' }];
                         set({ blocks: next as any });
                       }}
                       className="h-24 border-2 border-primary/20 border-dashed rounded-sm text-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 font-bold"

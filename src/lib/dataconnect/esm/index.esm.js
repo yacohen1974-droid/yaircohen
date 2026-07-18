@@ -1,10 +1,11 @@
-import { queryRef, executeQuery, validateArgsWithOptions, mutationRef, executeMutation, validateArgs } from 'firebase/data-connect';
+import { queryRef, executeQuery, mutationRef, executeMutation, validateArgs } from 'firebase/data-connect';
 
 export const connectorConfig = {
   connector: 'default',
   service: 'yaircohen-7823a-service',
   location: 'europe-west3'
 };
+
 export const upsertPageRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -13,8 +14,7 @@ export const upsertPageRef = (dcOrVars, vars) => {
 upsertPageRef.operationName = 'UpsertPage';
 
 export function upsertPage(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(upsertPageRef(dcInstance, inputVars));
+  return executeMutation(upsertPageRef(dcOrVars, vars));
 }
 
 export const deletePageRef = (dcOrVars, vars) => {
@@ -25,8 +25,7 @@ export const deletePageRef = (dcOrVars, vars) => {
 deletePageRef.operationName = 'DeletePage';
 
 export function deletePage(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(deletePageRef(dcInstance, inputVars));
+  return executeMutation(deletePageRef(dcOrVars, vars));
 }
 
 export const upsertBlogPostRef = (dcOrVars, vars) => {
@@ -37,8 +36,7 @@ export const upsertBlogPostRef = (dcOrVars, vars) => {
 upsertBlogPostRef.operationName = 'UpsertBlogPost';
 
 export function upsertBlogPost(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(upsertBlogPostRef(dcInstance, inputVars));
+  return executeMutation(upsertBlogPostRef(dcOrVars, vars));
 }
 
 export const deleteBlogPostRef = (dcOrVars, vars) => {
@@ -49,8 +47,7 @@ export const deleteBlogPostRef = (dcOrVars, vars) => {
 deleteBlogPostRef.operationName = 'DeleteBlogPost';
 
 export function deleteBlogPost(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(deleteBlogPostRef(dcInstance, inputVars));
+  return executeMutation(deleteBlogPostRef(dcOrVars, vars));
 }
 
 export const getPageRef = (dcOrVars, vars) => {
@@ -60,10 +57,8 @@ export const getPageRef = (dcOrVars, vars) => {
 }
 getPageRef.operationName = 'GetPage';
 
-export function getPage(dcOrVars, varsOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  return executeQuery(getPageRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
+export function getPage(dcOrVars, vars) {
+  return executeQuery(getPageRef(dcOrVars, vars));
 }
 
 export const listBlogPostsRef = (dc) => {
@@ -73,10 +68,8 @@ export const listBlogPostsRef = (dc) => {
 }
 listBlogPostsRef.operationName = 'ListBlogPosts';
 
-export function listBlogPosts(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(listBlogPostsRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
+export function listBlogPosts(dc) {
+  return executeQuery(listBlogPostsRef(dc));
 }
 
 export const getBlogPostRef = (dcOrVars, vars) => {
@@ -86,10 +79,8 @@ export const getBlogPostRef = (dcOrVars, vars) => {
 }
 getBlogPostRef.operationName = 'GetBlogPost';
 
-export function getBlogPost(dcOrVars, varsOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  return executeQuery(getBlogPostRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
+export function getBlogPost(dcOrVars, vars) {
+  return executeQuery(getBlogPostRef(dcOrVars, vars));
 }
 
 export const getBlogPostBySlugRef = (dcOrVars, vars) => {
@@ -99,9 +90,18 @@ export const getBlogPostBySlugRef = (dcOrVars, vars) => {
 }
 getBlogPostBySlugRef.operationName = 'GetBlogPostBySlug';
 
-export function getBlogPostBySlug(dcOrVars, varsOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  return executeQuery(getBlogPostBySlugRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
+export function getBlogPostBySlug(dcOrVars, vars) {
+  return executeQuery(getBlogPostBySlugRef(dcOrVars, vars));
+}
+
+export const listPagesRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListPages');
+}
+listPagesRef.operationName = 'ListPages';
+
+export function listPages(dc) {
+  return executeQuery(listPagesRef(dc));
 }
 

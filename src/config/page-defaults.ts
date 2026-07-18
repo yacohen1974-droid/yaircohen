@@ -11,6 +11,7 @@ export type Feature = {
 export type Testimonial = { text: string; author: string; location: string };
 export type Faq = { question: string; answer: string };
 export type LogoItem = { imageUrl: string; id: string };
+export type VideoItem = { id: string; url: string; title?: string };
 
 export type TitleSettings = {
   text: string;
@@ -55,6 +56,8 @@ export type DynamicSection = {
   mapAddress?: string;
   videoUrl?: string;
   videoTitle?: string;
+  videos?: VideoItem[];
+  videoColumns?: string;
   stats?: { value: string; label: string; prefix?: string; suffix?: string }[];
   statsBg?: 'navy' | 'white' | 'blue';
   /* ── Insight card ─────────────────────────────────────────── */

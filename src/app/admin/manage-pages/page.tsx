@@ -83,7 +83,18 @@ export default function ManagePagesPage() {
 
         <div className="space-y-6">
           {pages.length === 0 ? (
-            <p className="text-slate-400 text-center py-20">לא נמצאו דפים נוספים למחיקה.</p>
+            <div className="text-center py-20 space-y-6">
+              <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center">
+                <Trash2 size={28} className="text-slate-300" />
+              </div>
+              <div className="space-y-2">
+                <p className="text-slate-600 font-headline text-xl">אין דפים למחיקה כרגע</p>
+                <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+                  כאן יופיעו דפי נחיתה ושירותים שנוצרו ידנית כתיקיות קוד בפרויקט (מחוץ לדפים הקבועים כמו בית, אודות, שירותים וכו׳). 
+                  ניתן למחוק אותם מכאן כאשר הם כבר אינם נדרשים.
+                </p>
+              </div>
+            </div>
           ) : (
             pages.map(page => (
               <Card key={page} className="p-6 flex justify-between items-center bg-white border-none shadow-sm hover:shadow-md transition-all">

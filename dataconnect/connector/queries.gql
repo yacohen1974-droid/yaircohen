@@ -70,3 +70,10 @@ query GetBlogPostBySlug($slug: String!) @auth(level: PUBLIC, insecureReason: "Pu
     seoDescription
   }
 }
+
+# List all page IDs
+query ListPages @auth(level: PUBLIC, insecureReason: "Public reading is required for visitors") {
+  pages {
+    pageId
+  }
+}

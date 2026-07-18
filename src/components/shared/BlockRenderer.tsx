@@ -523,10 +523,24 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
               </section>
             );
 
-          case 'video':
+          case 'video': {
+            const videoItems = block.videos && block.videos.length > 0
+              ? block.videos
+              : block.videoUrl
+                ? [{ id: block.id, url: block.videoUrl, title: block.videoTitle }]
+                : [];
+
+            const videoColumnsClass =
+              block.videoColumns === 'md:grid-cols-2' ? 'md:grid-cols-2' :
+              block.videoColumns === 'md:grid-cols-3' ? 'md:grid-cols-2 lg:grid-cols-3' :
+              block.videoColumns === 'md:grid-cols-4' ? 'md:grid-cols-2 lg:grid-cols-4' :
+              '';
+
+            const containerMaxWidth = videoColumnsClass ? 'max-w-7xl' : 'max-w-4xl';
+
             return (
               <section key={block.id} className="py-20 md:py-32 px-6 bg-white">
-                <div className="max-w-4xl mx-auto">
+                <div className={cn(containerMaxWidth, "mx-auto")}>
                   {block.titleSettings && (
                     <SectionTitle
                       subtitle={block.titleSettings.subtitle || ''}
@@ -538,19 +552,22 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                       className="flex flex-col items-center text-center mb-10"
                     />
                   )}
-                  {block.videoUrl && (
-                    <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl border border-slate-100">
-                      <iframe
-                        src={getEmbedUrl(block.videoUrl)}
-                        title={block.videoTitle || block.title || 'Video'}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full"
-                        style={{ border: 0 }}
-                      />
+                  {videoItems.length > 0 ? (
+                    <div className={cn("grid grid-cols-1 gap-6 w-full", videoColumnsClass)}>
+                      {videoItems.map((video, i) => (
+                        <div key={video.id || i} className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-100">
+                          <iframe
+                            src={getEmbedUrl(video.url)}
+                            title={video.title || block.title || 'Video'}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                            style={{ border: 0 }}
+                          />
+                        </div>
+                      ))}
                     </div>
-                  )}
-                  {!block.videoUrl && (
+                  ) : (
                     <div className="aspect-video rounded-2xl bg-slate-100 flex items-center justify-center">
                       <p className="boutique-label text-slate-400">הזינו קישור YouTube/Vimeo בהגדרות הבלוק</p>
                     </div>
@@ -558,6 +575,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                 </div>
               </section>
             );
+          }
 
           case 'stats':
             return (

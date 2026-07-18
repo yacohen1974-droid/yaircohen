@@ -12,6 +12,7 @@ This README will guide you through the process of using the generated JavaScript
   - [*ListBlogPosts*](#listblogposts)
   - [*GetBlogPost*](#getblogpost)
   - [*GetBlogPostBySlug*](#getblogpostbyslug)
+  - [*ListPages*](#listpages)
 - [**Mutations**](#mutations)
   - [*UpsertPage*](#upsertpage)
   - [*DeletePage*](#deletepage)
@@ -66,7 +67,7 @@ Below are examples of how to use the `default` connector's generated functions t
 ## GetPage
 You can execute the `GetPage` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
 ```typescript
-getPage(vars: GetPageVariables, options?: ExecuteQueryOptions): QueryPromise<GetPageData, GetPageVariables>;
+getPage(vars: GetPageVariables): QueryPromise<GetPageData, GetPageVariables>;
 
 interface GetPageRef {
   ...
@@ -77,7 +78,7 @@ export const getPageRef: GetPageRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getPage(dc: DataConnect, vars: GetPageVariables, options?: ExecuteQueryOptions): QueryPromise<GetPageData, GetPageVariables>;
+getPage(dc: DataConnect, vars: GetPageVariables): QueryPromise<GetPageData, GetPageVariables>;
 
 interface GetPageRef {
   ...
@@ -178,7 +179,7 @@ executeQuery(ref).then((response) => {
 ## ListBlogPosts
 You can execute the `ListBlogPosts` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
 ```typescript
-listBlogPosts(options?: ExecuteQueryOptions): QueryPromise<ListBlogPostsData, undefined>;
+listBlogPosts(): QueryPromise<ListBlogPostsData, undefined>;
 
 interface ListBlogPostsRef {
   ...
@@ -189,7 +190,7 @@ export const listBlogPostsRef: ListBlogPostsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listBlogPosts(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListBlogPostsData, undefined>;
+listBlogPosts(dc: DataConnect): QueryPromise<ListBlogPostsData, undefined>;
 
 interface ListBlogPostsRef {
   ...
@@ -285,7 +286,7 @@ executeQuery(ref).then((response) => {
 ## GetBlogPost
 You can execute the `GetBlogPost` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
 ```typescript
-getBlogPost(vars: GetBlogPostVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
+getBlogPost(vars: GetBlogPostVariables): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
 
 interface GetBlogPostRef {
   ...
@@ -296,7 +297,7 @@ export const getBlogPostRef: GetBlogPostRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getBlogPost(dc: DataConnect, vars: GetBlogPostVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
+getBlogPost(dc: DataConnect, vars: GetBlogPostVariables): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
 
 interface GetBlogPostRef {
   ...
@@ -410,7 +411,7 @@ executeQuery(ref).then((response) => {
 ## GetBlogPostBySlug
 You can execute the `GetBlogPostBySlug` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
 ```typescript
-getBlogPostBySlug(vars: GetBlogPostBySlugVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
+getBlogPostBySlug(vars: GetBlogPostBySlugVariables): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
 
 interface GetBlogPostBySlugRef {
   ...
@@ -421,7 +422,7 @@ export const getBlogPostBySlugRef: GetBlogPostBySlugRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getBlogPostBySlug(dc: DataConnect, vars: GetBlogPostBySlugVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
+getBlogPostBySlug(dc: DataConnect, vars: GetBlogPostBySlugVariables): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
 
 interface GetBlogPostBySlugRef {
   ...
@@ -529,6 +530,99 @@ console.log(data.blogPosts);
 executeQuery(ref).then((response) => {
   const data = response.data;
   console.log(data.blogPosts);
+});
+```
+
+## ListPages
+You can execute the `ListPages` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
+```typescript
+listPages(): QueryPromise<ListPagesData, undefined>;
+
+interface ListPagesRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListPagesData, undefined>;
+}
+export const listPagesRef: ListPagesRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+listPages(dc: DataConnect): QueryPromise<ListPagesData, undefined>;
+
+interface ListPagesRef {
+  ...
+  (dc: DataConnect): QueryRef<ListPagesData, undefined>;
+}
+export const listPagesRef: ListPagesRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the listPagesRef:
+```typescript
+const name = listPagesRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `ListPages` query has no variables.
+### Return Type
+Recall that executing the `ListPages` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `ListPagesData`, which is defined in [dataconnect/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface ListPagesData {
+  pages: ({
+    pageId: string;
+  } & Page_Key)[];
+}
+```
+### Using `ListPages`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, listPages } from '@yaircohen/dataconnect';
+
+
+// Call the `listPages()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await listPages();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await listPages(dataConnect);
+
+console.log(data.pages);
+
+// Or, you can use the `Promise` API.
+listPages().then((response) => {
+  const data = response.data;
+  console.log(data.pages);
+});
+```
+
+### Using `ListPages`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, listPagesRef } from '@yaircohen/dataconnect';
+
+
+// Call the `listPagesRef()` function to get a reference to the query.
+const ref = listPagesRef();
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = listPagesRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.pages);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.pages);
 });
 ```
 

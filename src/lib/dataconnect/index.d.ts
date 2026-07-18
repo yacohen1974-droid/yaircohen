@@ -1,4 +1,4 @@
-import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, ExecuteQueryOptions, MutationRef, MutationPromise } from 'firebase/data-connect';
+import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, MutationRef, MutationPromise } from 'firebase/data-connect';
 
 export const connectorConfig: ConnectorConfig;
 
@@ -110,6 +110,12 @@ export interface ListBlogPostsData {
   } & BlogPost_Key)[];
 }
 
+export interface ListPagesData {
+  pages: ({
+    pageId: string;
+  } & Page_Key)[];
+}
+
 export interface Page_Key {
   pageId: string;
   __typename?: 'Page_Key';
@@ -201,8 +207,8 @@ interface GetPageRef {
 }
 export const getPageRef: GetPageRef;
 
-export function getPage(vars: GetPageVariables, options?: ExecuteQueryOptions): QueryPromise<GetPageData, GetPageVariables>;
-export function getPage(dc: DataConnect, vars: GetPageVariables, options?: ExecuteQueryOptions): QueryPromise<GetPageData, GetPageVariables>;
+export function getPage(vars: GetPageVariables): QueryPromise<GetPageData, GetPageVariables>;
+export function getPage(dc: DataConnect, vars: GetPageVariables): QueryPromise<GetPageData, GetPageVariables>;
 
 interface ListBlogPostsRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -213,8 +219,8 @@ interface ListBlogPostsRef {
 }
 export const listBlogPostsRef: ListBlogPostsRef;
 
-export function listBlogPosts(options?: ExecuteQueryOptions): QueryPromise<ListBlogPostsData, undefined>;
-export function listBlogPosts(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListBlogPostsData, undefined>;
+export function listBlogPosts(): QueryPromise<ListBlogPostsData, undefined>;
+export function listBlogPosts(dc: DataConnect): QueryPromise<ListBlogPostsData, undefined>;
 
 interface GetBlogPostRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -225,8 +231,8 @@ interface GetBlogPostRef {
 }
 export const getBlogPostRef: GetBlogPostRef;
 
-export function getBlogPost(vars: GetBlogPostVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
-export function getBlogPost(dc: DataConnect, vars: GetBlogPostVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
+export function getBlogPost(vars: GetBlogPostVariables): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
+export function getBlogPost(dc: DataConnect, vars: GetBlogPostVariables): QueryPromise<GetBlogPostData, GetBlogPostVariables>;
 
 interface GetBlogPostBySlugRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -237,6 +243,18 @@ interface GetBlogPostBySlugRef {
 }
 export const getBlogPostBySlugRef: GetBlogPostBySlugRef;
 
-export function getBlogPostBySlug(vars: GetBlogPostBySlugVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
-export function getBlogPostBySlug(dc: DataConnect, vars: GetBlogPostBySlugVariables, options?: ExecuteQueryOptions): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
+export function getBlogPostBySlug(vars: GetBlogPostBySlugVariables): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
+export function getBlogPostBySlug(dc: DataConnect, vars: GetBlogPostBySlugVariables): QueryPromise<GetBlogPostBySlugData, GetBlogPostBySlugVariables>;
+
+interface ListPagesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListPagesData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<ListPagesData, undefined>;
+  operationName: string;
+}
+export const listPagesRef: ListPagesRef;
+
+export function listPages(): QueryPromise<ListPagesData, undefined>;
+export function listPages(dc: DataConnect): QueryPromise<ListPagesData, undefined>;
 

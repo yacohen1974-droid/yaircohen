@@ -14,7 +14,7 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { upsertPage, deletePage, upsertBlogPost, deleteBlogPost, getPage, listBlogPosts, getBlogPost, getBlogPostBySlug } from '@yaircohen/dataconnect';
+import { upsertPage, deletePage, upsertBlogPost, deleteBlogPost, getPage, listBlogPosts, getBlogPost, getBlogPostBySlug, listPages } from '@yaircohen/dataconnect';
 
 
 // Operation UpsertPage:  For variables, look at type UpsertPageVars in ../index.d.ts
@@ -40,6 +40,9 @@ const { data } = await GetBlogPost(dataConnect, getBlogPostVars);
 
 // Operation GetBlogPostBySlug:  For variables, look at type GetBlogPostBySlugVars in ../index.d.ts
 const { data } = await GetBlogPostBySlug(dataConnect, getBlogPostBySlugVars);
+
+// Operation ListPages: 
+const { data } = await ListPages(dataConnect);
 
 
 ```
