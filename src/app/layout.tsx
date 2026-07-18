@@ -24,6 +24,7 @@ const amaticSC = Amatic_SC({
 import { Toaster } from '@/components/ui/toaster';
 import { InitialDataProvider } from '@/components/providers/InitialDataProvider';
 import { FloatingWhatsApp } from '@/components/shared/FloatingWhatsApp';
+import { ScrollToTop } from '@/components/shared/ScrollToTop';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -124,6 +125,7 @@ export default async function RootLayout({
         <InitialDataProvider initialData={initialData}>
           {children}
           <FloatingWhatsApp />
+          <ScrollToTop />
         </InitialDataProvider>
         <Toaster />
       </body>
