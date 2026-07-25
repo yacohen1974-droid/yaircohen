@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import { ToastAction } from '@/components/ui/toast';
 import { UploadCloud, Trash2, Loader2, AlertCircle, Eye } from 'lucide-react';
-import { hasDraftChanges, getDraftData, clearDraftData } from '@/lib/cms-draft';
+import { hasDraftChanges, getDraftData, clearDraftData, summarizeChanges } from '@/lib/cms-draft';
 
 export function PublishBanner() {
   const [hasChanges, setHasChanges] = useState(false);
@@ -28,6 +29,23 @@ export function PublishBanner() {
     const draft = getDraftData();
     if (!draft) return;
 
+    // Best-effort plain-language summary of what's about to go live
+    let changedPagePaths: string[] = [];
+    try {
+      const backupRes = await fetch('/api/admin/get-backup-data');
+      const backupData = await backupRes.json();
+      const published = backupData.success ? backupData.data : null;
+      const { labels, changedPagePaths: paths } = summarizeChanges(published, draft);
+      changedPagePaths = paths;
+
+      const confirmMsg = labels.length > 0
+        ? `שיניתם:\n${labels.map(l => `• ${l}`).join('\n')}\n\nלפרסם את השינויים האלה לאתר החי?`
+        : 'לפרסם את השינויים לאתר החי?';
+      if (!window.confirm(confirmMsg)) return;
+    } catch {
+      if (!window.confirm('לפרסם את השינויים לאתר החי?')) return;
+    }
+
     setIsPublishing(true);
     try {
       const res = await fetch('/api/admin/publish', {
@@ -39,13 +57,22 @@ export function PublishBanner() {
 
       if (data.success) {
         clearDraftData();
+        const linkPath = changedPagePaths.length === 1 ? changedPagePaths[0] : '/';
         toast({
           title: "✅ האתר פורסם בהצלחה!",
-          description: "השינויים נשלחו ל-GitHub ויהיו זמינים באונליין תוך כדקה."
+          description: "השינויים נשלחו ל-GitHub ויהיו זמינים באונליין תוך כדקה.",
+          action: (
+            <ToastAction
+              altText="צפייה באתר"
+              onClick={() => window.open(`${window.location.origin}${linkPath}`, '_blank', 'noopener')}
+            >
+              צפייה באתר
+            </ToastAction>
+          )
         });
         setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 4000);
       } else {
         throw new Error(data.error);
       }

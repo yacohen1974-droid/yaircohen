@@ -298,3 +298,83 @@ export async function fetchDraftSiteData(): Promise<any | null> {
     return null;
   }
 }
+
+// ─── Publish history + one-click revert ────────────────────────────────────
+// Every publish is already a commit on GitHub, so version history is free —
+// no separate backup mechanism needed.
+
+export interface PublishHistoryEntry {
+  sha: string;
+  message: string;
+  date: string;
+}
+
+export async function getPublishHistory(limit = 5): Promise<PublishHistoryEntry[]> {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) return [];
+  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
+  const filePath = 'src/content/site-data.json';
+
+  const res = await fetch(
+    `https://api.github.com/repos/${repo}/commits?path=${encodeURIComponent(filePath)}&sha=main&per_page=${limit}`,
+    { headers: ghHeaders(token), cache: 'no-store' }
+  );
+  if (!res.ok) return [];
+  const commits = await res.json();
+  if (!Array.isArray(commits)) return [];
+
+  return commits.map((c: any) => ({
+    sha: c.sha,
+    message: c.commit?.message || '',
+    date: c.commit?.author?.date || '',
+  }));
+}
+
+export async function revertToPreviousPublish(): Promise<{ date: string; message: string }> {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) throw new Error('GITHUB_TOKEN אינו מוגדר בשרת');
+  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
+  const filePath = 'src/content/site-data.json';
+  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+  const history = await getPublishHistory(5);
+  if (history.length < 2) {
+    throw new Error('אין גרסה קודמת לשחזר');
+  }
+  const previous = history[1];
+
+  const prevContentRes = await fetch(`${url}?ref=${previous.sha}`, { headers: ghHeaders(token) });
+  if (!prevContentRes.ok) throw new Error('לא ניתן לטעון את הגרסה הקודמת מ-GitHub');
+  const prevInfo = await prevContentRes.json();
+  const prevContentString = Buffer.from(prevInfo.content, 'base64').toString('utf-8');
+
+  // The Contents API requires the current file's sha to authorize the update
+  const currentRes = await fetch(url, { headers: ghHeaders(token) });
+  if (!currentRes.ok) throw new Error('לא ניתן לקרוא את המצב הנוכחי מ-GitHub');
+  const currentInfo = await currentRes.json();
+
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: { ...ghHeaders(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: 'admin: revert to previous version via CMS',
+      content: Buffer.from(prevContentString).toString('base64'),
+      sha: currentInfo.sha,
+      branch: 'main'
+    })
+  });
+  if (!putRes.ok) {
+    const errText = await putRes.text();
+    throw new Error(`שחזור הגרסה נכשל: ${putRes.status} ${errText}`);
+  }
+
+  // Keep the local file (and thus this instance's SSR reads) in sync too
+  try {
+    const localPath = path.join(process.cwd(), 'src/content/site-data.json');
+    await fs.writeFile(localPath, prevContentString, 'utf-8');
+  } catch (e) {
+    console.warn('Failed to write reverted site-data.json locally:', e);
+  }
+
+  return { date: previous.date, message: previous.message };
+}

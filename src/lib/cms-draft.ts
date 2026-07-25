@@ -37,6 +37,86 @@ export function clearDraftData() {
   window.dispatchEvent(new Event('cms_draft_updated'));
 }
 
+// ─── Plain-language change summary (for the pre-publish confirmation) ─────
+
+const GLOBAL_FIELD_LABELS: Record<string, string> = {
+  siteName: 'שם האתר',
+  siteSubtitle: 'סלוגן',
+  siteDescription: 'תיאור האתר (בפוטר)',
+  siteLogo: 'לוגו',
+  siteFavicon: 'פביקון',
+  sitePhone: 'טלפון',
+  siteEmail: 'אימייל',
+  siteAddress: 'כתובת',
+  facebookLink: 'קישור פייסבוק',
+  instagramLink: 'קישור אינסטגרם',
+  linkedinLink: 'קישור לינקדין',
+  youtubeLink: 'קישור יוטיוב',
+  tiktokLink: 'קישור טיקטוק',
+  navItems: 'תפריט עליון',
+  footerItems: 'תפריט פוטר',
+  ctaLabel: 'טקסט כפתור הנעה לפעולה',
+  whatsappMsg: 'הודעת וואטסאפ',
+};
+
+const PAGE_LABELS: Record<string, string> = {
+  home: 'עמוד הבית',
+  about: 'עמוד אודות',
+  services: 'עמוד שירותים',
+  contact: 'עמוד צור קשר',
+  privacy: 'מדיניות פרטיות',
+  terms: 'תנאי שימוש',
+  accessibility: 'נגישות',
+};
+
+function deepEqual(a: any, b: any): boolean {
+  return JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+}
+
+export interface ChangeSummary {
+  labels: string[];
+  /** URL paths of pages that changed, for a direct "view it" link after publish */
+  changedPagePaths: string[];
+}
+
+export function summarizeChanges(published: SiteData | null, draft: SiteData): ChangeSummary {
+  const labels: string[] = [];
+  const changedPagePaths: string[] = [];
+  const pub: SiteData = published || { pages: {}, blogPosts: [] };
+
+  const globalPub = pub.global || {};
+  const globalDraft = draft.global || {};
+  for (const key of Object.keys(GLOBAL_FIELD_LABELS)) {
+    if (!deepEqual(globalPub[key], globalDraft[key])) {
+      labels.push(GLOBAL_FIELD_LABELS[key]);
+    }
+  }
+
+  const pageIds = new Set([...Object.keys(pub.pages || {}), ...Object.keys(draft.pages || {})]);
+  for (const id of pageIds) {
+    if (!deepEqual(pub.pages?.[id], draft.pages?.[id])) {
+      labels.push(PAGE_LABELS[id] || `עמוד "${id}"`);
+      changedPagePaths.push(id === 'home' ? '/' : `/${id}`);
+    }
+  }
+
+  if (!deepEqual(pub.blog, draft.blog)) {
+    labels.push('הגדרות הבלוג');
+    changedPagePaths.push('/blog');
+  }
+
+  if (!deepEqual(pub.blogPosts, draft.blogPosts)) {
+    const pubCount = (pub.blogPosts || []).length;
+    const draftCount = (draft.blogPosts || []).length;
+    if (draftCount > pubCount) labels.push(`${draftCount - pubCount} מאמרים חדשים בבלוג`);
+    else if (draftCount < pubCount) labels.push(`${pubCount - draftCount} מאמרים נמחקו מהבלוג`);
+    else labels.push('עדכון תוכן בבלוג');
+    changedPagePaths.push('/blog');
+  }
+
+  return { labels, changedPagePaths };
+}
+
 export async function initializeDraft(force = false): Promise<SiteData> {
   const existing = getDraftData();
   if (existing && !force) return existing;

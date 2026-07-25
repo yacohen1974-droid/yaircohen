@@ -1392,6 +1392,33 @@ export default function AdminPages() {
   const [allPages, setAllPages] = useState<{id: string, name: string}[]>(DEFAULT_PAGES);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [isReverting, setIsReverting] = useState(false);
+
+  const handleRevertLastPublish = async () => {
+    setIsReverting(true);
+    try {
+      const histRes = await fetch('/api/admin/publish-history');
+      const histData = await histRes.json();
+      if (!histData.success || !histData.history || histData.history.length < 2) {
+        toast({ variant: 'destructive', title: 'אין גרסה קודמת לשחזר', description: 'נראה שעדיין לא פורסמו מספיק שינויים.' });
+        return;
+      }
+      const previous = histData.history[1];
+      const dateStr = new Date(previous.date).toLocaleString('he-IL', { dateStyle: 'medium', timeStyle: 'short' });
+      if (!window.confirm(`לשחזר את האתר לגרסה מתאריך ${dateStr}?\n\nהפעולה תפרסם מחדש את התוכן שהיה קיים לפני הפרסום האחרון. אפשר לבטל את זה בכל עת על ידי פרסום מחדש.`)) return;
+
+      const res = await fetch('/api/admin/revert-last-publish', { method: 'POST' });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      toast({ title: '↩️ שוחזר בהצלחה', description: `האתר שוחזר לגרסה מתאריך ${dateStr}.` });
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: '❌ שחזור נכשל', description: err.message });
+    } finally {
+      setIsReverting(false);
+    }
+  };
 
   const loadAllPages = async () => {
     try {
@@ -1618,6 +1645,15 @@ export default function AdminPages() {
               <ChevronRight className="ml-2 size-4" /> חזרה ללוח הבקרה
             </button>
             <h1 className="text-4xl md:text-6xl font-handwriting text-accent">Admin תוכן ועיצוב</h1>
+            <button
+              type="button"
+              onClick={handleRevertLastPublish}
+              disabled={isReverting}
+              className="mt-3 text-amber-600 hover:text-amber-700 text-xs flex items-center gap-1.5 transition-colors disabled:opacity-50"
+            >
+              {isReverting ? <Loader2 className="size-3.5 animate-spin" /> : <RefreshCcw className="size-3.5" />}
+              שחזור לגרסה קודמת של האתר
+            </button>
           </div>
 
           <div className="w-full md:w-96 flex flex-col gap-4 md:sticky md:top-[88px] md:z-[40]">
