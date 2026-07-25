@@ -233,7 +233,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                 </div>
                 <div className={cn("relative z-[5] w-full max-w-5xl mx-auto px-6 flex flex-col", block.heroTextAlign === 'center' ? 'items-center text-center' : block.heroTextAlign === 'left' ? 'items-start text-left' : 'items-end text-right')}>
                     {block.titleSettings && (
-                      <h1 className={cn("font-bold leading-tight hero-title-shadow break-words w-full gradient-text-hero", block.titleSettings.fontSize || 'text-5xl sm:text-7xl lg:text-9xl', block.titleSettings.fontFamily || 'font-handwriting')} style={{ color: block.titleSettings.color || 'white' }}>
+                      <h1 className={cn("font-bold leading-tight hero-title-shadow break-words w-full gradient-text-hero", block.titleSettings.fontSize || 'text-5xl sm:text-7xl lg:text-9xl', block.titleSettings.fontFamily || 'font-headline')} style={{ color: block.titleSettings.color || 'white' }}>
                         {block.titleSettings.text || block.title}
                       </h1>
                     )}
@@ -265,10 +265,6 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                         alt={block.title || "Portrait"} 
                         className="image-zoom-container mx-auto lg:max-w-none shadow-[0_40px_80px_rgba(30,58,138,0.15)]" 
                       />
-                      <div className={cn("absolute -bottom-2 bg-white rounded-2xl shadow-xl border border-slate-100 px-5 py-3 flex items-center gap-3 float-badge", block.portraitPosition === 'right' ? 'left-6' : 'right-6')}>
-                        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs shrink-0">15+</div>
-                        <div><p className="text-xs font-bold text-slate-800">שנות ניסיון</p><p className="text-[10px] text-slate-400">500+ לקוחות מרוצים</p></div>
-                      </div>
                     </div>
                     <div className={cn("lg:col-span-7 order-1 space-y-10", block.portraitPosition === 'right' ? 'lg:order-1' : 'lg:order-2')}>
                       <SectionTitle
@@ -389,20 +385,12 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                             </div>
                             
                             <div className="space-y-3 w-full">
-                              <h3 className={cn("font-headline font-black tracking-tight group-hover:text-primary transition-colors duration-300", titleSizeClass, titleColorClass)}>
+                              <h3 className={cn("font-headline font-bold tracking-tight group-hover:text-primary transition-colors duration-300", titleSizeClass, titleColorClass)}>
                                 {point.title}
                               </h3>
-                              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full group-hover:w-20 group-hover:bg-primary transition-all duration-500" />
                               <p className={cn("font-light leading-relaxed mx-auto", descSizeClass, descColorClass)}>
                                 {point.description}
                               </p>
-                            </div>
-
-                            <div className="pt-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-3 group-hover:translate-y-0">
-                                <div className="text-primary font-bold text-sm flex items-center gap-2">
-                                  גלו עוד על השירות
-                                  <ArrowLeft size={14} />
-                                </div>
                             </div>
                           </div>
                         </div>

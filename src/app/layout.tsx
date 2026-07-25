@@ -115,7 +115,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={cn(
-        "font-body antialiased bg-background text-foreground selection:bg-primary/20 overflow-x-hidden",
+        "font-body antialiased bg-background text-foreground selection:bg-primary/20 overflow-x-hidden pt-[56px] xl:pt-[80px]",
         SITE_THEME === 'masculine' && "theme-masculine"
       )}>
         <Script

@@ -55,21 +55,15 @@ export function Navbar() {
       ? globalSettings.navItems
       : defaultNavItems;
 
-  // Use solid look when scrolled or on admin pages
-  const useSolidLook = isScrolled || isAdminPage;
-
   return (
     <>
       {/* ── Main Nav Bar ── */}
       <nav
         dir="rtl"
         className={cn(
-          'fixed w-full z-[200] transition-all duration-500',
+          'fixed top-0 left-0 w-full z-[500]',
           'px-6 md:px-12 lg:px-20 xl:px-32',
-          'py-5 md:py-7',
-          useSolidLook
-            ? 'bg-white shadow-lg border-b border-slate-100 py-3 md:py-4'
-            : 'bg-transparent'
+          'bg-white border-b border-slate-100 shadow-md py-2 xl:py-3'
         )}
       >
         <div className="flex items-center justify-between gap-4">
@@ -77,34 +71,25 @@ export function Navbar() {
           {/* ── RIGHT: Logo (RTL so this renders on the right) ── */}
           <NextLink
             href="/"
-            className="flex items-center gap-4 shrink-0 group z-[220]"
+            className="flex items-center gap-4 shrink-0 group z-[520]"
           >
-            <div className="relative w-14 h-14 md:w-20 md:h-20 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <div className="relative w-10 h-10 xl:w-14 xl:h-14 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
               <Image
                 src={globalSettings?.siteLogo || '/logo.png'}
                 alt={globalSettings?.siteName || 'לוגו'}
                 fill
-                className={cn(
-                  'object-contain transition-all duration-500',
-                  !useSolidLook && 'brightness-0 invert drop-shadow-md'
-                )}
+                className="object-contain"
                 priority
               />
             </div>
             <div className="flex flex-col leading-tight text-right">
               <span
-                className={cn(
-                  'text-2xl sm:text-3xl font-bold tracking-wide transition-colors duration-500',
-                  useSolidLook ? 'text-slate-800' : 'text-white drop-shadow'
-                )}
+                className="text-2xl sm:text-3xl font-bold tracking-wide text-slate-800 transition-colors duration-300"
               >
                 {globalSettings?.siteName || 'יאיר כהן'}
               </span>
               <span
-                className={cn(
-                  'text-sm sm:text-base tracking-widest transition-colors duration-500',
-                  useSolidLook ? 'text-primary' : 'text-white/80 drop-shadow-sm'
-                )}
+                className="text-sm sm:text-base tracking-widest text-primary transition-colors duration-300"
               >
                 {globalSettings?.siteSubtitle || 'יעוץ משכנתאות'}
               </span>
@@ -119,23 +104,16 @@ export function Navbar() {
                 href={item.href}
                 className={cn(
                   'relative py-1 whitespace-nowrap text-lg font-bold transition-colors duration-300',
-                  useSolidLook
-                    ? pathname === item.href
-                      ? 'text-primary'
-                      : 'text-slate-700 hover:text-primary'
-                    : pathname === item.href
-                    ? 'text-white'
-                    : 'text-white/95 drop-shadow hover:text-white'
+                  pathname === item.href
+                    ? 'text-primary'
+                    : 'text-slate-700 hover:text-primary'
                 )}
               >
                 {item.label}
                 {/* Active underline */}
                 {pathname === item.href && (
                   <span
-                    className={cn(
-                      'absolute bottom-0 right-0 w-full h-[3px] rounded-full transition-colors duration-300',
-                      useSolidLook ? 'bg-primary' : 'bg-white'
-                    )}
+                    className="absolute bottom-0 right-0 w-full h-[3px] rounded-full bg-primary transition-colors duration-300"
                   />
                 )}
               </NextLink>
@@ -147,12 +125,7 @@ export function Navbar() {
             {/* Phone number */}
             <a
               href={`tel:${sitePhone}`}
-              className={cn(
-                'flex items-center gap-2.5 text-lg font-bold transition-colors duration-300',
-                useSolidLook
-                  ? 'text-slate-700 hover:text-primary'
-                  : 'text-white/95 drop-shadow hover:text-white'
-              )}
+              className="flex items-center gap-2.5 text-lg font-bold text-slate-700 hover:text-primary transition-colors duration-300"
             >
               <Phone className="w-6 h-6 flex-shrink-0" />
               <span dir="ltr">{sitePhone}</span>
@@ -173,17 +146,14 @@ export function Navbar() {
           <button
             onClick={() => setMobileMenuOpen(true)}
             className={cn(
-              'xl:hidden p-2 z-[230] relative',
+              'xl:hidden p-2 z-[530] relative',
               mobileMenuOpen && 'hidden'
             )}
             aria-label="פתח תפריט"
           >
             <Menu
               strokeWidth={1.5}
-              className={cn(
-                'size-7 transition-colors duration-300',
-                useSolidLook ? 'text-slate-800' : 'text-white drop-shadow-md'
-              )}
+              className="size-7 text-slate-800 transition-colors duration-300"
             />
           </button>
         </div>

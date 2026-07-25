@@ -36,7 +36,7 @@ export function SectionTitle({
     "stagger-2 transition-all duration-700 break-words",
     fontFamily ? fontFamily : "boutique-title",
     fontSize ? fontSize : "!text-4xl sm:!text-6xl lg:!text-7xl",
-    color ? color : (isLight ? 'text-white' : 'text-foreground'),
+    color ? color : (isLight ? 'text-white' : 'text-accent'),
   );
 
   return (
