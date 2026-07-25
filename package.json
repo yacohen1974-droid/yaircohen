@@ -10,8 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "db:migrate": "node scripts/migrate-to-sqlconnect.mjs",
-    "db:deploy": "firebase deploy --only dataconnect --project yaircohen-7823a"
+    "db:migrate": "node scripts/migrate-to-firestore.mjs"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.28.0",
