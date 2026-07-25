@@ -79,7 +79,7 @@ export function DynamicSections({ sections, className }: DynamicSectionsProps) {
                     <div 
                       key={logo.id || idx} 
                       className={cn(
-                        "relative flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-500",
+                        "relative flex items-center justify-center transition-all duration-500",
                         sec.logoSize === 'sm' ? 'w-24 h-12 md:w-32 md:h-16' : 
                         sec.logoSize === 'lg' ? 'w-48 h-24 md:w-64 md:h-32' : 
                         'w-32 h-16 md:w-40 md:h-20',
