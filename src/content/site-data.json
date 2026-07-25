@@ -27,7 +27,7 @@
             "text": " יאיר כהן, יועץ משכנתאות ופיננסים בלתי תלוי, מוביל אתכם צעד אחר צעד עד למפתחות.",
             "align": "right"
           },
-          "heroCloudiness": 25,
+          "heroCloudiness": 10,
           "id": "hero-main",
           "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362002/homepage_pc.png",
           "imageUrlMobile": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362983/homepage-mobile.png",
@@ -188,6 +188,14 @@
             {
               "imageUrl": "/logos/jerusalem.webp",
               "id": "djf3u5l98"
+            },
+            {
+              "id": "khav3tba3",
+              "imageUrl": "/logos/Bank Igud Logo.webp"
+            },
+            {
+              "id": "rnzzqfrwg",
+              "imageUrl": "/logos/bank3.svg"
             }
           ],
           "titleSettings": {
@@ -247,11 +255,6 @@
           "type": "testimonials",
           "id": "testimonials-main",
           "testimonials": [
-            {
-              "author": "דן ורחל לוי",
-              "location": "פתח תקווה",
-              "text": "הגענו ליאיר אחרי שהבנק הציע לנו ריבית של 4.5%. יאיר השיג לנו 3.8% – חיסכון של מעל 180,000 ₪ לאורך חיי המשכנתא. מקצועי, מסור ואמין לחלוטין."
-            },
             {
               "author": "נועה ואיתי כהן",
               "location": "ראשון לציון",
