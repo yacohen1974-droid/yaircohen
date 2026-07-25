@@ -5,6 +5,7 @@ export interface SiteData {
   blogPosts: any[];
   global?: any;
   blog?: any;
+  [key: string]: any;
 }
 
 export function getDraftData(): SiteData | null {
