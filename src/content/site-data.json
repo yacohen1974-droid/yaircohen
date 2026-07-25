@@ -214,9 +214,9 @@
           "bg": "white",
           "id": "logos-banks",
           "logoShape": "square",
-          "logoSize": "md",
+          "logoSize": "lg",
           "logosTitlePosition": "side",
-          "logosAlign": "left"
+          "logosAlign": "center"
         },
         {
           "id": "insight-advisor-vs-banker",
@@ -247,7 +247,8 @@
             }
           ],
           "insightTitleBold": "זה פשוט לא תפקידו",
-          "insightImageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80"
+          "insightImageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80",
+          "title": "הבנקאי לא עובד בשבילך –"
         },
         {
           "titleSettings": {
