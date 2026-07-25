@@ -52,7 +52,6 @@ export async function savePageContent(pageId: string, content: any) {
     await setDoc(docRef, content);
   } catch (e) {
     console.warn(`Firestore savePageContent failed for ${pageId}:`, e);
-    throw e;
   }
 
   // Always update local fallback as cache/backup
@@ -85,7 +84,6 @@ export async function deletePageContent(pageId: string) {
     await deleteDoc(docRef);
   } catch (e) {
     console.warn(`Firestore deletePageContent failed for ${pageId}:`, e);
-    throw e;
   }
 
   // Update local fallback
@@ -148,7 +146,6 @@ export async function saveBlogPost(post: any) {
     await setDoc(docRef, savedPost);
   } catch (e) {
     console.warn(`Firestore saveBlogPost failed for ${savedPost.id}:`, e);
-    throw e;
   }
 
   // Update local fallback
@@ -179,7 +176,6 @@ export async function deleteBlogPost(id: string) {
     await deleteDoc(docRef);
   } catch (e) {
     console.warn(`Firestore deleteBlogPost failed for ${id}:`, e);
-    throw e;
   }
 
   // Update local fallback
