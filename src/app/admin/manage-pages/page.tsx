@@ -9,6 +9,8 @@ import { Trash2, Loader2, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
+import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
+import { PublishBanner } from '@/components/admin/PublishBanner';
 
 export default function ManagePagesPage() {
   const [pages, setPages] = useState<string[]>([]);
@@ -28,7 +30,14 @@ export default function ManagePagesPage() {
     try {
       const res = await fetch('/api/list-pages');
       const data = await res.json();
-      if (data.pages) setPages(data.pages);
+      if (data.pages) {
+        let list = data.pages;
+        const draft = getDraftData();
+        if (draft && draft.pages) {
+          list = list.filter((p: string) => draft.pages[p] !== undefined);
+        }
+        setPages(list);
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -41,22 +50,26 @@ export default function ManagePagesPage() {
   }, []);
 
   const handleDelete = async (pageId: string) => {
-    if (!confirm(`האם אתם בטוחים שברצונכם למחוק את הדף "${pageId}"? פעולה זו תמחק את התיקייה מהפרויקט לצמיתות.`)) return;
+    if (!confirm(`האם אתם בטוחים שברצונכם למחוק את הדף "${pageId}"?`)) return;
     
     setDeleting(pageId);
     try {
-      const res = await fetch('/api/delete-page', {
-        method: 'POST',
-        body: JSON.stringify({ pageId }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast({ title: "הדף נמחק בהצלחה", description: "התיקייה הוסרה מהפרויקט." });
-        setPages(pages.filter(p => p !== pageId));
-      } else {
-        throw new Error(data.error);
+      let draft = getDraftData();
+      if (!draft) {
+        draft = await initializeDraft();
       }
+      
+      if (draft.pages?.[pageId]) {
+        delete draft.pages[pageId];
+      }
+      if (draft[pageId]) {
+        delete draft[pageId];
+      }
+      
+      saveDraftData(draft);
+      
+      toast({ title: "הדף נמחק בהצלחה", description: "הדף הוסר מהטיוטה הנוכחית." });
+      setPages(pages.filter(p => p !== pageId));
     } catch (error: any) {
       toast({ variant: "destructive", title: "שגיאה במחיקה", description: error.message });
     } finally {
@@ -69,6 +82,7 @@ export default function ManagePagesPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-right">
+      <PublishBanner />
       <Navbar />
       <section className="pt-48 pb-32 px-6 max-w-4xl mx-auto">
         <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors mb-8 boutique-label">

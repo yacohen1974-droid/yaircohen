@@ -5,6 +5,8 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useAuth, useUser } from '@/firebase';
+import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
+import { PublishBanner } from '@/components/admin/PublishBanner';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -198,6 +200,12 @@ export default function BlogManagementPage() {
   const fetchPosts = async () => {
     setPostsLoading(true);
     try {
+      const draft = getDraftData();
+      if (draft && draft.blogPosts) {
+        setPosts(draft.blogPosts);
+        return;
+      }
+      
       const res = await fetch('/api/blog/list-posts');
       const data = await res.json();
       if (data.success) {
@@ -235,20 +243,25 @@ export default function BlogManagementPage() {
       
       setAutoSaveStatus('saving');
       try {
-        const res = await fetch('/api/blog/save-post', {
-          method: 'POST',
-          body: JSON.stringify(postData),
-          headers: { 'Content-Type': 'application/json' }
-        });
-        const data = await res.json();
-        if (data.success) {
-          setIsDirty(false);
-          setAutoSaveStatus('saved');
-          fetchPosts();
-          setTimeout(() => setAutoSaveStatus('idle'), 2500);
-        } else {
-          throw new Error();
+        let draft = getDraftData();
+        if (!draft) {
+          draft = await initializeDraft();
         }
+        
+        if (!draft.blogPosts) draft.blogPosts = [];
+        const idx = draft.blogPosts.findIndex((p: any) => p.id === postData.id);
+        if (idx !== -1) {
+          draft.blogPosts[idx] = postData;
+        } else {
+          draft.blogPosts.push(postData);
+        }
+        
+        saveDraftData(draft);
+        
+        setIsDirty(false);
+        setAutoSaveStatus('saved');
+        fetchPosts();
+        setTimeout(() => setAutoSaveStatus('idle'), 2500);
       } catch {
         setAutoSaveStatus('error');
         setTimeout(() => setAutoSaveStatus('idle'), 4000);
@@ -277,21 +290,26 @@ export default function BlogManagementPage() {
     if(postData.content) postData.content = postData.content.replace(/&nbsp;|\u00A0/g, ' ');
 
     try {
-      const res = await fetch('/api/blog/save-post', {
-        method: 'POST',
-        body: JSON.stringify(postData),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast({ title: editingId ? "מאמר עודכן!" : "מאמר פורסם!" });
-        resetForm();
-        fetchPosts();
-      } else {
-        throw new Error();
+      let draft = getDraftData();
+      if (!draft) {
+        draft = await initializeDraft();
       }
+      
+      if (!draft.blogPosts) draft.blogPosts = [];
+      const idx = draft.blogPosts.findIndex((p: any) => p.id === postData.id);
+      if (idx !== -1) {
+        draft.blogPosts[idx] = postData;
+      } else {
+        draft.blogPosts.push(postData);
+      }
+      
+      saveDraftData(draft);
+      
+      toast({ title: editingId ? "מאמר עודכן בטיוטה!" : "מאמר נוסף לטיוטה!" });
+      resetForm();
+      fetchPosts();
     } catch (err) {
-      toast({ variant: 'destructive', title: "שגיאה בשמירה", description: "לא ניתן היה לשמור את המאמר." });
+      toast({ variant: 'destructive', title: "שגיאה בשמירה", description: "לא ניתן היה לשמור את המאמר בטיוטה." });
     } finally {
       setIsSaving(false);
     }
@@ -321,16 +339,19 @@ export default function BlogManagementPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("האם למחוק?")) return;
     try {
-      const res = await fetch('/api/blog/delete-post', {
-        method: 'POST',
-        body: JSON.stringify({ id }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast({ title: "מאמר נמחק." });
-        fetchPosts();
+      let draft = getDraftData();
+      if (!draft) {
+        draft = await initializeDraft();
       }
+      
+      if (draft.blogPosts) {
+        draft.blogPosts = draft.blogPosts.filter((p: any) => p.id !== id);
+      }
+      
+      saveDraftData(draft);
+      
+      toast({ title: "מאמר הוסר מהטיוטה." });
+      fetchPosts();
     } catch (e) {
       toast({ variant: 'destructive', title: "שגיאה במחיקה" });
     }
@@ -363,6 +384,7 @@ export default function BlogManagementPage() {
 
   return (
     <main className="min-h-screen bg-stone-50 text-right pb-32">
+      <PublishBanner />
       <Navbar />
       <section className="pt-28 md:pt-48 px-4 md:px-6 max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">

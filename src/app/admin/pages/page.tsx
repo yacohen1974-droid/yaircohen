@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { cn } from '@/lib/utils';
+import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
+import { PublishBanner } from '@/components/admin/PublishBanner';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -1331,10 +1333,19 @@ export default function AdminPages() {
   const fetchPageContent = async (id: string) => {
     setIsFetching(true);
     try {
-      const res = await fetch(`/api/get-content?pageId=${id}`);
-      const data = await res.json();
-      const fb = PAGE_FALLBACKS[id] || {};
-      const d = data.success ? data.content : null;
+      // 1. Check draft first
+      const draft = getDraftData();
+      let d = null;
+      if (draft) {
+        d = draft.pages?.[id] || draft[id];
+      }
+      
+      // 2. Fallback to API if not in draft
+      if (!d) {
+        const res = await fetch(`/api/get-content?pageId=${id}`);
+        const data = await res.json();
+        d = data.success ? data.content : null;
+      }
       
       if (d) {
         setContent({
@@ -1368,21 +1379,28 @@ export default function AdminPages() {
 
     setIsSaving(true);
     try {
-      const res = await fetch('/api/save-content', {
-        method: 'POST',
-        body: JSON.stringify({ [targetId]: content }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-      
-      if (data.success) {
-        setIsDirty(false);
-        await loadAllPages();
-        toast({ title: '✅ נשמר בהצלחה!', description: `התוכן נשמר בתיקיית הפרויקט.` });
-        if (selectedPage === 'custom') setSelectedPage(targetId);
-      } else {
-        throw new Error(data.error);
+      let draft = getDraftData();
+      if (!draft) {
+        draft = await initializeDraft();
       }
+      
+      const specialRootKeys = ['global', 'blog'];
+      if (specialRootKeys.includes(targetId)) {
+        draft[targetId] = { ...draft[targetId], ...content };
+      } else {
+        if (!draft.pages) draft.pages = {};
+        draft.pages[targetId] = { ...draft.pages[targetId], ...content };
+      }
+      
+      saveDraftData(draft);
+      
+      setIsDirty(false);
+      await loadAllPages();
+      toast({ 
+        title: '💾 טיוטה נשמרה בהצלחה!', 
+        description: `התוכן נשמר כטיוטה מקומית בדפדפן. יש ללחוץ על "פרסם שינויים" בראש המסך כדי להעלותם לאתר החי.` 
+      });
+      if (selectedPage === 'custom') setSelectedPage(targetId);
     } catch (err: any) {
       toast({ variant: 'destructive', title: '❌ שמירה נכשלה', description: err.message });
     } finally {
@@ -1396,19 +1414,23 @@ export default function AdminPages() {
     
     setIsSaving(true);
     try {
-      const res = await fetch('/api/delete-page', {
-        method: 'POST',
-        body: JSON.stringify({ pageId: selectedPage }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast({ title: '✅ נמחק בהצלחה', description: `הדף ${selectedPage} הוסר מהמערכת.` });
-        await loadAllPages();
-        setSelectedPage('home');
-      } else {
-        throw new Error(data.error);
+      let draft = getDraftData();
+      if (!draft) {
+        draft = await initializeDraft();
       }
+      
+      if (draft.pages?.[selectedPage]) {
+        delete draft.pages[selectedPage];
+      }
+      if (draft[selectedPage]) {
+        delete draft[selectedPage];
+      }
+      
+      saveDraftData(draft);
+      
+      toast({ title: '✅ נמחק בהצלחה', description: `הדף ${selectedPage} הוסר מהטיוטה.` });
+      await loadAllPages();
+      setSelectedPage('home');
     } catch (err: any) {
       toast({ variant: 'destructive', title: 'מחיקה נכשלה', description: err.message });
     } finally {
@@ -1448,6 +1470,7 @@ export default function AdminPages() {
 
   return (
     <main className="min-h-screen bg-stone-50 text-right pb-44">
+      <PublishBanner />
       <Navbar />
       <section className="pt-28 md:pt-48 px-4 md:px-6 max-w-5xl mx-auto">
 
