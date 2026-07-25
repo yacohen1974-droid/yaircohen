@@ -25,6 +25,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { InitialDataProvider } from '@/components/providers/InitialDataProvider';
 import { FloatingWhatsApp } from '@/components/shared/FloatingWhatsApp';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
+import { PreviewModeBanner } from '@/components/shared/PreviewModeBanner';
 
 async function getInitialData() {
   return getDbInitialData();
@@ -134,6 +135,7 @@ export default async function RootLayout({
           {children}
           <FloatingWhatsApp />
           <ScrollToTop />
+          <PreviewModeBanner />
         </InitialDataProvider>
         <Toaster />
       </body>

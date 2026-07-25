@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { UploadCloud, Trash2, Loader2, AlertCircle } from 'lucide-react';
+import { UploadCloud, Trash2, Loader2, AlertCircle, Eye } from 'lucide-react';
 import { hasDraftChanges, getDraftData, clearDraftData } from '@/lib/cms-draft';
 
 export function PublishBanner() {
   const [hasChanges, setHasChanges] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isPreviewing, setIsPreviewing] = useState(false);
   const { toast } = useToast();
 
   const checkDraft = () => {
@@ -59,6 +60,36 @@ export function PublishBanner() {
     }
   };
 
+  const handlePreview = async () => {
+    const draft = getDraftData();
+    if (!draft) return;
+
+    setIsPreviewing(true);
+    try {
+      const res = await fetch('/api/admin/save-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(draft)
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      window.open(`${window.location.origin}/api/admin/preview`, '_blank', 'noopener');
+      toast({
+        title: "🔍 תצוגה מקדימה מוכנה",
+        description: "נפתחה בכרטיסייה חדשה. אפשר לגלוש בכל עמודי האתר ולראות את הטיוטה, ואף לשתף את הקישור למישהו אחר לבדיקה (בתוקף ל-24 שעות)."
+      });
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "❌ יצירת תצוגה מקדימה נכשלה",
+        description: err.message || "שגיאה בשמירת הטיוטה לצורך תצוגה מקדימה."
+      });
+    } finally {
+      setIsPreviewing(false);
+    }
+  };
+
   const handleDiscard = () => {
     if (!window.confirm("האם אתה בטוח שברצונך לבטל את כל השינויים הלא שמורים? טיוטה זו תימחק לצמיתות והאתר יחזור לגרסה המפורסמת שלו.")) return;
     clearDraftData();
@@ -81,20 +112,39 @@ export function PublishBanner() {
         <span className="md:hidden font-medium">ישנם שינויים שלא פורסמו.</span>
       </div>
       <div className="flex items-center gap-3">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="sm"
           onClick={handleDiscard}
-          disabled={isPublishing}
+          disabled={isPublishing || isPreviewing}
           className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
         >
           <Trash2 className="ml-1.5 size-3.5" />
           בטל שינויים
         </Button>
-        <Button 
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handlePreview}
+          disabled={isPublishing || isPreviewing}
+          className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
+        >
+          {isPreviewing ? (
+            <>
+              <Loader2 className="ml-1.5 size-3.5 animate-spin" />
+              מכין תצוגה...
+            </>
+          ) : (
+            <>
+              <Eye className="ml-1.5 size-3.5" />
+              תצוגה מקדימה
+            </>
+          )}
+        </Button>
+        <Button
           size="sm"
           onClick={handlePublish}
-          disabled={isPublishing}
+          disabled={isPublishing || isPreviewing}
           className="bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold h-9 rounded-none text-xs"
         >
           {isPublishing ? (

@@ -206,3 +206,95 @@ export const getDbInitialData = unstable_cache(
   ['db-initial-data'],
   { tags: [SITE_CONTENT_CACHE_TAG], revalidate: 300 }
 );
+
+// ─── Draft branch (preview, not deployed) ──────────────────────────────────
+// Lets the admin push a draft to a separate 'draft' git branch so it can be
+// previewed from any device/browser via a cookie, without touching 'main'
+// (which is what triggers a real deploy) and without a database.
+
+const DRAFT_BRANCH = 'draft';
+
+function ghHeaders(token: string) {
+  return {
+    'Authorization': `Bearer ${token}`,
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'NextJS-CMS'
+  };
+}
+
+async function ensureBranchExists(repo: string, token: string, branch: string) {
+  const checkRes = await fetch(`https://api.github.com/repos/${repo}/git/ref/heads/${branch}`, {
+    headers: ghHeaders(token)
+  });
+  if (checkRes.status === 200) return;
+
+  const mainRefRes = await fetch(`https://api.github.com/repos/${repo}/git/ref/heads/main`, {
+    headers: ghHeaders(token)
+  });
+  if (!mainRefRes.ok) throw new Error('לא ניתן לקרוא את ה-branch הראשי ב-GitHub');
+  const mainRef = await mainRefRes.json();
+
+  const createRes = await fetch(`https://api.github.com/repos/${repo}/git/refs`, {
+    method: 'POST',
+    headers: { ...ghHeaders(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainRef.object.sha })
+  });
+  if (!createRes.ok && createRes.status !== 422) {
+    const errText = await createRes.text();
+    throw new Error(`יצירת branch לטיוטה נכשלה: ${createRes.status} ${errText}`);
+  }
+}
+
+export async function commitDraftSiteData(data: any) {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) throw new Error('GITHUB_TOKEN אינו מוגדר בשרת — לא ניתן לשמור טיוטה לתצוגה מקדימה');
+  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
+  const filePath = 'src/content/site-data.json';
+  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+  await ensureBranchExists(repo, token, DRAFT_BRANCH);
+
+  const contentString = JSON.stringify(data, null, 2);
+  const getRes = await fetch(`${url}?ref=${DRAFT_BRANCH}`, { headers: ghHeaders(token) });
+  let sha = '';
+  if (getRes.status === 200) {
+    const info = await getRes.json();
+    sha = info.sha;
+  }
+
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: { ...ghHeaders(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: 'admin: save draft via CMS (preview only, not deployed)',
+      content: Buffer.from(contentString).toString('base64'),
+      sha: sha || undefined,
+      branch: DRAFT_BRANCH
+    })
+  });
+  if (!putRes.ok) {
+    const errText = await putRes.text();
+    throw new Error(`שמירת הטיוטה ל-GitHub נכשלה: ${putRes.status} ${errText}`);
+  }
+}
+
+export async function fetchDraftSiteData(): Promise<any | null> {
+  const token = process.env.GITHUB_TOKEN;
+  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
+  const filePath = 'src/content/site-data.json';
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${DRAFT_BRANCH}`, {
+      headers: ghHeaders(token),
+      cache: 'no-store'
+    });
+    if (!res.ok) return null;
+    const info = await res.json();
+    const contentString = Buffer.from(info.content, 'base64').toString('utf-8');
+    return JSON.parse(contentString);
+  } catch (e) {
+    console.warn('Failed to fetch draft site data from GitHub:', e);
+    return null;
+  }
+}

@@ -1,19 +1,41 @@
 import { useMemo, useState, useEffect } from 'react';
 import { ContentState, getInitialPageContent } from '@/config/page-defaults';
 import { useInitialData } from '@/components/providers/InitialDataProvider';
-import { getDraftData } from '@/lib/cms-draft';
+import { getDraftData, SiteData } from '@/lib/cms-draft';
+
+// Module-level cache so every usePageContent() instance on a page shares one
+// fetch instead of each hitting the API separately.
+let remoteDraftPromise: Promise<SiteData | null> | null = null;
+
+function isPreviewMode(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.cookie.split('; ').some(c => c.trim() === 'cms_preview=1');
+}
+
+function loadRemoteDraft(): Promise<SiteData | null> {
+  if (!remoteDraftPromise) {
+    remoteDraftPromise = fetch('/api/admin/preview-draft', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => (data.success ? data.data : null))
+      .catch(() => null);
+  }
+  return remoteDraftPromise;
+}
+
+function pickPageData(source: SiteData | null | undefined, pageId: string): any {
+  if (!source) return null;
+  return (pageId === 'global' || pageId === 'blog') ? source[pageId] : source.pages?.[pageId];
+}
 
 export function usePageContent(pageId: string) {
   const initialDataMap = useInitialData();
-  
+
   // Use server-side data for initial state if available
   const initialContent = useMemo(() => {
     // 1. Check client-side draft first if window exists
     if (typeof window !== 'undefined') {
       const draft = getDraftData();
-      const pageData = (pageId === 'global' || pageId === 'blog')
-        ? draft?.[pageId]
-        : draft?.pages?.[pageId];
+      const pageData = pickPageData(draft, pageId);
       if (pageData) {
         return {
           ...getInitialPageContent(pageId),
@@ -23,11 +45,9 @@ export function usePageContent(pageId: string) {
     }
 
     if (!initialDataMap) return getInitialPageContent(pageId);
-    
-    const pageData = (pageId === 'global' || pageId === 'blog')
-      ? initialDataMap[pageId]
-      : initialDataMap.pages?.[pageId];
-      
+
+    const pageData = pickPageData(initialDataMap, pageId);
+
     if (pageData) {
       return {
         ...getInitialPageContent(pageId),
@@ -38,32 +58,46 @@ export function usePageContent(pageId: string) {
     return getInitialPageContent(pageId);
   }, [pageId, initialDataMap]);
 
-  const hasInitialData = !!((pageId === 'global' || pageId === 'blog')
-    ? initialDataMap?.[pageId]
-    : initialDataMap?.pages?.[pageId]);
+  const hasInitialData = !!pickPageData(initialDataMap, pageId);
 
   const [content, setContent] = useState<ContentState>(initialContent);
   const [loading, setLoading] = useState(!hasInitialData);
 
   useEffect(() => {
-    // Sync with draft changes if any
-    const syncDraft = () => {
+    let cancelled = false;
+
+    // Sync with draft changes if any (same-browser edits), and fall back to
+    // the remote draft branch when in preview mode (other device/browser).
+    const syncDraft = async () => {
       const draft = getDraftData();
-      const pageData = (pageId === 'global' || pageId === 'blog')
-        ? draft?.[pageId]
-        : draft?.pages?.[pageId];
-      if (pageData) {
+      const localPageData = pickPageData(draft, pageId);
+      if (localPageData) {
         setContent({
           ...getInitialPageContent(pageId),
-          ...pageData
+          ...localPageData
         });
         setLoading(false);
+        return;
+      }
+
+      if (isPreviewMode()) {
+        const remote = await loadRemoteDraft();
+        if (cancelled) return;
+        const remotePageData = pickPageData(remote, pageId);
+        if (remotePageData) {
+          setContent({
+            ...getInitialPageContent(pageId),
+            ...remotePageData
+          });
+          setLoading(false);
+        }
       }
     };
-    
+
     syncDraft();
     window.addEventListener('cms_draft_updated', syncDraft);
     return () => {
+      cancelled = true;
       window.removeEventListener('cms_draft_updated', syncDraft);
     };
   }, [pageId]);
@@ -76,19 +110,33 @@ export function usePageContent(pageId: string) {
 
     // Check if we have draft data, if so no need to fetch
     const draft = getDraftData();
-    const pageData = (pageId === 'global' || pageId === 'blog')
-      ? draft?.[pageId]
-      : draft?.pages?.[pageId];
-    if (pageData) {
+    const localPageData = pickPageData(draft, pageId);
+    if (localPageData) {
       setLoading(false);
       return;
     }
 
+    let cancelled = false;
+
     async function load() {
+      if (isPreviewMode()) {
+        const remote = await loadRemoteDraft();
+        if (cancelled) return;
+        const remotePageData = pickPageData(remote, pageId);
+        if (remotePageData) {
+          setContent({
+            ...getInitialPageContent(pageId),
+            ...remotePageData
+          });
+          setLoading(false);
+          return;
+        }
+      }
+
       try {
         const res = await fetch(`/api/get-content?pageId=${pageId}`, { cache: 'no-store' });
         const data = await res.json();
-        if (data.success && data.content) {
+        if (!cancelled && data.success && data.content) {
           setContent({
              ...getInitialPageContent(pageId),
              ...data.content
@@ -97,12 +145,13 @@ export function usePageContent(pageId: string) {
       } catch (e) {
         console.error('Error fetching content:', e);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
-    
+
     // Only fetch if we don't already have initial data or to refresh
     load();
+    return () => { cancelled = true; };
   }, [pageId, hasInitialData]);
 
   return {
