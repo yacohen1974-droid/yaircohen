@@ -2,7 +2,7 @@ import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
 import Script from 'next/script';
-import { Assistant, Amatic_SC } from 'next/font/google';
+import { Assistant, Amatic_SC, Frank_Ruhl_Libre } from 'next/font/google';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -18,6 +18,13 @@ const amaticSC = Amatic_SC({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-amatic',
+  display: 'swap',
+});
+
+const frankRuhlLibre = Frank_Ruhl_Libre({
+  subsets: ['latin', 'hebrew'],
+  weight: ['300', '400', '500', '700', '900'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -87,7 +94,7 @@ export default async function RootLayout({
   const initialData = await getInitialData();
 
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable)}>
+    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable, frankRuhlLibre.variable)}>
       <head>
         <meta name="google-site-verification" content="uZtRayPCUnA35YVD2gPquUAz34V0WlSF1jaUI3kYYnM" />
         <meta name="google-site-verification" content="Z7Bp-hEfMFwQYW9oYF0qdSdhJumMFlhsp246MOYQFP0" />

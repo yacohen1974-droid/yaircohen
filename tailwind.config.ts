@@ -13,6 +13,7 @@ export default {
       fontFamily: {
         body: ['var(--font-assistant)', 'sans-serif'],
         headline: ['var(--font-assistant)', 'sans-serif'],
+        serif: ['var(--font-serif)', 'serif'],
         handwriting: ['var(--font-amatic)', 'cursive'],
         code: ['monospace'],
       },
@@ -50,6 +51,8 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        warm: 'hsl(var(--warm))',
+        sage: 'hsl(var(--sage))',
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -35,15 +35,15 @@ export function SectionTitle({
   const titleStyles = cn(
     "stagger-2 transition-all duration-700 break-words",
     fontFamily ? fontFamily : "boutique-title",
-    fontSize ? fontSize : "!text-4xl sm:!text-6xl lg:!text-7xl",
+    fontSize ? fontSize : "text-3xl sm:text-5xl lg:text-6xl",
     color ? color : (isLight ? 'text-white' : 'text-accent'),
   );
 
   return (
-    <div ref={revealRef} className={cn("mb-12 sm:mb-24 flex flex-col reveal transition-all duration-1000", alignmentClass, className)}>
+    <div ref={revealRef} className={cn("mb-8 sm:mb-16 flex flex-col reveal transition-all duration-1000", alignmentClass, className)}>
       <span className={cn(
-        "boutique-label block mb-4 sm:mb-8 stagger-1 tracking-[0.4em] uppercase opacity-60",
-        isLight ? 'text-white/50' : 'text-primary'
+        "boutique-label block mb-3 sm:mb-6 stagger-1 opacity-70",
+        isLight ? 'text-white/60' : 'text-primary'
       )}>
         {subtitle}
       </span>
@@ -51,7 +51,7 @@ export function SectionTitle({
         {title}
       </h2>
       <div className={cn(
-        "w-16 sm:w-24 h-[2px] mt-8 sm:mt-12 stagger-3",
+        "w-10 sm:w-16 h-[1px] mt-6 sm:mt-8 stagger-3",
         isLight ? 'bg-white/20' : 'bg-primary/20',
         align === 'center' ? 'mx-auto' : align === 'left' ? 'mr-auto ml-0' : 'ml-auto mr-0'
       )}></div>

@@ -63,7 +63,7 @@ export function Navbar() {
         className={cn(
           'fixed top-0 left-0 w-full z-[500]',
           'px-6 md:px-12 lg:px-20 xl:px-32',
-          'bg-white border-b border-slate-100 shadow-md py-2 xl:py-3'
+          'bg-white/95 backdrop-blur-xl border-b border-slate-100 shadow-sm py-3'
         )}
       >
         <div className="flex items-center justify-between gap-4">
@@ -73,7 +73,7 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-4 shrink-0 group z-[520]"
           >
-            <div className="relative w-10 h-10 xl:w-14 xl:h-14 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <div className="relative w-10 h-10 xl:w-12 xl:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
               <Image
                 src={globalSettings?.siteLogo || '/logo.png'}
                 alt={globalSettings?.siteName || 'לוגו'}
@@ -84,12 +84,12 @@ export function Navbar() {
             </div>
             <div className="flex flex-col leading-tight text-right">
               <span
-                className="text-2xl sm:text-3xl font-bold tracking-wide text-slate-800 transition-colors duration-300"
+                className="text-xl sm:text-2xl font-serif font-bold tracking-wide text-slate-800 transition-colors duration-300"
               >
                 {globalSettings?.siteName || 'יאיר כהן'}
               </span>
               <span
-                className="text-sm sm:text-base tracking-widest text-primary transition-colors duration-300"
+                className="text-xs sm:text-sm tracking-widest text-primary/80 transition-colors duration-300"
               >
                 {globalSettings?.siteSubtitle || 'יעוץ משכנתאות'}
               </span>
@@ -97,23 +97,23 @@ export function Navbar() {
           </NextLink>
 
           {/* ── CENTER: Desktop Nav Links ── */}
-          <div className="hidden xl:flex items-center gap-10">
+          <div className="hidden xl:flex items-center gap-8">
             {navItems.map((item: { label: string; href: string }) => (
               <NextLink
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative py-1 whitespace-nowrap text-lg font-bold transition-colors duration-300',
+                  'relative py-1 whitespace-nowrap text-base font-medium transition-colors duration-300',
                   pathname === item.href
-                    ? 'text-primary'
-                    : 'text-slate-700 hover:text-primary'
+                    ? 'text-primary font-semibold'
+                    : 'text-slate-600 hover:text-primary'
                 )}
               >
                 {item.label}
                 {/* Active underline */}
                 {pathname === item.href && (
                   <span
-                    className="absolute bottom-0 right-0 w-full h-[3px] rounded-full bg-primary transition-colors duration-300"
+                    className="absolute bottom-0 right-0 w-full h-[2px] rounded-full bg-primary transition-colors duration-300"
                   />
                 )}
               </NextLink>
@@ -121,13 +121,13 @@ export function Navbar() {
           </div>
 
           {/* ── LEFT: Phone + CTA (RTL so this renders on the left) ── */}
-          <div className="hidden xl:flex items-center gap-8 shrink-0">
+          <div className="hidden xl:flex items-center gap-6 shrink-0">
             {/* Phone number */}
             <a
               href={`tel:${sitePhone}`}
-              className="flex items-center gap-2.5 text-lg font-bold text-slate-700 hover:text-primary transition-colors duration-300"
+              className="flex items-center gap-2 text-base font-medium text-slate-600 hover:text-primary transition-colors duration-300"
             >
-              <Phone className="w-6 h-6 flex-shrink-0" />
+              <Phone className="w-5 h-5 flex-shrink-0" />
               <span dir="ltr">{sitePhone}</span>
             </a>
 
@@ -136,7 +136,7 @@ export function Navbar() {
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full px-8 py-4 bg-primary text-white text-lg font-extrabold hover:bg-accent transition-all duration-300 shadow-xl whitespace-nowrap hover:scale-105 active:scale-95"
+              className="rounded-full px-6 py-3.5 bg-primary text-white text-base font-semibold hover:bg-accent transition-all duration-300 shadow-sm whitespace-nowrap hover:scale-105 active:scale-95"
             >
               {globalSettings?.ctaLabel || 'לקביעת פגישה'}
             </a>

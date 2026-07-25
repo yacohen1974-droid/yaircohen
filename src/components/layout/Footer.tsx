@@ -38,14 +38,7 @@ export function Footer() {
   const youtubeUrl = globalSettings?.youtubeLink || 'https://www.youtube.com/channel/UCIU3xxQ5o4nDttcVD17q8QQ';
 
   return (
-    <footer className="bg-[#0D2347] text-white" dir="rtl">
-
-      {/* Top strip — tagline */}
-      <div className="bg-[hsl(220,60%,13%)] border-b border-white/10 py-3 px-6 text-center">
-        <p className="text-sm text-white/60 tracking-wide">
-          ליווי מקצועי ואישי בכל תהליך המשכנתא — מהייעוץ הראשון ועד לחתימה על ההסכם
-        </p>
-      </div>
+    <footer className="bg-slate-900 text-white" dir="rtl">
 
       {/* Main grid */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16">
@@ -62,7 +55,7 @@ export function Footer() {
                 />
               </div>
               <div>
-                <h3 className="text-2xl font-bold tracking-wide text-white leading-snug">
+                <h3 className="text-2xl font-serif font-bold tracking-wide text-white leading-snug">
                   {globalSettings?.siteName || 'יאיר כהן'}
                 </h3>
                 <p className="text-sm text-white/50 mt-1">

@@ -105,7 +105,7 @@ function BlogGrid({ titleSettings }: { titleSettings?: any }) {
   };
 
   return (
-    <section className="py-24 md:py-32 xl:py-40 px-6 md:px-12 xl:px-24 bg-white">
+    <section className="py-16 md:py-24 px-6 md:px-12 xl:px-24 bg-white">
       <div className="max-w-7xl mx-auto">
         <SectionTitle 
           subtitle={titleSettings?.subtitle || "Journal"} 
@@ -117,17 +117,17 @@ function BlogGrid({ titleSettings }: { titleSettings?: any }) {
           className="flex flex-col items-center text-center" 
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 xl:gap-16 mt-20 md:mt-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 md:mt-16">
           {loading ? (
-            <div className="col-span-full flex justify-center py-20">
+            <div className="col-span-full flex justify-center py-16">
               <Loader2 className="animate-spin text-primary size-12" />
             </div>
           ) : posts.length === 0 ? (
-            <p className="col-span-full text-center text-stone-400 text-xl font-light font-headline italic">בקרוב יעלו תכנים חדשים ומאירי פנים...</p>
+            <p className="col-span-full text-center text-stone-400 text-lg font-light italic">בקרוב יעלו תכנים חדשים ומאירי פנים...</p>
           ) : (
             posts.map((post: any) => (
-              <Link href={`/blog/${post.slug || post.id}`} key={post.id} className="group cursor-pointer glass-3d-card p-4 rounded-3xl">
-                <div className="bg-stone-50 aspect-video mb-8 overflow-hidden relative rounded-2xl shadow-sm group-hover:shadow-xl transition-all duration-700">
+              <Link href={`/blog/${post.slug || post.id}`} key={post.id} className="group cursor-pointer border border-slate-100/85 bg-white hover:border-slate-300 hover:shadow-md p-4 rounded-3xl transition-all duration-300">
+                <div className="bg-stone-50 aspect-video mb-6 overflow-hidden relative rounded-2xl shadow-sm">
                    {post.heroImageUrlDesktop ? (
                      <>
                        <div className="hidden md:block absolute inset-0">
@@ -149,18 +149,18 @@ function BlogGrid({ titleSettings }: { titleSettings?: any }) {
                      </>
                    ) : (
                      <div className="absolute inset-0 bg-stone-100 flex items-center justify-center">
-                        <span className="font-handwriting text-4xl text-stone-300">יאיר כהן</span>
+                        <span className="font-handwriting text-3xl text-stone-300">יאיר כהן</span>
                      </div>
                    )}
                    <div className="absolute top-4 right-4 boutique-label text-[10px] bg-white px-3 py-1 shadow-sm">{post.category}</div>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3.5">
                   <span className="boutique-label text-stone-400 block">{formatDisplayDate(post.date)}</span>
-                  <h3 className="text-2xl md:text-3xl font-headline font-bold text-accent group-hover:text-primary transition-colors leading-tight">{post.title}</h3>
-                  <p className="text-lg font-light text-stone-500 leading-relaxed line-clamp-3 font-headline italic">
+                  <h3 className="text-xl md:text-2xl font-serif font-bold text-accent group-hover:text-primary transition-colors leading-tight">{post.title}</h3>
+                  <p className="text-sm font-light text-slate-500 leading-relaxed line-clamp-3">
                     {post.summary || post.subtitle || "לחצו לקריאת המאמר המלא..."}
                   </p>
-                  <div className="flex items-center gap-4 text-primary boutique-label text-[10px] pt-4 font-bold">
+                  <div className="flex items-center gap-2 text-primary boutique-label text-[10px] pt-2 font-bold">
                     קריאת המאמר <ArrowLeft size={14} />
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
         switch (block.type) {
           case 'hero':
             return (
-              <section key={block.id} className="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden bg-[#0D2347] shadow-2xl" style={{ minHeight: block.heroHeight || '70vh' }}>
+              <section key={block.id} className="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden bg-slate-900 shadow-sm" style={{ minHeight: block.heroHeight || '60vh' }}>
                 <div className="absolute inset-0 z-0">
                   {block.imageUrl && (
                     <div className="hidden md:block absolute inset-0">
@@ -214,38 +214,23 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                       />
                     </div>
                   )}
-                  <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-background via-background/30 to-transparent z-0 pointer-events-none" style={{ opacity: (block.heroCloudiness ?? 30) / 100 }} />
-                  {/* Floating decorative elements */}
-                  <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
-                    <div className="absolute top-1/4 left-[6%] text-white/[0.04] text-[220px] font-black select-none leading-none">₪</div>
-                    <div className="absolute bottom-1/3 right-[8%] w-40 h-40 rounded-full border border-white/[0.06]" />
-                    <div className="absolute top-[15%] right-[20%] w-5 h-5 rounded-full bg-white/10" />
-                    <div className="absolute bottom-[25%] left-[30%] w-3 h-3 rounded-full bg-primary/30" />
-                    <div className="absolute top-[40%] left-[18%] w-1.5 h-1.5 rounded-full bg-white/20" />
-                    <div className="absolute top-[20%] left-[40%] w-24 h-24 rounded-full border border-white/[0.05]" />
-                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-background via-background/20 to-transparent z-0 pointer-events-none" style={{ opacity: (block.heroCloudiness ?? 30) / 100 }} />
                 </div>
-                {/* Diagonal wave bottom */}
-                <div className="absolute bottom-0 left-0 right-0 z-[3] pointer-events-none overflow-hidden leading-none">
-                  <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none">
-                    <path d="M0,70 L0,35 Q360,0 720,35 Q1080,70 1440,28 L1440,70 Z" fill="hsl(var(--background))" />
-                  </svg>
-                </div>
-                <div className={cn("relative z-[5] w-full max-w-5xl mx-auto px-6 flex flex-col", block.heroTextAlign === 'center' ? 'items-center text-center' : block.heroTextAlign === 'left' ? 'items-start text-left' : 'items-end text-right')}>
+                <div className={cn("relative z-[5] w-full max-w-5xl mx-auto px-6 flex flex-col pt-16 pb-12", block.heroTextAlign === 'center' ? 'items-center text-center' : block.heroTextAlign === 'left' ? 'items-start text-left' : 'items-end text-right')}>
                     {block.titleSettings && (
-                      <h1 className={cn("font-bold leading-tight hero-title-shadow break-words w-full gradient-text-hero", block.titleSettings.fontSize || 'text-5xl sm:text-7xl lg:text-9xl', block.titleSettings.fontFamily || 'font-headline')} style={{ color: block.titleSettings.color || 'white' }}>
+                      <h1 className={cn("font-serif font-light leading-tight hero-title-shadow break-words w-full", block.titleSettings.fontSize || 'text-4xl sm:text-6xl lg:text-7xl')} style={{ color: block.titleSettings.color || 'white' }}>
                         {block.titleSettings.text || block.title}
                       </h1>
                     )}
                     {block.subtitleSettings && (
-                      <h2 className={cn("font-headline font-semibold mt-6 text-white/95 max-w-2xl xl:max-w-3xl leading-relaxed hero-para-shadow", block.subtitleSettings.fontSize || 'text-base md:text-xl lg:text-3xl')} style={{ color: block.subtitleSettings.color || 'white' }}>
+                      <h2 className={cn("font-sans font-light mt-4 text-white/90 max-w-2xl xl:max-w-3xl leading-relaxed hero-para-shadow", block.subtitleSettings.fontSize || 'text-base md:text-lg')} style={{ color: block.subtitleSettings.color || 'white' }}>
                         {block.subtitleSettings.text}
                       </h2>
                     )}
-                    {/* Scroll-down pill CTA */}
-                    <a href="#services" className="mt-10 flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white text-sm font-semibold hover:bg-white/25 transition-all duration-300 w-fit group">
+                    {/* Scroll-down CTA Button */}
+                    <a href="#services" className="mt-8 flex items-center gap-2 px-6 py-3 rounded-full bg-white text-slate-900 text-sm font-semibold hover:bg-slate-50 transition-all duration-300 w-fit shadow-md group">
                       <span>גלו את השירותים שלנו</span>
-                      <ChevronDown size={16} className="animate-bounce group-hover:animate-none" />
+                      <ChevronDown size={14} className="animate-bounce group-hover:animate-none" />
                     </a>
                 </div>
               </section>
@@ -253,20 +238,19 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
 
           case 'intro':
             return (
-              <section key={block.id} className={cn("py-24 md:py-32 xl:py-40 px-6 md:px-12 xl:px-24 border-b border-slate-100 relative overflow-hidden", block.bg === 'stone-50' ? 'bg-slate-50' : 'bg-white')}>
+              <section key={block.id} className={cn("py-16 md:py-24 px-6 md:px-12 xl:px-24 border-b border-slate-100/60 relative overflow-hidden", block.bg === 'stone-50' ? 'bg-slate-50/50' : 'bg-white')}>
                 <div className="max-w-7xl mx-auto">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24 items-center">
-                    <div className={cn("lg:col-span-5 order-2 relative pt-6 pb-12", block.portraitPosition === 'right' ? 'lg:order-2' : 'lg:order-1')}>
-                      <div className={cn("absolute w-3/4 h-4/5 bg-primary/10 rounded-2xl -z-10", block.portraitPosition === 'right' ? '-bottom-4 -left-4' : '-bottom-4 -right-4')} />
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20 items-center">
+                    <div className={cn("lg:col-span-5 order-2 relative pt-4 pb-8", block.portraitPosition === 'right' ? 'lg:order-2' : 'lg:order-1')}>
                       <PortraitImage 
                         src={block.portraitImageUrl || ''} 
                         shape={(block.portraitShape as any) || 'rectangle'} 
                         size={block.portraitSize || (block.portraitShape === 'circle' ? 250 : 400)}
                         alt={block.title || "Portrait"} 
-                        className="image-zoom-container mx-auto lg:max-w-none shadow-[0_40px_80px_rgba(30,58,138,0.15)]" 
+                        className="image-zoom-container mx-auto lg:max-w-none shadow-[0_20px_50px_rgba(0,0,0,0.08)] rounded-[2rem]" 
                       />
                     </div>
-                    <div className={cn("lg:col-span-7 order-1 space-y-10", block.portraitPosition === 'right' ? 'lg:order-1' : 'lg:order-2')}>
+                    <div className={cn("lg:col-span-7 order-1 space-y-8", block.portraitPosition === 'right' ? 'lg:order-1' : 'lg:order-2')}>
                       <SectionTitle
                         subtitle={block.titleSettings?.subtitle || ""}
                         title={block.titleSettings?.text || block.title || ""}
@@ -296,7 +280,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
             const sizeStyle = block.featuresSize || 'comfortable';
 
             return (
-              <section key={block.id} id="services" className={cn("py-16 md:py-32 px-6 md:px-12 border-y border-slate-100", block.bg === 'white' ? 'bg-white' : 'bg-slate-50')}>
+              <section key={block.id} id="services" className={cn("py-16 md:py-24 px-6 md:px-12 border-y border-slate-100/60", block.bg === 'white' ? 'bg-white' : 'bg-slate-50/50')}>
                 <div className="max-w-7xl mx-auto">
                   <SectionTitle
                     subtitle={block.titleSettings?.subtitle || ""}
@@ -307,88 +291,72 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                     color={block.titleSettings?.color}
                     align={block.titleSettings?.align || 'center'}
                   />
-                  <div className={cn("grid grid-cols-1 gap-6 mt-12 sm:mt-20", columnsClass)}>
+                  <div className={cn("grid grid-cols-1 gap-8 mt-12 sm:mt-16", columnsClass)}>
                     {(block.features || []).map((point, i) => {
                       const Icon = ICON_MAP[point.icon] || Heart;
-                      const num = String(i + 1).padStart(2, '0');
 
-                      // Define card bg style classes
+                      // Define card bg style classes (Flat, premium 2026 feel)
                       const cardBgClass = 
-                        bgStyle === 'slate' ? 'bg-slate-50 border border-slate-100 shadow-sm' :
-                        bgStyle === 'navy' ? 'bg-[#0D2347] border border-white/5 shadow-2xl text-white' :
-                        bgStyle === 'glass' ? 'bg-white/40 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(31,38,135,0.04)]' :
-                        bgStyle === 'border' ? 'bg-transparent border border-slate-200 hover:border-primary/40 shadow-sm' :
-                        'bg-white shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/80';
+                        bgStyle === 'slate' ? 'bg-slate-50/50 border border-slate-100 shadow-sm' :
+                        bgStyle === 'navy' ? 'bg-slate-900 border border-white/5 shadow-md text-white' :
+                        bgStyle === 'glass' ? 'bg-white border border-slate-150 shadow-sm' :
+                        bgStyle === 'border' ? 'bg-transparent border border-slate-200 hover:border-slate-350 shadow-sm' :
+                        'bg-white shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100/80';
 
                       const titleColorClass = bgStyle === 'navy' ? 'text-white' : 'text-accent';
-                      const descColorClass = bgStyle === 'navy' ? 'text-white/70' : 'text-slate-600';
-                      const numColorClass = bgStyle === 'navy' ? 'text-white/[0.02] group-hover:text-white/[0.05]' : 'text-primary/[0.03] group-hover:text-primary/[0.06]';
+                      const descColorClass = bgStyle === 'navy' ? 'text-white/70' : 'text-slate-500';
                       const iconBgClass = 
                         bgStyle === 'navy' ? 'text-white bg-white/10' : 
-                        bgStyle === 'glass' ? 'text-primary bg-white/50 backdrop-blur-sm' : 
                         'text-primary bg-primary/5';
 
                       // Define card size style classes
                       const cardPaddingClass = 
-                        sizeStyle === 'compact' ? 'p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem]' :
-                        sizeStyle === 'large' ? 'p-8 sm:p-12 rounded-[2rem] sm:rounded-[3rem]' :
-                        'p-6 sm:p-10 rounded-[1.8rem] sm:rounded-[2.5rem]';
+                        sizeStyle === 'compact' ? 'p-6 sm:p-8 rounded-2xl' :
+                        sizeStyle === 'large' ? 'p-8 sm:p-12 rounded-[2rem]' :
+                        'p-6 sm:p-10 rounded-[1.5rem]';
 
                       const gapClass = 
-                        sizeStyle === 'compact' ? 'gap-4 sm:gap-6' :
-                        sizeStyle === 'large' ? 'gap-8 sm:gap-10' :
-                        'gap-6 sm:gap-8';
+                        sizeStyle === 'compact' ? 'gap-4' :
+                        sizeStyle === 'large' ? 'gap-8' :
+                        'gap-6';
 
                       const titleSizeClass = 
                         sizeStyle === 'compact' ? 'text-lg sm:text-xl' :
-                        sizeStyle === 'large' ? 'text-2xl sm:text-3xl lg:text-4xl' :
-                        'text-xl sm:text-2xl lg:text-3xl';
+                        sizeStyle === 'large' ? 'text-xl sm:text-2xl lg:text-3xl' :
+                        'text-lg sm:text-xl lg:text-2xl';
 
                       const descSizeClass = 
-                        sizeStyle === 'compact' ? 'text-xs sm:text-sm max-w-xs' :
-                        sizeStyle === 'large' ? 'text-base sm:text-lg lg:text-xl max-w-md' :
-                        'text-sm sm:text-base lg:text-lg max-w-sm';
-
-                      const numSizeClass = 
-                        sizeStyle === 'compact' ? 'text-[60px] sm:text-[80px]' :
-                        sizeStyle === 'large' ? 'text-[100px] sm:text-[140px]' :
-                        'text-[80px] sm:text-[120px]';
+                        sizeStyle === 'compact' ? 'text-xs sm:text-sm' :
+                        sizeStyle === 'large' ? 'text-base sm:text-lg lg:text-xl' :
+                        'text-sm sm:text-base';
 
                       const iconSizeClass = 
                         sizeStyle === 'compact' ? 'w-12 h-12' :
-                        sizeStyle === 'large' ? 'w-20 h-20' :
-                        'w-16 h-16';
+                        sizeStyle === 'large' ? 'w-16 h-16' :
+                        'w-14 h-14';
 
                       const iconSvgSize = 
-                        sizeStyle === 'compact' ? 24 :
-                        sizeStyle === 'large' ? 40 :
-                        32;
+                        sizeStyle === 'compact' ? 20 :
+                        sizeStyle === 'large' ? 28 :
+                        24;
 
                       return (
                         <div key={i} className={cn(
-                          "group relative cursor-default flex flex-col items-center text-center transition-all duration-500 hover:shadow-xl hover:-translate-y-1",
+                          "group relative cursor-default flex flex-col items-start text-right transition-all duration-300 hover:border-slate-300 hover:shadow-md",
                           cardBgClass,
                           cardPaddingClass,
                           `stagger-${Math.min(i + 1, 5)}`
                         )}>
-                          {/* Pattern Background */}
-                          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-                               style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '24px 24px' }} />
-                          
-                          {/* Big faded number */}
-                          <span className={cn("absolute top-4 right-6 font-black leading-none select-none pointer-events-none transition-all duration-700 font-sans italic", numSizeClass, numColorClass)}>{num}</span>
-                          
-                          <div className={cn("flex flex-col items-center relative z-10 w-full", gapClass)}>
-                            <div className={cn("rounded-full flex items-center justify-center relative shadow-sm group-hover:scale-110 transition-transform duration-500", iconSizeClass, iconBgClass)}>
+                          <div className={cn("flex flex-col items-start relative z-10 w-full", gapClass)}>
+                            <div className={cn("rounded-2xl flex items-center justify-center relative transition-transform duration-300", iconSizeClass, iconBgClass)}>
                               <Icon size={iconSvgSize} strokeWidth={1.5} />
-                              <div className="absolute -inset-2 bg-primary/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
                             
-                            <div className="space-y-3 w-full">
-                              <h3 className={cn("font-headline font-bold tracking-tight group-hover:text-primary transition-colors duration-300", titleSizeClass, titleColorClass)}>
+                            <div className="space-y-2.5 w-full">
+                              <h3 className={cn("font-serif font-bold tracking-tight transition-colors duration-300", titleSizeClass, titleColorClass)}>
                                 {point.title}
                               </h3>
-                              <p className={cn("font-light leading-relaxed mx-auto", descSizeClass, descColorClass)}>
+                              <p className={cn("font-light leading-relaxed font-sans", descSizeClass, descColorClass)}>
                                 {point.description}
                               </p>
                             </div>
@@ -422,45 +390,40 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
 
           case 'cta':
             return (
-              <section key={block.id} className="relative py-24 md:py-32 px-6 finance-gradient overflow-hidden">
-                {/* Decorative circles */}
-                <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-white/[0.04] pointer-events-none" />
-                <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-white/[0.04] pointer-events-none" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-white/[0.04] pointer-events-none" />
-
-                <div className="max-w-3xl mx-auto text-center relative z-10">
+              <section key={block.id} className="relative py-16 md:py-24 px-6 bg-slate-900 overflow-hidden text-center">
+                <div className="max-w-3xl mx-auto relative z-10">
                   {/* Trust strip */}
-                  <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mb-10">
+                  <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mb-8">
                     {['ייעוץ ראשוני חינם', 'ללא התחייבות', '500+ לקוחות מרוצים'].map((t, i) => (
                       <span key={i} className="text-white/70 text-sm flex items-center gap-2">
-                        <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">✓</span>
+                        <span className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold">✓</span>
                         {t}
                       </span>
                     ))}
                   </div>
 
                   {/* Headline */}
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white leading-tight mb-5">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white leading-tight mb-5">
                     {block.titleSettings?.text || 'מוכנים לחסוך עשרות אלפי שקלים?'}
                   </h2>
                   {block.titleSettings?.subtitle && (
-                    <p className="text-white/75 text-lg md:text-xl mb-10 leading-relaxed">
+                    <p className="text-white/70 text-base md:text-lg mb-8 leading-relaxed font-light">
                       {block.titleSettings.subtitle}
                     </p>
                   )}
 
                   {/* CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12">
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
                     {(block.ctaButtons || []).map((btn: any, i: number) => {
                       return (
                         <a
                           key={i}
                           href={btn.href}
                           className={cn(
-                            "px-12 py-5 rounded-full font-bold text-lg transition-all min-w-[240px] text-center",
+                            "px-8 py-4 rounded-full font-semibold text-base transition-all min-w-[200px] text-center shadow-sm",
                             i === 0
-                              ? "btn-3d btn-3d-gold text-white shadow-gold/20"
-                              : "btn-3d bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                              ? "bg-[#d4af37] text-white hover:bg-[#c5a028]"
+                              : "bg-white/10 text-white border border-white/25 hover:bg-white/15"
                           )}
                         >
                           {btn.label}
@@ -468,28 +431,18 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                       );
                     })}
                   </div>
-
-                  {/* Social proof avatars */}
-                  <div className="mt-10 flex justify-center items-center gap-3">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <div key={i} className="w-8 h-8 rounded-full border-2 border-white/30 bg-white/10 -ml-2 first:ml-0" />
-                      ))}
-                    </div>
-                    <p className="text-white/60 text-sm">הצטרפו ל-500+ לקוחות שכבר חסכו</p>
-                  </div>
                 </div>
               </section>
             );
 
           case 'contact':
             return (
-              <section key={block.id} id="contact" className="py-24 md:py-48 px-6 bg-slate-50">
+              <section key={block.id} id="contact" className="py-16 md:py-24 px-6 bg-slate-50/50">
                 <div className="w-full">
                   <ContactForm 
-                    title={block.titleSettings?.text}
-                    description={block.titleSettings?.subtitle}
-                    imageUrl={block.imageUrl}
+                     title={block.titleSettings?.text}
+                     description={block.titleSettings?.subtitle}
+                     imageUrl={block.imageUrl}
                   />
                 </div>
               </section>
@@ -570,16 +523,10 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
           case 'stats':
             return (
               <section key={block.id} className={cn(
-                "relative py-16 md:py-24 px-6 overflow-hidden",
-                (!block.statsBg || block.statsBg === 'navy') ? 'finance-gradient' :
-                block.statsBg === 'blue' ? 'bg-primary' : 'bg-white border-y border-slate-100'
+                "relative py-16 md:py-20 px-6 overflow-hidden",
+                (!block.statsBg || block.statsBg === 'navy') ? 'bg-slate-900' :
+                block.statsBg === 'blue' ? 'bg-primary' : 'bg-white border-y border-slate-100/60'
               )}>
-                {/* Bottom wave */}
-                <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none pointer-events-none">
-                  <svg viewBox="0 0 1440 32" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none">
-                    <path d="M0,32 L0,16 Q360,32 720,16 Q1080,0 1440,16 L1440,32 Z" fill="hsl(var(--background))" />
-                  </svg>
-                </div>
                 <div className="max-w-6xl mx-auto relative z-10">
                   {block.titleSettings?.text && (
                     <SectionTitle
@@ -619,41 +566,37 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
             const imgLeft = block.insightImagePosition !== 'right';
             const sectionBg =
               block.insightBg === 'light-blue' ? 'bg-[hsl(213,40%,97%)]' :
-              block.insightBg === 'slate'       ? 'bg-slate-50' :
-              block.insightBg === 'navy'        ? 'finance-gradient' :
+              block.insightBg === 'slate'       ? 'bg-slate-50/50' :
+              block.insightBg === 'navy'        ? 'bg-slate-900' :
               'bg-white';
             return (
-              <section key={block.id} className={cn("py-14 md:py-20 px-6 md:px-12", sectionBg)}>
+              <section key={block.id} className={cn("py-12 md:py-16 px-6 md:px-12", sectionBg)}>
                 <div className="max-w-6xl mx-auto">
-                  <div className="bg-white rounded-[2rem] shadow-[0_8px_60px_rgba(30,58,138,0.1)] border border-slate-100/80 overflow-hidden grid grid-cols-1 md:grid-cols-2">
+                  <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
                     {/* ── Image ── */}
                     <div className={cn("relative min-h-[280px] md:min-h-[420px]", imgLeft ? 'md:order-2' : 'md:order-1')}>
                       {block.insightImageUrl ? (
                         <Image src={safeEncodeURI(block.insightImageUrl)} alt={block.title || 'Insight'} fill className="object-cover" />
                       ) : (
-                        <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-primary/5 flex items-center justify-center">
                           <span className="boutique-label text-primary/40">הוסיפו תמונה</span>
                         </div>
                       )}
-                      {/* Gradient bleed into text side */}
-                      <div className={cn("absolute inset-y-0 w-16 from-white to-transparent hidden md:block pointer-events-none",
-                        imgLeft ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'
-                      )} />
                     </div>
 
                     {/* ── Content ── */}
-                    <div className={cn("p-10 md:p-14 flex flex-col justify-center text-right gap-7", imgLeft ? 'md:order-1' : 'md:order-2')}>
+                    <div className={cn("p-8 md:p-12 flex flex-col justify-center text-right gap-6", imgLeft ? 'md:order-1' : 'md:order-2')}>
                       {/* Title — split regular + bold italic */}
                       {(block.titleSettings?.text || block.title) && (
                         <div>
                           {block.titleSettings?.subtitle && (
-                            <span className="boutique-label text-primary mb-3 block">{block.titleSettings.subtitle}</span>
+                            <span className="boutique-label text-primary mb-2 block">{block.titleSettings.subtitle}</span>
                           )}
-                          <h2 className="text-3xl md:text-4xl font-headline font-bold text-accent leading-[1.25]">
+                          <h2 className="text-2xl md:text-3xl font-serif font-bold text-accent leading-[1.25]">
                             {block.titleSettings?.text || block.title}
                             {block.insightTitleBold && (
-                              <> <em className="not-italic text-primary">{block.insightTitleBold}</em></>
+                              <> <em className="not-italic text-primary font-normal">{block.insightTitleBold}</em></>
                             )}
                           </h2>
                         </div>
@@ -661,18 +604,18 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
 
                       {/* Bullet points */}
                       {(block.insightPoints || []).length > 0 && (
-                        <ul className="space-y-4">
+                        <ul className="space-y-3.5">
                           {(block.insightPoints || []).map((pt, i) => (
-                            <li key={i} className="flex items-start gap-3.5 text-right">
+                            <li key={i} className="flex items-start gap-3 text-right">
                               <span className={cn(
-                                "shrink-0 mt-0.5 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black",
-                                pt.type === 'negative' ? 'bg-red-100 text-red-500' :
-                                pt.type === 'positive' ? 'bg-emerald-100 text-emerald-600' :
+                                "shrink-0 mt-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold",
+                                pt.type === 'negative' ? 'bg-red-50 text-red-500' :
+                                pt.type === 'positive' ? 'bg-emerald-50 text-emerald-600' :
                                 'bg-primary/10 text-primary'
                               )}>
                                 {pt.type === 'negative' ? '✗' : pt.type === 'positive' ? '✓' : '→'}
                               </span>
-                              <p className="text-slate-600 text-base md:text-[17px] leading-relaxed">{pt.text}</p>
+                              <p className="text-slate-600 text-sm md:text-base leading-relaxed">{pt.text}</p>
                             </li>
                           ))}
                         </ul>
@@ -680,21 +623,21 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
 
                       {/* Conclusion */}
                       {block.insightConclusion && (
-                        <div className="border-t border-slate-100/60 pt-6">
-                          <p className="font-bold text-accent text-base md:text-lg leading-relaxed">{block.insightConclusion}</p>
+                        <div className="border-t border-slate-100 pt-5">
+                          <p className="font-semibold text-accent text-base leading-relaxed">{block.insightConclusion}</p>
                         </div>
                       )}
 
                       {/* CTA Button */}
                       {(block.ctaButtons || []).length > 0 && (
-                        <div className="mt-4">
+                        <div className="mt-2">
                           {block.ctaButtons?.map((btn, i) => (
                             <Link 
                               key={i} 
                               href={btn.href} 
                               className={cn(
-                                "btn-3d w-fit px-8 py-3.5 rounded-xl font-bold flex items-center gap-2",
-                                i === 0 ? "btn-3d-gold" : "bg-white text-primary border border-slate-200"
+                                "rounded-full px-6 py-3.5 text-base font-semibold transition-all w-fit flex items-center gap-2 shadow-sm",
+                                i === 0 ? "bg-[#d4af37] text-white hover:bg-[#c5a028]" : "bg-white text-primary border border-slate-200 hover:bg-slate-50"
                               )}
                             >
                               {btn.label}
@@ -712,89 +655,89 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
 
           case 'comparison':
             return (
-              <section key={block.id} className="py-24 md:py-40 bg-transparent px-6 overflow-hidden relative">
+              <section key={block.id} className="py-16 md:py-24 bg-transparent px-6 overflow-hidden relative">
                 <div className="max-w-7xl mx-auto">
                   <SectionTitle
                     subtitle={block.titleSettings?.subtitle || "למה כדאי ליווי מקצועי?"}
                     title={block.titleSettings?.text || "ההבדל בין לבד בבנק - לבין איתנו"}
-                    className="flex flex-col items-center text-center mb-16 md:mb-24"
+                    className="flex flex-col items-center text-center mb-10 md:mb-16"
                     fontSize={block.titleSettings?.fontSize}
                     fontFamily={block.titleSettings?.fontFamily}
                     color={block.titleSettings?.color}
                     align={block.titleSettings?.align || 'center'}
                   />
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch bg-white/40 backdrop-blur-md rounded-[3rem] border border-white/60 overflow-hidden shadow-2xl">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                     {/* Left: Solo at Bank */}
-                    <div className="lg:col-span-4 p-8 md:p-12 border-b lg:border-b-0 lg:border-l border-slate-100 flex flex-col bg-slate-50/30">
-                      <div className="text-center mb-10">
-                        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mx-auto mb-4">
-                          <X size={32} />
+                    <div className="lg:col-span-4 p-8 md:p-10 rounded-3xl border border-slate-100 bg-slate-50/50 flex flex-col">
+                      <div className="text-center mb-8">
+                        <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mx-auto mb-4">
+                          <X size={24} />
                         </div>
-                        <h3 className="text-2xl font-headline font-bold text-slate-400">לבד בבנק</h3>
-                        <div className="w-12 h-1 bg-slate-200 mx-auto mt-4" />
+                        <h3 className="text-xl font-serif font-bold text-slate-500">לבד בבנק</h3>
+                        <div className="w-12 h-[1px] bg-slate-200 mx-auto mt-4" />
                       </div>
-                      <div className="space-y-8 flex-grow">
+                      <div className="space-y-6 flex-grow">
                         {(block.insightPoints || []).filter(p => p.type === 'negative').map((point, i) => (
-                          <div key={i} className="flex gap-4 items-start group">
-                            <div className="shrink-0 w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-slate-300 group-hover:border-red-200 group-hover:text-red-300 transition-colors">
-                              <X size={12} />
+                          <div key={i} className="flex gap-3 items-start">
+                            <div className="shrink-0 w-5 h-5 rounded-full border border-slate-200 flex items-center justify-center text-slate-300 mt-0.5">
+                              <X size={10} />
                             </div>
-                            <p className="text-slate-500 font-light leading-relaxed">{point.text}</p>
+                            <p className="text-slate-500 text-sm font-light leading-relaxed">{point.text}</p>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Middle: Professional Help (Highlighted) */}
-                    <div className="lg:col-span-5 p-8 md:p-12 relative z-10 flex flex-col bg-white shadow-[0_0_50px_rgba(0,0,0,0.05)] ring-4 ring-primary/5">
-                      <div className="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-primary via-primary/80 to-primary" />
-                      <div className="text-center mb-12">
-                        <div className="icon-3d-wrapper bg-primary text-white mx-auto mb-6 scale-110">
-                          <ShieldCheck size={36} />
+                    <div className="lg:col-span-5 p-8 md:p-10 relative z-10 flex flex-col bg-white border border-primary/20 rounded-3xl shadow-sm">
+                      <div className="absolute top-0 right-0 left-0 h-1 bg-primary" />
+                      <div className="text-center mb-8">
+                        <div className="w-14 h-14 rounded-full bg-primary/5 text-primary mx-auto mb-4 flex items-center justify-center">
+                          <ShieldCheck size={28} />
                         </div>
-                        <h3 className="text-3xl font-headline font-bold text-primary">עם ויידר משכנתאות</h3>
-                        <p className="text-primary/60 text-sm font-bold mt-2 uppercase tracking-widest italic">המסלול הבטוח לחיסכון</p>
+                        <h3 className="text-2xl font-serif font-bold text-primary">עם יאיר כהן</h3>
+                        <p className="text-primary/60 text-xs font-bold mt-1 uppercase tracking-widest italic">המסלול הבטוח לחיסכון</p>
                       </div>
-                      <div className="space-y-10 flex-grow">
+                      <div className="space-y-6 flex-grow">
                         {(block.insightPoints || []).filter(p => p.type === 'positive').map((point, i) => (
-                          <div key={i} className="flex gap-5 items-start group">
-                            <div className="shrink-0 w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
-                              <Check size={18} strokeWidth={3} />
+                          <div key={i} className="flex gap-4 items-start">
+                            <div className="shrink-0 w-6 h-6 rounded-lg bg-primary/5 flex items-center justify-center text-primary mt-0.5 shadow-sm">
+                              <Check size={14} strokeWidth={3} />
                             </div>
-                            <p className="text-slate-700 font-medium leading-relaxed md:text-lg">{point.text}</p>
+                            <p className="text-slate-700 font-medium leading-relaxed text-base">{point.text}</p>
                           </div>
                         ))}
                       </div>
-                      <div className="mt-12 pt-8 border-t border-slate-100">
-                        <div className="flex items-center gap-4 text-primary font-bold">
-                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                            <Star size={20} className="fill-primary" />
-                          </div>
+                      <div className="mt-8 pt-6 border-t border-slate-100">
+                        <div className="flex items-center gap-3 text-primary text-sm font-bold">
+                          <Star size={16} className="fill-primary text-primary" />
                           <span>חיסכון ממוצע של 80,000₪ ללקוח</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Right: Key Differences / Advantages */}
-                    <div className="lg:col-span-3 p-8 md:p-12 bg-accent text-white flex flex-col">
-                      <h3 className="text-xl font-headline font-bold mb-10 text-white/50 border-r-2 border-white/20 pr-4">היתרונות שלנו</h3>
-                      <div className="space-y-12">
-                        {[
-                          { title: 'כוח מיקוח', desc: 'אנחנו מביאים עשרות תיקים בחודש ומקבלים ריביות שאין ללקוח פרטי.' },
-                          { title: 'שקט נפשי', desc: 'אנחנו מטפלים בכל הבירוקרטיה המייגעת מול הבנקים והביטוחים.' },
-                          { title: 'תכנון קדימה', desc: 'בניית תמהיל חכם שמתאים לחיים שלכם גם בעוד 10 שנים.' }
-                        ].map((item, i) => (
-                          <div key={i} className="space-y-2">
-                            <h4 className="font-bold text-lg text-white flex items-center gap-2">
-                              <ChevronRight size={16} className="text-primary" /> {item.title}
-                            </h4>
-                            <p className="text-white/60 text-sm font-light leading-relaxed">{item.desc}</p>
-                          </div>
-                        ))}
+                    <div className="lg:col-span-3 p-8 md:p-10 bg-slate-900 text-white rounded-3xl flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-lg font-serif font-bold mb-8 text-white/60 border-r-2 border-white/20 pr-3">היתרונות שלנו</h3>
+                        <div className="space-y-8">
+                          {[
+                            { title: 'כוח מיקוח', desc: 'אנחנו מביאים עשרות תיקים בחודש ומקבלים ריביות שאין ללקוח פרטי.' },
+                            { title: 'שקט נפשי', desc: 'אנחנו מטפלים בכל הבירוקרטיה המייגעת מול הבנקים והביטוחים.' },
+                            { title: 'תכנון קדימה', desc: 'בניית תמהיל חכם שמתאים לחיים שלכם גם בעוד 10 שנים.' }
+                          ].map((item, i) => (
+                            <div key={i} className="space-y-1">
+                              <h4 className="font-bold text-sm text-white flex items-center gap-1.5">
+                                <ChevronRight size={14} className="text-primary" /> {item.title}
+                              </h4>
+                              <p className="text-white/60 text-xs font-light leading-relaxed">{item.desc}</p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="mt-auto pt-10">
-                        <Link href="#contact" className="btn-3d btn-3d-gold block w-full py-4 rounded-xl text-center font-bold">
+                      <div className="pt-8">
+                        <Link href="#contact" className="block w-full py-3.5 rounded-full bg-[#d4af37] hover:bg-[#c5a028] text-center font-semibold text-white shadow-sm transition-all duration-300">
                           בואו נחסוך לכם
                         </Link>
                       </div>
