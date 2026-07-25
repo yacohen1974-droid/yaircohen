@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -18,6 +19,22 @@ const db = getFirestore(app);
 
 async function migrate() {
   console.log("Starting migration to Firestore...");
+  
+  const auth = getAuth(app);
+  try {
+    console.log("Authenticating as admin...");
+    await signInWithEmailAndPassword(auth, 'yairmashkantaot@gmail.com', 'Yc147258@');
+    console.log("Authenticated successfully!");
+  } catch (authErr) {
+    try {
+      console.log("Retrying with fallback credentials...");
+      await signInWithEmailAndPassword(auth, 'amirher@gmail.com', 'amir147+');
+      console.log("Authenticated successfully (fallback)!");
+    } catch (fallbackErr) {
+      console.warn("Authentication failed, trying unauthenticated migration...", fallbackErr);
+    }
+  }
+
   const jsonPath = path.join(process.cwd(), 'src/content/site-data.json');
   const fileContent = await fs.readFile(jsonPath, 'utf-8');
   const data = JSON.parse(fileContent);
