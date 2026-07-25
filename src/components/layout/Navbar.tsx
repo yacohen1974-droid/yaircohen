@@ -81,7 +81,7 @@ export function Navbar() {
           >
             <div className="relative w-14 h-14 md:w-20 md:h-20 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
               <Image
-                src="/logo.png"
+                src={globalSettings?.siteLogo || '/logo.png'}
                 alt={globalSettings?.siteName || 'לוגו'}
                 fill
                 className={cn(
@@ -217,7 +217,7 @@ export function Navbar() {
           <NextLink href="/" className="flex items-center gap-3">
             <div className="relative w-10 h-10 flex-shrink-0">
               <Image
-                src="/logo.png"
+                src={globalSettings?.siteLogo || '/logo.png'}
                 alt={globalSettings?.siteName || 'לוגו'}
                 fill
                 className="object-contain brightness-0 invert"

@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, Lock, Instagram, Linkedin, Youtube, Music } from 'lucide-react';
+import { Mail, Phone, Lock, Instagram, Linkedin, Youtube, Music, MapPin } from 'lucide-react';
 
 /** Minimal Facebook "f" mark — avoids the deprecated lucide Facebook icon */
 function FacebookIcon({ size = 18 }: { size?: number }) {
@@ -54,9 +54,9 @@ export function Footer() {
           <div className="sm:col-span-2 lg:col-span-1 flex flex-col gap-5">
             <Link href="/" className="flex flex-col gap-3 group">
               <div className="relative w-12 h-12">
-                <Image 
-                  src="/logo.png" 
-                  alt={globalSettings?.siteName || 'לוגו'} 
+                <Image
+                  src={globalSettings?.siteLogo || '/logo.png'}
+                  alt={globalSettings?.siteName || 'לוגו'}
                   fill 
                   className="object-contain brightness-0 invert group-hover:scale-105 transition-transform duration-300"
                 />
@@ -220,6 +220,13 @@ export function Footer() {
                 <Mail size={15} className="shrink-0 text-white/50" />
                 <span>{email}</span>
               </a>
+
+              {globalSettings?.siteAddress && (
+                <div className="flex items-center gap-3 text-white/80 text-sm">
+                  <MapPin size={15} className="shrink-0 text-white/50" />
+                  <span>{globalSettings.siteAddress}</span>
+                </div>
+              )}
 
               <a
                 href={waHref}

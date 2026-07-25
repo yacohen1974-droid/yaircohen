@@ -1313,6 +1313,28 @@ export default function AdminPages() {
     });
   };
 
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingFavicon, setUploadingFavicon] = useState(false);
+
+  const handleBrandingUpload = async (file: File, type: 'logo' | 'favicon') => {
+    const setUploading = type === 'logo' ? setUploadingLogo : setUploadingFavicon;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', type);
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      set(type === 'logo' ? { siteLogo: data.path } : { siteFavicon: data.path });
+      toast({ title: type === 'logo' ? '✅ הלוגו הועלה בהצלחה' : '✅ הפביקון הועלה בהצלחה', description: 'לחצו "שמירת טיוטה" ולאחר מכן "פרסם שינויים" כדי להשלים את העדכון.' });
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: '❌ ההעלאה נכשלה', description: err.message });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
     if (!authLoading && !user) router.push('/admin/login');
@@ -1540,6 +1562,59 @@ export default function AdminPages() {
           <form onSubmit={handleSave} className="space-y-12">
             
             {selectedPage === 'global' ? (
+              <>
+              <SectionCard icon={<ImageIcon size={20} />} title="לוגו ופביקון">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <Label className="boutique-label">לוגו האתר</Label>
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-20 h-20 shrink-0 rounded-lg bg-white border border-stone-200 flex items-center justify-center overflow-hidden">
+                        {content.siteLogo && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={content.siteLogo} alt="לוגו (רקע בהיר)" className="max-w-full max-h-full object-contain" />
+                        )}
+                      </div>
+                      <div className="relative w-20 h-20 shrink-0 rounded-lg bg-[hsl(220,60%,18%)] border border-stone-200 flex items-center justify-center overflow-hidden">
+                        {content.siteLogo && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={content.siteLogo} alt="לוגו (רקע כהה)" className="max-w-full max-h-full object-contain" />
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <Input
+                          type="file"
+                          accept=".png,.jpg,.jpeg,.svg,.webp"
+                          disabled={uploadingLogo}
+                          onChange={e => { const f = e.target.files?.[0]; if (f) handleBrandingUpload(f, 'logo'); e.target.value = ''; }}
+                          className="bg-white"
+                        />
+                        {uploadingLogo && <p className="text-xs text-stone-400 flex items-center gap-1"><Loader2 className="animate-spin size-3" /> מעלה...</p>}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <Label className="boutique-label">פביקון (Favicon)</Label>
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-10 h-10 shrink-0 rounded bg-white border border-stone-200 flex items-center justify-center overflow-hidden">
+                        {content.siteFavicon && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={content.siteFavicon} alt="פביקון" className="max-w-full max-h-full object-contain" />
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <Input
+                          type="file"
+                          accept=".png,.ico,.svg"
+                          disabled={uploadingFavicon}
+                          onChange={e => { const f = e.target.files?.[0]; if (f) handleBrandingUpload(f, 'favicon'); e.target.value = ''; }}
+                          className="bg-white"
+                        />
+                        {uploadingFavicon && <p className="text-xs text-stone-400 flex items-center gap-1"><Loader2 className="animate-spin size-3" /> מעלה...</p>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </SectionCard>
               <SectionCard icon={<Globe size={20} />} title="הגדרות כלליות וסלוגן">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <Field label="שם האתר">
@@ -1558,6 +1633,7 @@ export default function AdminPages() {
                   </div>
                   <Field label="אימייל לContact Us">
                     <Input value={content.siteEmail || ''} onChange={e => set({ siteEmail: e.target.value })} dir="ltr" />
+                    <p className="text-xs text-amber-600 font-medium mt-1">⚠️ שדה זה מוצג באתר בלבד ואינו משפיע על פרטי ההתחברות שלך לניהול האתר.</p>
                   </Field>
                   <Field label="טלפון לContact Us">
                     <Input value={content.sitePhone || ''} onChange={e => set({ sitePhone: e.target.value })} dir="ltr" />
@@ -1629,6 +1705,7 @@ export default function AdminPages() {
                   </Button>
                 </div>
               </SectionCard>
+              </>
             ) : (
               <>
                 <SectionCard icon={<Monitor size={20} />} title="הגדרות עמוד (SEO)">

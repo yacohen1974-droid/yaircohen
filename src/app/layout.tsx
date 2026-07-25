@@ -26,48 +26,56 @@ import { InitialDataProvider } from '@/components/providers/InitialDataProvider'
 import { FloatingWhatsApp } from '@/components/shared/FloatingWhatsApp';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: 'יאיר כהן – יועץ משכנתאות ופיננסים | ליווי אישי לרכישת הבית שלכם',
-    template: '%s | יאיר כהן – יועץ משכנתאות'
-  },
-  description: 'יאיר כהן, יועץ משכנתאות ופיננסים בלתי תלוי – מלווה אתכם בכל שלבי תהליך המשכנתא, ממשא ומתן עם הבנקים ועד לחיסכון מרבי בריבית. קבלו ייעוץ ראשוני ללא עלות.',
-  keywords: ['יאיר כהן', 'יעוץ משכנתאות', 'יועץ משכנתאות', 'משכנתא', 'רכישת דירה', 'מחזור משכנתא', 'ריבית משכנתא', 'בנק למשכנתאות'],
-  openGraph: {
-    type: 'website',
-    locale: 'he_IL',
-    url: SITE_URL,
-    siteName: 'יאיר כהן – יועץ משכנתאות ופיננסים',
-    title: 'יאיר כהן – יועץ משכנתאות ופיננסים | ליווי אישי',
-    description: 'יועץ משכנתאות בלתי תלוי – חסכו עשרות אלפי שקלים עם ייעוץ מקצועי.',
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
-  },
-  icons: {
-    icon: [
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon.ico' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-  },
-  manifest: '/site.webmanifest',
-  alternates: {
-    canonical: SITE_URL,
-  },
-};
-
 async function getInitialData() {
   return getDbInitialData();
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const initialData = await getInitialData();
+  const customFavicon = initialData?.global?.siteFavicon;
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: 'יאיר כהן – יועץ משכנתאות ופיננסים | ליווי אישי לרכישת הבית שלכם',
+      template: '%s | יאיר כהן – יועץ משכנתאות'
+    },
+    description: 'יאיר כהן, יועץ משכנתאות ופיננסים בלתי תלוי – מלווה אתכם בכל שלבי תהליך המשכנתא, ממשא ומתן עם הבנקים ועד לחיסכון מרבי בריבית. קבלו ייעוץ ראשוני ללא עלות.',
+    keywords: ['יאיר כהן', 'יעוץ משכנתאות', 'יועץ משכנתאות', 'משכנתא', 'רכישת דירה', 'מחזור משכנתא', 'ריבית משכנתא', 'בנק למשכנתאות'],
+    openGraph: {
+      type: 'website',
+      locale: 'he_IL',
+      url: SITE_URL,
+      siteName: 'יאיר כהן – יועץ משכנתאות ופיננסים',
+      title: 'יאיר כהן – יועץ משכנתאות ופיננסים | ליווי אישי',
+      description: 'יועץ משכנתאות בלתי תלוי – חסכו עשרות אלפי שקלים עם ייעוץ מקצועי.',
+    },
+    twitter: {
+      card: 'summary_large_image',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
+    },
+    icons: customFavicon ? {
+      icon: [{ url: customFavicon }],
+      apple: [{ url: customFavicon }],
+    } : {
+      icon: [
+        { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon.ico' },
+      ],
+      apple: [
+        { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
+    manifest: '/site.webmanifest',
+    alternates: {
+      canonical: SITE_URL,
+    },
+  };
 }
 
 export default async function RootLayout({

@@ -78,6 +78,8 @@ export type ContentState = {
   siteEmail?: string;
   sitePhone?: string;
   siteAddress?: string;
+  siteLogo?: string;
+  siteFavicon?: string;
   facebookLink?: string;
   instagramLink?: string;
   linkedinLink?: string;
@@ -170,6 +172,8 @@ export function getInitialPageContent(id: string): ContentState {
     siteEmail:            fallback.siteEmail            || '',
     sitePhone:            fallback.sitePhone            || '',
     siteAddress:          fallback.siteAddress          || '',
+    siteLogo:             fallback.siteLogo             || '/logo.png',
+    siteFavicon:          fallback.siteFavicon          || '/favicon.ico',
     facebookLink:         fallback.facebookLink         || '',
     instagramLink:        fallback.instagramLink        || '',
     linkedinLink:         fallback.linkedinLink         || '',
