@@ -3,6 +3,7 @@ import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import fs from 'fs/promises';
 import path from 'path';
+import readline from 'readline';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCFCLyOZCi0HRAPM9iipX7urj4-yBllFFU",
@@ -17,22 +18,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const askQuestion = (query) => new Promise((resolve) => rl.question(query, resolve));
+
 async function migrate() {
   console.log("Starting migration to Firestore...");
   
+  const email = await askQuestion("אנא הזן את אימייל המנהל בפיירבייס: ");
+  const password = await askQuestion("אנא הזן את סיסמת המנהל: ");
+  rl.close();
+
   const auth = getAuth(app);
   try {
-    console.log("Authenticating as admin...");
-    await signInWithEmailAndPassword(auth, 'yairmashkantaot@gmail.com', 'Yc147258@');
-    console.log("Authenticated successfully!");
+    console.log(`מתחבר כעת כ- ${email.trim()}...`);
+    await signInWithEmailAndPassword(auth, email.trim(), password.trim());
+    console.log("התחברת בהצלחה!");
   } catch (authErr) {
-    try {
-      console.log("Retrying with fallback credentials...");
-      await signInWithEmailAndPassword(auth, 'amirher@gmail.com', 'amir147+');
-      console.log("Authenticated successfully (fallback)!");
-    } catch (fallbackErr) {
-      console.warn("Authentication failed, trying unauthenticated migration...", fallbackErr);
-    }
+    console.error("שגיאת התחברות: ", authErr.message);
+    process.exit(1);
   }
 
   const jsonPath = path.join(process.cwd(), 'src/content/site-data.json');
