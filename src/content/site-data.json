@@ -1,7 +1,7 @@
 {
   "pages": {
     "home": {
-      "primaryColor": "220 60% 18%",
+      "primaryColor": "213 75% 35%",
       "siteName": "יאיר כהן",
       "siteSubtitle": "יועץ משכנתאות ופיננסים",
       "siteDescription": "",
@@ -14,7 +14,7 @@
       "navItems": [],
       "footerItems": [],
       "metaTitle": "יאיר כהן – יועץ משכנתאות | ייעוץ ראשוני ללא התחייבות ",
-      "metaDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של 15 שנה. חיסכון של עשרות אלפי שקלים. קבל ייעוץ ראשוני חינם.",
+      "metaDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של 15 שנה. חיסכון של עשרות אלפי שקלים. קבל ייעוץ  התאמה ראשוני.",
       "blocks": [
         {
           "type": "hero",
@@ -23,11 +23,11 @@
           "subtitleSettings": {
             "color": "rgba(255,255,255,0.9)",
             "fontFamily": "font-headline",
-            "fontSize": "text-base md:text-xl lg:text-2xl",
+            "fontSize": "text-4xl",
             "text": " יאיר כהן, יועץ משכנתאות ופיננסים בלתי תלוי, מוביל אתכם צעד אחר צעד עד למפתחות.",
-            "align": "center"
+            "align": "right"
           },
-          "heroCloudiness": 10,
+          "heroCloudiness": 0,
           "id": "hero-main",
           "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362002/homepage_pc.png",
           "imageUrlMobile": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362983/homepage-mobile.png",
@@ -38,7 +38,8 @@
             "color": "#ffffff",
             "fontFamily": "font-headline"
           },
-          "title": "משכנתא חכמה מתחילה בשיחה עם יאיר כהן"
+          "title": "משכנתא חכמה מתחילה בשיחה עם יאיר כהן",
+          "bg": "primary-solid"
         },
         {
           "statsBg": "navy",
@@ -68,17 +69,17 @@
           ]
         },
         {
-          "title": "יאיר כהן  יועץ המשכנתאות שלכם",
+          "title": "אני יאיר כהן – יועץ המשכנתאות שלכם",
           "titleSettings": {
             "subtitle": "מוסמך • בלתי תלוי • מחויב אך ורק לכם",
-            "text": "יאיר כהן  יועץ המשכנתאות שלכם",
-            "align": "center",
+            "text": "אני יאיר כהן – יועץ המשכנתאות שלכם",
+            "align": "left",
             "color": "text-accent",
-            "fontFamily": "font-handwriting",
-            "fontSize": "text-6xl"
+            "fontFamily": "font-headline",
+            "fontSize": "text-3xl sm:text-4xl"
           },
           "type": "intro",
-          "content": "<p class=\"ql-direction-rtl ql-align-right\"><strong class=\"ql-size-large\">יא<span class=\"ql-cursor\">﻿</span>יר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</strong></p><p class=\"ql-direction-rtl ql-align-right\"><strong class=\"ql-size-large\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</strong></p><p class=\"ql-direction-rtl ql-align-right\"><strong class=\"ql-size-large\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</strong></p>",
+          "content": "<p class=\"ql-direction-rtl ql-align-right\"><span class=\"ql-font-serif\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</span></p><p class=\"ql-direction-rtl ql-align-right\"><span class=\"ql-font-serif\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</span></p><p class=\"ql-direction-rtl ql-align-right\"><span class=\"ql-font-serif\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</span></p>",
           "portraitShape": "rectangle",
           "id": "intro-main",
           "portraitImageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784306511/%D7%99%D7%90%D7%99%D7%A8_%D7%9B%D7%94%D7%9F_skiai5.webp",
@@ -191,30 +192,36 @@
             },
             {
               "id": "rnzzqfrwg",
-              "imageUrl": ""
+              "imageUrl": "/logos/bankigud.svg"
             },
             {
               "id": "bzuzvgwim",
-              "imageUrl": ""
+              "imageUrl": "/logos/bankmercantil.svg"
             },
             {
               "id": "8jn5252nj",
-              "imageUrl": ""
+              "imageUrl": "/logos/bank10.svg"
+            },
+            {
+              "id": "ig1nfbcug",
+              "imageUrl": "/logos/bank5-p5fl.svg"
             }
           ],
           "titleSettings": {
             "color": "text-accent",
-            "fontFamily": "font-headline",
-            "fontSize": "text-2xl",
+            "fontFamily": "font-handwriting",
+            "fontSize": "text-4xl",
             "subtitle": "",
-            "text": "עובדים מול כל הבנקים",
-            "align": "center"
+            "text": "אני עובד עם כל בנק שתבחר ",
+            "align": "left"
           },
           "type": "logos",
           "bg": "white",
           "id": "logos-banks",
           "logoShape": "square",
-          "logoSize": "md"
+          "logoSize": "md",
+          "logosTitlePosition": "above",
+          "logosAlign": "left"
         },
         {
           "id": "insight-advisor-vs-banker",
@@ -245,7 +252,8 @@
             }
           ],
           "insightTitleBold": "זה פשוט לא תפקידו",
-          "insightImageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80"
+          "insightImageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80",
+          "title": "הבנקאי לא עובד בשבילך –"
         },
         {
           "titleSettings": {
