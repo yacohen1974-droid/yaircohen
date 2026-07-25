@@ -204,8 +204,8 @@
           ],
           "titleSettings": {
             "color": "text-accent",
-            "fontFamily": "font-headline",
-            "fontSize": "text-4xl",
+            "fontFamily": "font-handwriting",
+            "fontSize": "text-6xl",
             "subtitle": "",
             "text": "אני עובד עם כל בנק שתבחר ",
             "align": "right"
