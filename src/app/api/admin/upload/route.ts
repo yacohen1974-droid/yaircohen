@@ -13,6 +13,37 @@ const TYPE_CONFIG: Record<UploadType, { dir: string; extensions: string[] }> = {
 
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
+// Max dimension (px) to resize down to per upload type — keeps uploads from
+// a phone camera or a raw export from blowing up page weight. SVG/ICO are
+// vector/icon formats and are left untouched.
+const MAX_DIMENSION: Record<UploadType, number> = {
+  logo: 800,
+  favicon: 256,
+  'partner-logo': 800,
+};
+const RESIZABLE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
+
+async function optimizeImageIfNeeded(buffer: Buffer, ext: string, maxDimension: number): Promise<Buffer> {
+  if (!RESIZABLE_EXTENSIONS.includes(ext)) return buffer;
+  try {
+    const sharp = (await import('sharp')).default;
+    let img = sharp(buffer).resize({
+      width: maxDimension,
+      height: maxDimension,
+      fit: 'inside',
+      withoutEnlargement: true,
+    });
+    if (ext === '.png') img = img.png({ quality: 85, compressionLevel: 8 });
+    else if (ext === '.jpg' || ext === '.jpeg') img = img.jpeg({ quality: 82, mozjpeg: true });
+    else if (ext === '.webp') img = img.webp({ quality: 82 });
+    else if (ext === '.avif') img = img.avif({ quality: 60 });
+    return await img.toBuffer();
+  } catch (e) {
+    console.warn('Image optimization failed, using original file as-is:', e);
+    return buffer;
+  }
+}
+
 function sanitizeBaseName(name: string): string {
   const withoutExt = name.replace(/\.[^.]+$/, '');
   const slug = withoutExt
@@ -107,7 +138,8 @@ export async function POST(request: Request) {
       fileName = `uploaded-${uploadType}${ext}`;
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const rawBuffer = Buffer.from(await file.arrayBuffer());
+    const buffer = await optimizeImageIfNeeded(rawBuffer, ext, MAX_DIMENSION[uploadType]);
     const relativeDir = config.dir ? `public/${config.dir}` : 'public';
     const publicPath = config.dir ? `/${config.dir}/${fileName}` : `/${fileName}`;
 

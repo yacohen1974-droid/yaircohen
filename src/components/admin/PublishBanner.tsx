@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { ToastAction } from '@/components/ui/toast';
-import { UploadCloud, Trash2, Loader2, AlertCircle, Eye } from 'lucide-react';
+import { UploadCloud, Trash2, Loader2, AlertCircle, Eye, Smartphone } from 'lucide-react';
 import { hasDraftChanges, getDraftData, clearDraftData, summarizeChanges } from '@/lib/cms-draft';
 
 export function PublishBanner() {
@@ -87,7 +87,7 @@ export function PublishBanner() {
     }
   };
 
-  const handlePreview = async () => {
+  const handlePreview = async (device: 'desktop' | 'mobile') => {
     const draft = getDraftData();
     if (!draft) return;
 
@@ -101,7 +101,12 @@ export function PublishBanner() {
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
 
-      window.open(`${window.location.origin}/api/admin/preview`, '_blank', 'noopener');
+      const url = `${window.location.origin}/api/admin/preview`;
+      if (device === 'mobile') {
+        window.open(url, '_blank', 'noopener,width=390,height=844');
+      } else {
+        window.open(url, '_blank', 'noopener');
+      }
       toast({
         title: "🔍 תצוגה מקדימה מוכנה",
         description: "נפתחה בכרטיסייה חדשה. אפשר לגלוש בכל עמודי האתר ולראות את הטיוטה, ואף לשתף את הקישור למישהו אחר לבדיקה (בתוקף ל-24 שעות)."
@@ -152,7 +157,7 @@ export function PublishBanner() {
         <Button
           variant="outline"
           size="sm"
-          onClick={handlePreview}
+          onClick={() => handlePreview('desktop')}
           disabled={isPublishing || isPreviewing}
           className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
         >
@@ -167,6 +172,16 @@ export function PublishBanner() {
               תצוגה מקדימה
             </>
           )}
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handlePreview('mobile')}
+          disabled={isPublishing || isPreviewing}
+          title="תצוגה מקדימה בגודל מסך נייד"
+          className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 w-9 p-0 rounded-none"
+        >
+          <Smartphone className="size-3.5" />
         </Button>
         <Button
           size="sm"

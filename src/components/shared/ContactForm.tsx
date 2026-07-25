@@ -19,9 +19,7 @@ export function ContactForm({
 }) {
   const revealRef = useReveal();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-
-  // Portrait image of Yair (local public folder asset)
-  const yairPortrait = "/yair-portrait.png";
+  const hasPortrait = !!imageUrl;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,28 +81,31 @@ export function ContactForm({
       <div className="finance-gradient rounded-[3rem] overflow-hidden shadow-[0_30px_90px_rgba(30,58,138,0.3)] border border-white/10 grid grid-cols-1 lg:grid-cols-10 gap-0 relative">
         
         {/* ── Left Side: Yair Portrait (30%) ── */}
-        <div className="lg:col-span-3 relative min-h-[350px] lg:min-h-[550px] bg-white/5 overflow-hidden group border-b lg:border-b-0 lg:border-l border-white/10">
+        <div className={cn(
+          "lg:col-span-3 relative bg-white/5 overflow-hidden group border-b lg:border-b-0 lg:border-l border-white/10",
+          hasPortrait ? "min-h-[350px] lg:min-h-[550px]" : "min-h-[140px] lg:min-h-[550px]"
+        )}>
           {/* Decorative aura behind Yair */}
           <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent opacity-40" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180%] h-[180%] bg-[radial-gradient(circle,hsl(var(--primary)/0.15)_0%,transparent_70%)] animate-pulse pointer-events-none" />
-          
-          <div className="absolute inset-0 flex items-end justify-center">
-            <div className="relative w-full h-[95%] transition-transform duration-1000 group-hover:scale-105">
-              {(imageUrl || yairPortrait) && (
-                <Image 
-                  src={safeEncodeURI(imageUrl || yairPortrait)} 
-                  alt="יאיר כהן - מומחה למשכנתאות ומימון נדל״ן" 
-                  fill 
+
+          {hasPortrait && (
+            <div className="absolute inset-0 flex items-end justify-center">
+              <div className="relative w-full h-[95%] transition-transform duration-1000 group-hover:scale-105">
+                <Image
+                  src={safeEncodeURI(imageUrl!)}
+                  alt="יאיר כהן - מומחה למשכנתאות ומימון נדל״ן"
+                  fill
                   unoptimized={true}
                   className="object-contain object-bottom drop-shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
                   priority
                 />
-              )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Floating Trust Badge */}
-          <div className="absolute bottom-10 right-6 left-6 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl flex items-center gap-4 animate-float text-white lg:bottom-auto lg:top-8">
+          <div className="absolute bottom-4 right-6 left-6 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl flex items-center gap-4 animate-float text-white lg:bottom-auto lg:top-8">
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
               <ShieldCheck size={20} />
             </div>

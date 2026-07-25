@@ -1017,7 +1017,7 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
               <Field label="טקסט מודגש בסוף הכותרת (אופציונלי)">
                 <Input value={section.insightTitleBold || ''} onChange={e => onChange({ ...section, insightTitleBold: e.target.value })} placeholder="לדוג': במשכנתא שלכם" className="bg-stone-50" />
               </Field>
-              <Field label="תמונה (URL)">
+              <Field label="כתובת התמונה">
                 <Input value={section.insightImageUrl || ''} onChange={e => onChange({ ...section, insightImageUrl: e.target.value })} placeholder="https://..." className="bg-stone-50 font-sans" dir="ltr" />
               </Field>
               <Field label="מיקום תמונה">
@@ -1078,9 +1078,9 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
                     className="bg-stone-50" 
                   />
                 </Field>
-                <Field label="קישור (URL)">
-                  <Input 
-                    value={section.ctaButtons?.[0]?.href || ''} 
+                <Field label="קישור (לאן הכפתור מוביל)">
+                  <Input
+                    value={section.ctaButtons?.[0]?.href || ''}
                     onChange={e => {
                       const btns = [...(section.ctaButtons || [])];
                       btns[0] = { ...(btns[0] || { variant: 'primary', size: 'default', label: '' }), href: e.target.value };
@@ -1679,12 +1679,13 @@ export default function AdminPages() {
               </button>
             </div>
             {(selectedPage === 'custom' || (selectedPage !== 'global' && selectedPage !== 'custom')) && (
-              <Field label="מזהה עמוד (Slug)">
-                <Input 
-                  value={selectedPage === 'custom' ? customPageId : customPageId || selectedPage} 
-                  onChange={e => setCustomPageId(e.target.value)} 
-                  placeholder="my-new-page" 
-                  className="bg-white h-12" 
+              <Field label="כתובת העמוד באתר">
+                <Input
+                  value={selectedPage === 'custom' ? customPageId : customPageId || selectedPage}
+                  onChange={e => setCustomPageId(e.target.value)}
+                  placeholder="my-new-page"
+                  className="bg-white h-12"
+                  dir="ltr"
                 />
               </Field>
             )}
@@ -1857,11 +1858,11 @@ export default function AdminPages() {
               <>
                 <SectionCard icon={<Monitor size={20} />} title="הגדרות עמוד (SEO)">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <Field label="כותרת העמוד (Meta Title)">
+                    <Field label="כותרת לתוצאות חיפוש בגוגל">
                       <Input value={content.metaTitle || ''} onChange={e => set({ metaTitle: e.target.value })} placeholder="כותרת המופיעה בגוגל" />
                     </Field>
                     <div className="md:col-span-2">
-                      <Field label="תיאור העמוד (Meta Description)">
+                      <Field label="תיאור לתוצאות חיפוש בגוגל">
                         <Textarea value={content.metaDescription || ''} onChange={e => set({ metaDescription: e.target.value })} rows={2} placeholder="תיאור קצר עבור מנועי חיפוש" />
                       </Field>
                     </div>
