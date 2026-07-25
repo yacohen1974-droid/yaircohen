@@ -190,10 +190,10 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                         src={safeEncodeURI(block.imageUrl)} 
                         alt={block.title || "Hero"} 
                         fill 
-                        className="object-cover object-top" 
+                        className="object-cover" 
                         style={{ 
                           opacity: (100 - (block.heroCloudiness ?? 30)) / 100,
-                          objectPosition: 'center top'
+                          objectPosition: block.heroImagePosition || 'center'
                         }}
                         priority 
                       />
@@ -206,12 +206,14 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                         alt={block.title || "Hero"} 
                         fill 
                         className="object-cover"
-                        style={{ opacity: (100 - (block.heroCloudiness ?? 30)) / 100 }}
+                        style={{ 
+                          opacity: (100 - (block.heroCloudiness ?? 30)) / 100,
+                          objectPosition: block.heroImagePositionMobile || block.heroImagePosition || 'center'
+                        }}
                         priority 
                       />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#0D2347]/70 via-[#0D2347]/20 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-background via-background/30 to-transparent z-0 pointer-events-none" style={{ opacity: (block.heroCloudiness ?? 30) / 100 }} />
                   {/* Floating decorative elements */}
                   <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">

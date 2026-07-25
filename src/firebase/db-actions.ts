@@ -1,12 +1,5 @@
-import { dataConnect } from './init';
-import {
-  getPage,
-  upsertPage,
-  deletePage,
-  listBlogPosts,
-  upsertBlogPost,
-  deleteBlogPost as sdkDeleteBlogPost
-} from '@/lib/dataconnect';
+import { db } from './init';
+import { doc, getDoc, setDoc, deleteDoc, collection, getDocs } from 'firebase/firestore';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { unstable_cache } from 'next/cache';
@@ -40,27 +33,26 @@ const getLocalAllPostsFallback = async () => {
 };
 
 export async function getPageContent(pageId: string) {
-  if (!dataConnect) return getLocalFallback(pageId);
   try {
-    const result = await getPage(dataConnect, { pageId });
-    if (result.data?.page) {
-      return result.data.page.content;
+    const docRef = doc(db, 'siteContent', pageId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
     }
     return getLocalFallback(pageId);
   } catch (e) {
-    console.warn(`DataConnect getPageContent failed for ${pageId}, falling back to local:`, e);
+    console.warn(`Firestore getPageContent failed for ${pageId}, falling back to local:`, e);
     return getLocalFallback(pageId);
   }
 }
 
 export async function savePageContent(pageId: string, content: any) {
-  if (dataConnect) {
-    try {
-      await upsertPage(dataConnect, { pageId, content });
-    } catch (e) {
-      console.warn(`DataConnect savePageContent failed for ${pageId}:`, e);
-      throw e;
-    }
+  try {
+    const docRef = doc(db, 'siteContent', pageId);
+    await setDoc(docRef, content);
+  } catch (e) {
+    console.warn(`Firestore savePageContent failed for ${pageId}:`, e);
+    throw e;
   }
 
   // Always update local fallback as cache/backup
@@ -88,13 +80,12 @@ export async function savePageContent(pageId: string, content: any) {
 }
 
 export async function deletePageContent(pageId: string) {
-  if (dataConnect) {
-    try {
-      await deletePage(dataConnect, { pageId });
-    } catch (e) {
-      console.warn(`DataConnect deletePageContent failed for ${pageId}:`, e);
-      throw e;
-    }
+  try {
+    const docRef = doc(db, 'siteContent', pageId);
+    await deleteDoc(docRef);
+  } catch (e) {
+    console.warn(`Firestore deletePageContent failed for ${pageId}:`, e);
+    throw e;
   }
 
   // Update local fallback
@@ -116,15 +107,23 @@ export async function deletePageContent(pageId: string) {
 }
 
 export async function getBlogPosts() {
-  if (!dataConnect) return getLocalAllPostsFallback();
   try {
-    const result = await listBlogPosts(dataConnect);
-    if (result.data?.blogPosts) {
-      return result.data.blogPosts;
-    }
-    return getLocalAllPostsFallback();
+    const querySnapshot = await getDocs(collection(db, 'blogPosts'));
+    const posts = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    
+    // Sort by createdAt descending
+    posts.sort((a: any, b: any) => {
+      const dateA = a.createdAt || '';
+      const dateB = b.createdAt || '';
+      return dateB.localeCompare(dateA);
+    });
+    
+    return posts.length > 0 ? posts : getLocalAllPostsFallback();
   } catch (e) {
-    console.warn("DataConnect getBlogPosts failed, falling back to local:", e);
+    console.warn("Firestore getBlogPosts failed, falling back to local:", e);
     return getLocalAllPostsFallback();
   }
 }
@@ -144,27 +143,12 @@ export async function saveBlogPost(post: any) {
     savedPost.updatedAt = new Date().toISOString();
   }
 
-  if (dataConnect) {
-    try {
-      await upsertBlogPost(dataConnect, {
-        id: savedPost.id,
-        title: savedPost.title || "",
-        content: savedPost.content || "",
-        slug: savedPost.slug || savedPost.id,
-        category: savedPost.category || null,
-        tags: savedPost.tags || null,
-        published: savedPost.published ?? false,
-        excerpt: savedPost.excerpt || null,
-        heroImageUrlDesktop: savedPost.heroImageUrlDesktop || null,
-        heroImageUrlMobile: savedPost.heroImageUrlMobile || null,
-        author: savedPost.author || null,
-        seoTitle: savedPost.seoTitle || null,
-        seoDescription: savedPost.seoDescription || null,
-      });
-    } catch (e) {
-      console.warn(`DataConnect saveBlogPost failed for ${savedPost.id}:`, e);
-      throw e;
-    }
+  try {
+    const docRef = doc(db, 'blogPosts', savedPost.id);
+    await setDoc(docRef, savedPost);
+  } catch (e) {
+    console.warn(`Firestore saveBlogPost failed for ${savedPost.id}:`, e);
+    throw e;
   }
 
   // Update local fallback
@@ -190,13 +174,12 @@ export async function saveBlogPost(post: any) {
 }
 
 export async function deleteBlogPost(id: string) {
-  if (dataConnect) {
-    try {
-      await sdkDeleteBlogPost(dataConnect, { id });
-    } catch (e) {
-      console.warn(`DataConnect deleteBlogPost failed for ${id}:`, e);
-      throw e;
-    }
+  try {
+    const docRef = doc(db, 'blogPosts', id);
+    await deleteDoc(docRef);
+  } catch (e) {
+    console.warn(`Firestore deleteBlogPost failed for ${id}:`, e);
+    throw e;
   }
 
   // Update local fallback

@@ -6,17 +6,37 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { SectionTitle } from '@/components/shared/SectionTitle';
 import { ContactForm } from '@/components/shared/ContactForm';
-import { Phone, Mail, MapPin, MessageSquare } from 'lucide-react';
+import { BlockRenderer } from '@/components/shared/BlockRenderer';
+import { Phone, Mail, MapPin, MessageSquare, Loader2 } from 'lucide-react';
 import { usePageContent } from '@/hooks/use-page-content';
 
 export default function ContactPage() {
   const { content: globalSettings } = usePageContent('global');
+  const { content: pageContent, loading } = usePageContent('contact');
 
   const phone = globalSettings?.sitePhone || '050-628-5476';
   const email = globalSettings?.siteEmail || 'yairmashkantaot@gmail.com';
   const address = globalSettings?.siteAddress || 'תל אביב';
   const whatsappMsg = globalSettings?.whatsappMsg || 'היי יאיר, הגעתי מהאתר ומעוניין לייעוץ משכנתא. תודה!';
   const whatsappLink = `https://wa.me/${phone.replace(/-/g, '').replace(/^0/, '972')}?text=${encodeURIComponent(whatsappMsg)}`;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="animate-spin text-primary size-12" />
+      </div>
+    );
+  }
+
+  if (pageContent.blocks && pageContent.blocks.length > 0) {
+    return (
+      <main className="min-h-screen bg-background text-right overflow-x-hidden">
+        <Navbar />
+        <BlockRenderer blocks={pageContent.blocks} />
+        <Footer />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background text-right overflow-x-hidden">

@@ -363,6 +363,44 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
               <Field label="תמונה - מובייל">
                 <Input value={section.imageUrlMobile || ''} onChange={e => onChange({ ...section, imageUrlMobile: e.target.value })} placeholder="URL" className="font-sans" dir="ltr" />
               </Field>
+              <Field label="מיקום/פוקוס תמונה (דסקטופ)">
+                <Select value={section.heroImagePosition || 'center'} onValueChange={v => onChange({ ...section, heroImagePosition: v })}>
+                  <SelectTrigger className="bg-stone-50"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="center">מרכז (Center)</SelectItem>
+                    <SelectItem value="top">למעלה (Top)</SelectItem>
+                    <SelectItem value="bottom">למטה (Bottom)</SelectItem>
+                    <SelectItem value="left">שמאל (Left)</SelectItem>
+                    <SelectItem value="right">ימין (Right)</SelectItem>
+                    <SelectItem value="center top">מרכז-למעלה (Center Top)</SelectItem>
+                    <SelectItem value="center bottom">מרכז-למטה (Center Bottom)</SelectItem>
+                    <SelectItem value="center 10%">גבוה מאוד (10%)</SelectItem>
+                    <SelectItem value="center 20%">גבוה (20%)</SelectItem>
+                    <SelectItem value="center 30%">קצת גבוה (30%)</SelectItem>
+                    <SelectItem value="center 70%">קצת נמוך (70%)</SelectItem>
+                    <SelectItem value="center 80%">נמוך (80%)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="מיקום/פוקוס תמונה (מובייל)">
+                <Select value={section.heroImagePositionMobile || 'center'} onValueChange={v => onChange({ ...section, heroImagePositionMobile: v })}>
+                  <SelectTrigger className="bg-stone-50"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="center">מרכז (Center)</SelectItem>
+                    <SelectItem value="top">למעלה (Top)</SelectItem>
+                    <SelectItem value="bottom">למטה (Bottom)</SelectItem>
+                    <SelectItem value="left">שמאל (Left)</SelectItem>
+                    <SelectItem value="right">ימין (Right)</SelectItem>
+                    <SelectItem value="center top">מרכז-למעלה (Center Top)</SelectItem>
+                    <SelectItem value="center bottom">מרכז-למטה (Center Bottom)</SelectItem>
+                    <SelectItem value="center 10%">גבוה מאוד (10%)</SelectItem>
+                    <SelectItem value="center 20%">גבוה (20%)</SelectItem>
+                    <SelectItem value="center 30%">קצת גבוה (30%)</SelectItem>
+                    <SelectItem value="center 70%">קצת נמוך (70%)</SelectItem>
+                    <SelectItem value="center 80%">נמוך (80%)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
               <div className="md:col-span-2 space-y-2">
                 <div className="flex justify-between items-center">
                   <Label className="boutique-label">מידת עננות (אטימות רקע)</Label>
