@@ -25,20 +25,20 @@ async function migrate() {
   // 1. Migrate global config
   if (data.global) {
     console.log("Migrating global configuration...");
-    await setDoc(doc(db, 'pages', 'global'), data.global);
+    await setDoc(doc(db, 'siteContent', 'global'), data.global);
   }
 
   // 2. Migrate blog config
   if (data.blog) {
     console.log("Migrating blog page configuration...");
-    await setDoc(doc(db, 'pages', 'blog'), data.blog);
+    await setDoc(doc(db, 'siteContent', 'blog'), data.blog);
   }
 
   // 3. Migrate pages
   if (data.pages) {
     for (const [pageId, pageContent] of Object.entries(data.pages)) {
       console.log(`Migrating page: ${pageId}...`);
-      await setDoc(doc(db, 'pages', pageId), pageContent);
+      await setDoc(doc(db, 'siteContent', pageId), pageContent);
     }
   }
 
@@ -47,7 +47,7 @@ async function migrate() {
   for (const [key, value] of Object.entries(data)) {
     if (!specialRootKeys.includes(key)) {
       console.log(`Migrating root-level page: ${key}...`);
-      await setDoc(doc(db, 'pages', key), value);
+      await setDoc(doc(db, 'siteContent', key), value);
     }
   }
 
