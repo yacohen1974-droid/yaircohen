@@ -36,6 +36,8 @@ export type DynamicSection = {
   logos?: LogoItem[];
   logoSize?: 'sm' | 'md' | 'lg';
   logoShape?: 'circle' | 'square';
+  logosAlign?: 'right' | 'center' | 'left';
+  logosTitlePosition?: 'above' | 'side';
   features?: Feature[];
   featuresColumns?: string;
   featuresBg?: string;

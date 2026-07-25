@@ -111,9 +111,22 @@ const HERO_HEIGHTS = [
 
 const SECTION_BG_OPTIONS = [
   { label: 'לבן', value: 'white' },
-  { label: 'אפור בהיר (Slate)', value: 'stone-50' },
-  { label: 'כחול עדין', value: 'bg-[hsl(213,30%,97%)]' },
-  { label: 'ראשי (Primary)', value: 'primary' },
+  { label: 'אפור בהיר', value: 'stone-50' },
+  { label: 'אפור', value: 'stone-100' },
+  { label: 'כחול עדין', value: 'sky-tint' },
+  { label: 'צבע ראשי (עדין)', value: 'primary-tint' },
+  { label: 'צבע ראשי (מלא, טקסט בהיר)', value: 'primary-solid' },
+];
+
+const LOGOS_ALIGN_OPTIONS = [
+  { label: 'ימין', value: 'right' },
+  { label: 'מרכז', value: 'center' },
+  { label: 'שמאל', value: 'left' },
+];
+
+const LOGOS_TITLE_POSITION_OPTIONS = [
+  { label: 'מעל הלוגואים', value: 'above' },
+  { label: 'בצד (לצד הלוגואים)', value: 'side' },
 ];
 
 const CTA_VARIANTS = [
@@ -656,6 +669,11 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
         
         {section.type === 'logos' && (
           <div className="md:col-span-2 space-y-4">
+            <TitleEditor
+              label="כותרת הקטע (אופציונלי)"
+              settings={section.titleSettings}
+              onChange={s => onChange({ ...section, titleSettings: s })}
+            />
             <div className="grid grid-cols-2 gap-4">
               <Field label="גודל לוגואים">
                 <Select value={section.logoSize || 'md'} onValueChange={v => onChange({ ...section, logoSize: v })}>
@@ -673,6 +691,22 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
                   <SelectContent>
                     <SelectItem value="square">מרובע</SelectItem>
                     <SelectItem value="circle">עגול</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="מיקום כותרת ביחס ללוגואים">
+                <Select value={section.logosTitlePosition || 'above'} onValueChange={v => onChange({ ...section, logosTitlePosition: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {LOGOS_TITLE_POSITION_OPTIONS.map(o => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="יישור הלוגואים">
+                <Select value={section.logosAlign || 'center'} onValueChange={v => onChange({ ...section, logosAlign: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {LOGOS_ALIGN_OPTIONS.map(o => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
