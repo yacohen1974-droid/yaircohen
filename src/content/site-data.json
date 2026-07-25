@@ -214,9 +214,9 @@
           "bg": "white",
           "id": "logos-banks",
           "logoShape": "square",
-          "logoSize": "lg",
-          "logosTitlePosition": "side",
-          "logosAlign": "center"
+          "logoSize": "md",
+          "logosTitlePosition": "above",
+          "logosAlign": "left"
         },
         {
           "id": "insight-advisor-vs-banker",
