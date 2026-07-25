@@ -23,7 +23,8 @@ import {
   Orbit, Compass, Users, Star, Palette, MessageSquare, HelpCircle,
   MousePointerClick, Quote, AlignLeft, AlignCenter, AlignRight, UserRound, RefreshCcw,
   ChevronRight, Monitor, Smartphone, Globe, X, Search, BookOpen, FileText, ShieldCheck, Check,
-  Video, BarChart2, Mail, Phone, Lock, Instagram, Linkedin, Youtube, Music, ArrowLeftRight
+  Video, BarChart2, Mail, Phone, Lock, Instagram, Linkedin, Youtube, Music, ArrowLeftRight,
+  UploadCloud
 } from 'lucide-react';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), {
@@ -264,7 +265,69 @@ function AlignPicker({ value, onChange }: { value: string, onChange: (v: string)
   );
 }
 
-function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDown, isFirst, isLast }: { 
+function LogoPicker({ value, onChange, availableLogos, onUploaded }: {
+  value: string;
+  onChange: (url: string) => void;
+  availableLogos: string[];
+  onUploaded: () => void;
+}) {
+  const { toast } = useToast();
+  const [uploading, setUploading] = useState(false);
+
+  const handleUpload = async (file: File) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', 'partner-logo');
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      onChange(data.path);
+      onUploaded();
+      toast({ title: '✅ הלוגו הועלה ונדחף לשרת', description: data.path });
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: '❌ ההעלאה נכשלה', description: err.message });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="flex-1 flex items-center gap-2 bg-white p-2 border border-stone-100">
+      <div className="relative w-10 h-10 shrink-0 rounded bg-stone-50 border border-stone-200 flex items-center justify-center overflow-hidden">
+        {value && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={value} alt="לוגו" className="max-w-full max-h-full object-contain" />
+        )}
+      </div>
+      <Select value={availableLogos.includes(value) ? value : undefined} onValueChange={onChange}>
+        <SelectTrigger className="flex-1 bg-stone-50 border-none h-10 text-xs font-sans">
+          <SelectValue placeholder={value || 'בחרו לוגו מהתיקייה...'} />
+        </SelectTrigger>
+        <SelectContent>
+          {availableLogos.map(f => <SelectItem key={f} value={f} className="text-xs font-sans">{f.replace('/logos/', '')}</SelectItem>)}
+        </SelectContent>
+      </Select>
+      <label className={cn(
+        'shrink-0 h-10 px-3 flex items-center gap-1.5 text-xs font-bold cursor-pointer border border-dashed border-primary/30 text-primary hover:bg-primary/5 transition-colors',
+        uploading && 'opacity-50 pointer-events-none'
+      )}>
+        {uploading ? <Loader2 size={14} className="animate-spin" /> : <UploadCloud size={14} />}
+        העלאה
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          disabled={uploading}
+          onChange={e => { const f = e.target.files?.[0]; if (f) handleUpload(f); e.target.value = ''; }}
+        />
+      </label>
+    </div>
+  );
+}
+
+function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDown, isFirst, isLast }: {
   section: any, 
   onChange: (s: any) => void, 
   onRemove: () => void,
@@ -273,6 +336,19 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
   isFirst: boolean,
   isLast: boolean
 }) {
+  const [availableLogos, setAvailableLogos] = useState<string[]>([]);
+
+  const refreshAvailableLogos = () => {
+    fetch('/api/admin/list-logos')
+      .then(res => res.json())
+      .then(data => { if (data.success) setAvailableLogos(data.files); })
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    if (section.type === 'logos') refreshAvailableLogos();
+  }, [section.type]);
+
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-md space-y-0 mb-8 relative group hover:border-primary/40 transition-all duration-300 overflow-hidden">
       <div className="flex justify-between items-center border-b border-slate-700 px-6 py-4 md:px-8 md:py-5">
@@ -602,37 +678,38 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
               </Field>
             </div>
             <Label className="boutique-label">רשימת לוגואים</Label>
+            <p className="text-xs text-stone-400 -mt-2">בחרו לוגו קיים מתוך public/logos, או העלו קובץ תמונה חדש בכל פורמט — הוא יישמר בתיקייה וידחף לשרת מיד.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {(section.logos || []).map((logo: any, idx: number) => (
-                <div key={logo.id || idx} className="flex gap-2 items-center bg-stone-50 p-2">
-                  <Input 
-                    value={logo.imageUrl} 
-                    onChange={e => {
+                <div key={logo.id || idx} className="flex gap-2 items-center">
+                  <LogoPicker
+                    value={logo.imageUrl}
+                    onChange={url => {
                       const nextLogos = [...(section.logos || [])];
-                      nextLogos[idx] = { ...nextLogos[idx], imageUrl: e.target.value };
+                      nextLogos[idx] = { ...nextLogos[idx], imageUrl: url };
                       onChange({ ...section, logos: nextLogos });
-                    }} 
-                    placeholder="URL תמונה" 
-                    className="flex-1 bg-white h-10 text-xs font-sans" 
+                    }}
+                    availableLogos={availableLogos}
+                    onUploaded={refreshAvailableLogos}
                   />
-                  <Button 
-                    type="button" 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => {
                       const nextLogos = [...(section.logos || [])];
                       nextLogos.splice(idx, 1);
                       onChange({ ...section, logos: nextLogos });
                     }}
-                    className="text-red-400 h-8 w-8"
+                    className="text-red-400 h-8 w-8 shrink-0"
                   >
                     <X size={14} />
                   </Button>
                 </div>
               ))}
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => {
                   const id = Math.random().toString(36).substr(2, 9);
                   const nextLogos = [...(section.logos || []), { id, imageUrl: '' }];
