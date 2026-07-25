@@ -1,138 +1,148 @@
-import { db } from './init';
-import { doc, getDoc, setDoc, deleteDoc, collection, getDocs } from 'firebase/firestore';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { unstable_cache } from 'next/cache';
 
 export const SITE_CONTENT_CACHE_TAG = 'site-content';
 
-const getLocalFallback = async (pageId: string) => {
+// Helper to read the file
+async function readSiteData(): Promise<any> {
+  const filePath = path.join(process.cwd(), 'src/content/site-data.json');
   try {
-    const filePath = path.join(process.cwd(), 'src/content/site-data.json');
     const fileContent = await fs.readFile(filePath, 'utf-8');
-    const data = JSON.parse(fileContent);
-    
-    // In site-data.json, pages can be at the root or under pages
-    return data.pages?.[pageId] || data[pageId] || null;
+    return JSON.parse(fileContent);
   } catch (e) {
-    console.warn(`Local fallback read failed for page ${pageId}:`, e);
-    return null;
+    console.error("Failed to read site-data.json:", e);
+    return { pages: {}, blogPosts: [] };
   }
-};
+}
 
-const getLocalAllPostsFallback = async () => {
+// Helper to write the file locally and to GitHub
+async function writeSiteData(data: any) {
+  const contentString = JSON.stringify(data, null, 2);
+  
+  // 1. Write locally if possible
   try {
     const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    const data = JSON.parse(fileContent);
-    return data.blogPosts || [];
+    await fs.writeFile(filePath, contentString, 'utf-8');
   } catch (e) {
-    console.warn("Local fallback read failed for blog posts:", e);
-    return [];
+    console.warn("Failed to write site-data.json locally:", e);
   }
-};
+
+  // 2. Commit to GitHub in production
+  await commitToGitHub(contentString);
+}
+
+async function commitToGitHub(contentString: string) {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
+    console.log("No GITHUB_TOKEN configured. Skipping GitHub commit.");
+    return;
+  }
+
+  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
+  const filePath = 'src/content/site-data.json';
+  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+  try {
+    console.log("Fetching file SHA from GitHub...");
+    const getRes = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'User-Agent': 'NextJS-CMS'
+      }
+    });
+
+    let sha = '';
+    if (getRes.status === 200) {
+      const fileInfo = await getRes.json();
+      sha = fileInfo.sha;
+    }
+
+    console.log("Committing updated site-data.json to GitHub...");
+    const putRes = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github+json',
+        'User-Agent': 'NextJS-CMS'
+      },
+      body: JSON.stringify({
+        message: 'admin: update website content via CMS',
+        content: Buffer.from(contentString).toString('base64'),
+        sha: sha || undefined,
+        branch: 'main'
+      })
+    });
+
+    if (!putRes.ok) {
+      const errText = await putRes.text();
+      throw new Error(`GitHub API returned ${putRes.status}: ${errText}`);
+    }
+
+    console.log("Successfully committed updated content to GitHub!");
+  } catch (err) {
+    console.error("GitHub commit failed:", err);
+  }
+}
 
 export async function getPageContent(pageId: string) {
-  try {
-    const docRef = doc(db, 'siteContent', pageId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return docSnap.data();
-    }
-    return getLocalFallback(pageId);
-  } catch (e) {
-    console.warn(`Firestore getPageContent failed for ${pageId}, falling back to local:`, e);
-    return getLocalFallback(pageId);
-  }
+  const data = await readSiteData();
+  return data.pages?.[pageId] || data[pageId] || null;
 }
 
 export async function savePageContent(pageId: string, content: any) {
-  try {
-    const docRef = doc(db, 'siteContent', pageId);
-    await setDoc(docRef, content);
-  } catch (e) {
-    console.warn(`Firestore savePageContent failed for ${pageId}:`, e);
+  const data = await readSiteData();
+  
+  if (!data.pages) data.pages = {};
+  
+  const specialRootKeys = ['global', 'blog', 'blogPosts'];
+  if (specialRootKeys.includes(pageId)) {
+    data[pageId] = { ...data[pageId], ...content };
+  } else {
+    data.pages[pageId] = { ...data.pages[pageId], ...content };
   }
 
-  // Always update local fallback as cache/backup
-  try {
-    const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-    let existingData: any = {};
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      existingData = JSON.parse(fileContent);
-    } catch (e) {}
-
-    if (!existingData.pages) existingData.pages = {};
-
-    const specialRootKeys = ['global', 'blog', 'blogPosts'];
-    if (specialRootKeys.includes(pageId)) {
-      existingData[pageId] = { ...existingData[pageId], ...content };
-    } else {
-      existingData.pages[pageId] = { ...existingData.pages[pageId], ...content };
-    }
-
-    await fs.writeFile(filePath, JSON.stringify(existingData, null, 2), 'utf-8');
-  } catch (e) {
-    console.error('Error saving local fallback:', e);
-  }
+  await writeSiteData(data);
 }
 
 export async function deletePageContent(pageId: string) {
-  try {
-    const docRef = doc(db, 'siteContent', pageId);
-    await deleteDoc(docRef);
-  } catch (e) {
-    console.warn(`Firestore deletePageContent failed for ${pageId}:`, e);
+  const data = await readSiteData();
+  
+  if (data.pages?.[pageId]) {
+    delete data.pages[pageId];
   }
-
-  // Update local fallback
-  try {
-    const siteDataPath = path.join(process.cwd(), 'src/content/site-data.json');
-    const fileContent = await fs.readFile(siteDataPath, 'utf-8');
-    const data = JSON.parse(fileContent);
-    
-    if (data.pages?.[pageId]) {
-      delete data.pages[pageId];
-    }
-    if (data[pageId]) {
-      delete data[pageId];
-    }
-    await fs.writeFile(siteDataPath, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (e) {
-    console.error('Error deleting page from local fallback:', e);
+  if (data[pageId]) {
+    delete data[pageId];
   }
+  
+  await writeSiteData(data);
 }
 
 export async function getBlogPosts() {
-  try {
-    const querySnapshot = await getDocs(collection(db, 'blogPosts'));
-    const posts = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    
-    // Sort by createdAt descending
-    posts.sort((a: any, b: any) => {
-      const dateA = a.createdAt || '';
-      const dateB = b.createdAt || '';
-      return dateB.localeCompare(dateA);
-    });
-    
-    return posts.length > 0 ? posts : getLocalAllPostsFallback();
-  } catch (e) {
-    console.warn("Firestore getBlogPosts failed, falling back to local:", e);
-    return getLocalAllPostsFallback();
-  }
+  const data = await readSiteData();
+  const posts = data.blogPosts || [];
+  
+  // Sort by date or createdAt descending
+  posts.sort((a: any, b: any) => {
+    const dateA = a.createdAt || '';
+    const dateB = b.createdAt || '';
+    return dateB.localeCompare(dateA);
+  });
+  
+  return posts;
 }
 
 export async function saveBlogPost(post: any) {
+  const data = await readSiteData();
+  if (!data.blogPosts) data.blogPosts = [];
+
   let savedPost = { ...post };
   if (!savedPost.id) {
     savedPost.id = Math.random().toString(36).substr(2, 9);
     savedPost.createdAt = new Date().toISOString();
   } else {
-    // Standardize dates to ISO strings for PostgreSQL/GraphQL Timestamps
     if (typeof savedPost.createdAt === 'number') {
       savedPost.createdAt = new Date(savedPost.createdAt).toISOString();
     } else if (!savedPost.createdAt) {
@@ -141,54 +151,21 @@ export async function saveBlogPost(post: any) {
     savedPost.updatedAt = new Date().toISOString();
   }
 
-  try {
-    const docRef = doc(db, 'blogPosts', savedPost.id);
-    await setDoc(docRef, savedPost);
-  } catch (e) {
-    console.warn(`Firestore saveBlogPost failed for ${savedPost.id}:`, e);
+  const index = data.blogPosts.findIndex((p: any) => p.id === savedPost.id);
+  if (index !== -1) {
+    data.blogPosts[index] = savedPost;
+  } else {
+    data.blogPosts.push(savedPost);
   }
 
-  // Update local fallback
-  try {
-    const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-    let data: any = {};
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      data = JSON.parse(fileContent);
-    } catch (e) {}
-
-    if (!data.blogPosts) data.blogPosts = [];
-    const index = data.blogPosts.findIndex((p: any) => p.id === savedPost.id);
-    if (index !== -1) {
-      data.blogPosts[index] = savedPost;
-    } else {
-      data.blogPosts.push(savedPost);
-    }
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (e) {
-    console.error('Error saving blog post to local fallback:', e);
-  }
+  await writeSiteData(data);
 }
 
 export async function deleteBlogPost(id: string) {
-  try {
-    const docRef = doc(db, 'blogPosts', id);
-    await deleteDoc(docRef);
-  } catch (e) {
-    console.warn(`Firestore deleteBlogPost failed for ${id}:`, e);
-  }
-
-  // Update local fallback
-  try {
-    const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    const data = JSON.parse(fileContent);
-    if (data.blogPosts) {
-      data.blogPosts = data.blogPosts.filter((p: any) => p.id !== id);
-      await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-    }
-  } catch (e) {
-    console.error('Error deleting blog post from local fallback:', e);
+  const data = await readSiteData();
+  if (data.blogPosts) {
+    data.blogPosts = data.blogPosts.filter((p: any) => p.id !== id);
+    await writeSiteData(data);
   }
 }
 
@@ -224,10 +201,6 @@ async function fetchDbInitialData() {
   return data;
 }
 
-// Fetches all page/blog content for the root layout in one pass. The six
-// underlying reads run in parallel (was a sequential loop, ~6x request
-// latency on every page load) and the result is cached across requests;
-// save-content/save-post revalidate this tag so edits show up immediately.
 export const getDbInitialData = unstable_cache(
   fetchDbInitialData,
   ['db-initial-data'],

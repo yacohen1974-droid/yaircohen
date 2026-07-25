@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useAuth, useUser, initializeFirebase } from '@/firebase';
+import { useAuth, useUser } from '@/firebase';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -235,10 +235,6 @@ export default function BlogManagementPage() {
       
       setAutoSaveStatus('saving');
       try {
-        const { firestore } = initializeFirebase();
-        const { doc, setDoc } = await import('firebase/firestore');
-        await setDoc(doc(firestore, 'blogPosts', postData.id), postData);
-
         const res = await fetch('/api/blog/save-post', {
           method: 'POST',
           body: JSON.stringify(postData),
@@ -281,10 +277,6 @@ export default function BlogManagementPage() {
     if(postData.content) postData.content = postData.content.replace(/&nbsp;|\u00A0/g, ' ');
 
     try {
-      const { firestore } = initializeFirebase();
-      const { doc, setDoc } = await import('firebase/firestore');
-      await setDoc(doc(firestore, 'blogPosts', postId), postData);
-
       const res = await fetch('/api/blog/save-post', {
         method: 'POST',
         body: JSON.stringify(postData),
@@ -329,10 +321,6 @@ export default function BlogManagementPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("האם למחוק?")) return;
     try {
-      const { firestore } = initializeFirebase();
-      const { doc, deleteDoc } = await import('firebase/firestore');
-      await deleteDoc(doc(firestore, 'blogPosts', id));
-
       const res = await fetch('/api/blog/delete-post', {
         method: 'POST',
         body: JSON.stringify({ id }),

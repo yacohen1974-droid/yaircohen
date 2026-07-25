@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Trash2, Loader2, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { useUser, initializeFirebase } from '@/firebase';
+import { useUser } from '@/firebase';
 
 export default function ManagePagesPage() {
   const [pages, setPages] = useState<string[]>([]);
@@ -45,10 +45,6 @@ export default function ManagePagesPage() {
     
     setDeleting(pageId);
     try {
-      const { firestore } = initializeFirebase();
-      const { doc, deleteDoc } = await import('firebase/firestore');
-      await deleteDoc(doc(firestore, 'siteContent', pageId));
-
       const res = await fetch('/api/delete-page', {
         method: 'POST',
         body: JSON.stringify({ pageId }),

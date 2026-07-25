@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useUser, initializeFirebase } from '@/firebase';
+import { useUser } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -1368,10 +1368,6 @@ export default function AdminPages() {
 
     setIsSaving(true);
     try {
-      const { firestore } = initializeFirebase();
-      const { doc, setDoc } = await import('firebase/firestore');
-      await setDoc(doc(firestore, 'siteContent', targetId), content);
-
       const res = await fetch('/api/save-content', {
         method: 'POST',
         body: JSON.stringify({ [targetId]: content }),
@@ -1400,10 +1396,6 @@ export default function AdminPages() {
     
     setIsSaving(true);
     try {
-      const { firestore } = initializeFirebase();
-      const { doc, deleteDoc } = await import('firebase/firestore');
-      await deleteDoc(doc(firestore, 'siteContent', selectedPage));
-
       const res = await fetch('/api/delete-page', {
         method: 'POST',
         body: JSON.stringify({ pageId: selectedPage }),
