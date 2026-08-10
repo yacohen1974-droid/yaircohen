@@ -32,18 +32,6 @@ export function usePageContent(pageId: string) {
 
   // Use server-side data for initial state if available
   const initialContent = useMemo(() => {
-    // 1. Check client-side draft first if window exists
-    if (typeof window !== 'undefined') {
-      const draft = getDraftData();
-      const pageData = pickPageData(draft, pageId);
-      if (pageData) {
-        return {
-          ...getInitialPageContent(pageId),
-          ...pageData
-        };
-      }
-    }
-
     if (!initialDataMap) return getInitialPageContent(pageId);
 
     const pageData = pickPageData(initialDataMap, pageId);
