@@ -33,6 +33,7 @@ import { InitialDataProvider } from '@/components/providers/InitialDataProvider'
 import { FloatingWhatsApp } from '@/components/shared/FloatingWhatsApp';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { PreviewModeBanner } from '@/components/shared/PreviewModeBanner';
+import { CookieConsent } from '@/components/shared/CookieConsent';
 
 async function getInitialData() {
   return getDbInitialData();
@@ -125,24 +126,12 @@ export default async function RootLayout({
         "font-body antialiased bg-background text-foreground selection:bg-primary/20 overflow-x-hidden pt-[56px] xl:pt-[80px]",
         SITE_THEME === 'masculine' && "theme-masculine"
       )}>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-CTGVLV3791"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-CTGVLV3791');
-          `}
-        </Script>
         <InitialDataProvider initialData={initialData}>
           {children}
           <FloatingWhatsApp />
           <ScrollToTop />
           <PreviewModeBanner />
+          <CookieConsent />
         </InitialDataProvider>
         <Toaster />
       </body>

@@ -5,6 +5,7 @@ import { useReveal } from '@/hooks/use-reveal';
 import { cn, safeEncodeURI } from '@/lib/utils';
 import { CheckCircle2, AlertCircle, ArrowLeft, Phone, User, MessageSquare, ShieldCheck, Star } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function ContactForm({ 
   isLight = false,
@@ -200,10 +201,10 @@ export function ContactForm({
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-2">
-              <div className="flex items-center gap-3 text-white/30 text-[11px]">
+              <div className="flex items-center gap-3 text-white/40 text-[11px]">
                 <input type="checkbox" id="terms" required className="w-4 h-4 rounded border-white/10 bg-white/5 accent-primary cursor-pointer" />
                 <label htmlFor="terms" className="cursor-pointer hover:text-white transition-colors">
-                  אני מאשר קבלת שיחה חוזרת מיאיר כהן ייעוץ למשכנתאות
+                  אני מאשר/ת את <Link href="/terms" className="underline hover:text-primary transition-colors">תנאי השימוש</Link> ו<Link href="/privacy" className="underline hover:text-primary transition-colors">מדיניות הפרטיות</Link> ומאשר/ת קבלת שיחה חוזרת מיאיר כהן – יועץ משכנתאות ופיננסים
                 </label>
               </div>
 
