@@ -101,6 +101,8 @@ export default async function RootLayout({
   const isUnderConstruction = !!initialData?.global?.underConstruction;
   const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api');
 
+  console.log("RootLayout: isUnderConstruction =", isUnderConstruction, "| pathname =", pathname, "| isAdminRoute =", isAdminRoute);
+
   if (isUnderConstruction && !isAdminRoute) {
     return (
       <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable, frankRuhlLibre.variable)}>
