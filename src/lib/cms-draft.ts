@@ -40,6 +40,7 @@ export function clearDraftData() {
 // ─── Plain-language change summary (for the pre-publish confirmation) ─────
 
 const GLOBAL_FIELD_LABELS: Record<string, string> = {
+  underConstruction: 'מצב אתר בבנייה (חסימת גלישה)',
   siteName: 'שם האתר',
   siteSubtitle: 'סלוגן',
   siteDescription: 'תיאור האתר (בפוטר)',

@@ -3,6 +3,8 @@ import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
 import Script from 'next/script';
 import { Assistant, Amatic_SC, Frank_Ruhl_Libre } from 'next/font/google';
+import { headers } from 'next/headers';
+import { UnderConstructionPage } from '@/components/shared/UnderConstructionPage';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -93,6 +95,28 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const initialData = await getInitialData();
+  const headerList = await headers();
+  const pathname = headerList.get('x-pathname') || '';
+
+  const isUnderConstruction = !!initialData?.global?.underConstruction;
+  const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api');
+
+  if (isUnderConstruction && !isAdminRoute) {
+    return (
+      <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable, frankRuhlLibre.variable)}>
+        <head>
+          <meta name="google-site-verification" content="uZtRayPCUnA35YVD2gPquUAz34V0WlSF1jaUI3kYYnM" />
+          <meta name="google-site-verification" content="Z7Bp-hEfMFwQYW9oYF0qdSdhJumMFlhsp246MOYQFP0" />
+        </head>
+        <body className={cn(
+          "font-body antialiased bg-stone-50 text-foreground selection:bg-primary/20 overflow-x-hidden",
+          SITE_THEME === 'masculine' && "theme-masculine"
+        )}>
+          <UnderConstructionPage globalData={initialData?.global} />
+        </body>
+      </html>
+    );
+  }
 
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable, frankRuhlLibre.variable)}>

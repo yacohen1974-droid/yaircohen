@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
+import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import {
   Loader2, Save, Plus, Trash2, Box, Heart, Sparkles, Image as ImageIcon, Type, Layout,
@@ -1765,6 +1766,21 @@ export default function AdminPages() {
               </SectionCard>
               <SectionCard icon={<Globe size={20} />} title="הגדרות כלליות וסלוגן">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="flex items-center justify-between border border-amber-200 bg-amber-50/50 p-4 rounded-lg md:col-span-2 gap-4">
+                    <div className="space-y-1 flex-1">
+                      <Label htmlFor="underConstruction" className="boutique-label font-bold text-amber-900 cursor-pointer block text-right">
+                        מצב אתר בבנייה (חסימת גלישה)
+                      </Label>
+                      <p className="text-xs text-stone-500 text-right">
+                        כאשר אפשרות זו פעילה, כל דפי האתר הציבוריים ייחסמו והגולשים יופנו למסך "אתר בבנייה". ממשק הניהול יישאר נגיש עבורך.
+                      </p>
+                    </div>
+                    <Switch
+                      checked={!!content.underConstruction}
+                      onCheckedChange={checked => set({ underConstruction: checked })}
+                      id="underConstruction"
+                    />
+                  </div>
                   <Field label="שם האתר">
                     <Input value={content.siteName} onChange={e => set({ siteName: e.target.value })} />
                   </Field>

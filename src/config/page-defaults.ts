@@ -73,6 +73,7 @@ export type DynamicSection = {
 
 export type ContentState = {
   // Global settings
+  underConstruction?: boolean;
   primaryColor: string;
   siteName: string;
   siteSubtitle: string;
@@ -167,6 +168,7 @@ export function getInitialPageContent(id: string): ContentState {
   }
 
   return {
+    underConstruction:    false,
     primaryColor:         fallback.primaryColor         || '35 40% 45%',
     siteName:             fallback.siteName             || '',
     siteSubtitle:         fallback.siteSubtitle         || '',
