@@ -522,7 +522,10 @@
     "ctaLabel": "לייעוץ ראשוני חינם",
     "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
     "pageId": "global",
-    "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
+    "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
+    "underConstruction": true,
+    "siteLogo": "/logo.png",
+    "siteFavicon": "/favicon.ico"
   },
   "home": {
     "primaryColor": "213 75% 35%",
