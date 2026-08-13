@@ -75,7 +75,7 @@
             "align": "center",
             "color": "text-accent",
             "fontFamily": "font-headline",
-            "fontSize": "text-6xl"
+            "fontSize": "text-4xl"
           },
           "type": "intro",
           "content": "<p class=\"ql-direction-rtl ql-align-right\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-direction-rtl ql-align-right\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-direction-rtl ql-align-right\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
@@ -121,6 +121,18 @@
           }
         },
         {
+          "id": "calculator-main",
+          "titleSettings": {
+            "fontSize": "text-4xl",
+            "subtitle": "מחשבון משכנתא",
+            "text": "כמה תוכלו לחסוך?",
+            "align": "center",
+            "color": "text-accent",
+            "fontFamily": "font-headline"
+          },
+          "type": "calculator"
+        },
+        {
           "insightTitleBold": "מאות אלפי שקלים במשכנתא?",
           "titleSettings": {
             "align": "right",
@@ -162,40 +174,32 @@
         {
           "logos": [
             {
-              "imageUrl": "/logos/bank5-lnw3.svg",
+              "imageUrl": "/logos/leumi.svg",
               "id": "yjoucv37w"
             },
             {
-              "imageUrl": "/logos/bankmercantil.svg",
+              "imageUrl": "/logos/mizrahi.svg",
               "id": "bcx2mx4sp"
             },
             {
-              "imageUrl": "/logos/bankigud-ui96.svg",
+              "imageUrl": "/logos/discount.svg",
               "id": "96sp5j0sd"
             },
             {
-              "imageUrl": "/logos/bank10.svg",
+              "imageUrl": "",
               "id": "djf3u5l98"
             },
             {
               "id": "rnzzqfrwg",
-              "imageUrl": "/logos/discount.svg"
+              "imageUrl": ""
             },
             {
               "id": "bzuzvgwim",
-              "imageUrl": "/logos/bank3.svg"
+              "imageUrl": ""
             },
             {
-              "id": "1d1vvpdw6",
-              "imageUrl": "/logos/jerusalem.svg"
-            },
-            {
-              "id": "mtt5ngpw6",
-              "imageUrl": "/logos/mizrahi.svg"
-            },
-            {
-              "id": "ixmg8bsfn",
-              "imageUrl": "/logos/leumi-kb7q.svg"
+              "id": "8jn5252nj",
+              "imageUrl": ""
             }
           ],
           "titleSettings": {
@@ -453,7 +457,7 @@
     "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
     "siteEmail": "yairmashkantaot@gmail.com",
     "sitePhone": "050-628-5476",
-    "siteAddress": "",
+    "siteAddress": "רחוב דיזנגוף 99, תל אביב",
     "facebookLink": "https://www.facebook.com",
     "instagramLink": "https://www.instagram.com/yair_cohen_44",
     "linkedinLink": "",
@@ -518,10 +522,7 @@
     "ctaLabel": "לייעוץ ראשוני חינם",
     "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
     "pageId": "global",
-    "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
-    "underConstruction": true,
-    "siteLogo": "/logo.png",
-    "siteFavicon": "/favicon.ico"
+    "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
   },
   "home": {
     "primaryColor": "213 75% 35%",
