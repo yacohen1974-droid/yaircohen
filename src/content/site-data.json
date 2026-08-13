@@ -453,7 +453,7 @@
     "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
     "siteEmail": "yairmashkantaot@gmail.com",
     "sitePhone": "050-628-5476",
-    "siteAddress": "רחוב דיזנגוף 99, תל אביב",
+    "siteAddress": "",
     "facebookLink": "https://www.facebook.com",
     "instagramLink": "https://www.instagram.com/yair_cohen_44",
     "linkedinLink": "",
@@ -518,7 +518,10 @@
     "ctaLabel": "לייעוץ ראשוני חינם",
     "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
     "pageId": "global",
-    "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
+    "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
+    "underConstruction": true,
+    "siteLogo": "/logo.png",
+    "siteFavicon": "/favicon.ico"
   },
   "home": {
     "primaryColor": "213 75% 35%",
