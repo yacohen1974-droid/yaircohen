@@ -523,7 +523,7 @@
     "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
     "pageId": "global",
     "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
-    "underConstruction": true,
+    "underConstruction": false,
     "siteLogo": "/logo.png",
     "siteFavicon": "/favicon.ico"
   },
