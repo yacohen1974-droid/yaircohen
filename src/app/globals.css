@@ -4,43 +4,48 @@
 
 @layer base {
   :root {
-    --background: 36 28% 97%; /* Warm White/Cream */
-    --foreground: 220 30% 15%;
+    --background: 210 29% 98%; /* HSL values for calm pale blue-gray */
+    --foreground: 243 100% 16%; /* Deep midnight blue */
 
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 15%;
+    --card-foreground: 243 100% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 15%;
+    --popover-foreground: 243 100% 16%;
 
-    --primary: 210 55% 38%;
+    --primary: 243 100% 16%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 30% 93%;
-    --secondary-foreground: 213 50% 20%;
+    --secondary: 210 50% 94%;
+    --secondary-foreground: 243 100% 16%;
 
-    --muted: 210 20% 94%;
-    --muted-foreground: 215 20% 45%;
+    --muted: 210 40% 90%;
+    --muted-foreground: 243 25% 42%;
 
-    --accent: 220 30% 22%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 210 50% 94%;
+    --accent-foreground: 243 100% 16%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 213 20% 90%;
-    --input: 213 20% 90%;
-    --ring: 210 55% 38%;
+    --border: 210 30% 88%;
+    --input: 210 30% 88%;
+    --ring: 243 100% 16%;
 
-    --radius: 0.75rem;
-    --gold: 42 70% 48%;
-    --warm: 36 28% 95%;
+    --radius: 1.25rem;
+    --gold: 38 44% 86%;
+    --warm: 210 29% 98%;
     --sage: 120 12% 90%;
   }
+}
 
-  body {
-    background-color: #fafaf9;
-  }
+::selection {
+  background-color: hsl(38 44% 86%) !important;
+  color: hsl(34 12% 17%) !important;
+}
+::-moz-selection {
+  background-color: hsl(38 44% 86%) !important;
+  color: hsl(34 12% 17%) !important;
 }
 
 
@@ -49,6 +54,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     scroll-padding-top: 56px;
+    font-size: clamp(100%, 0.95rem + 0.25vw, 112%);
   }
   @media (min-width: 1280px) {
     html {
@@ -63,6 +69,9 @@
     @apply bg-background text-foreground font-body overflow-x-hidden w-full;
     direction: rtl;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-weight: 450;
+    letter-spacing: 0.01em;
     line-height: 1.6;
     /* Never auto-hyphenate — always wrap whole words naturally */
     hyphens: none;
@@ -72,12 +81,20 @@
     word-spacing: normal;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-light tracking-tight;
+    @apply font-sans font-light tracking-tight;
     line-height: 1.25;
     hyphens: none;
     -webkit-hyphens: none;
     word-break: normal;
   }
+}
+
+.font-light, .font-thin {
+  font-weight: 450 !important;
+}
+
+.text-accent {
+  color: hsl(var(--primary)) !important;
 }
 
 /* Luxury Reveal Animations */
@@ -630,4 +647,193 @@
   text-shadow: 0 1px 0 rgba(255,255,255,0.2),
                0 2px 0 rgba(255,255,255,0.1),
                0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ── Animations & Transitions ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomInFromPoint {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes scrollHorizontal {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.9s ease-out forwards;
+}
+
+.animate-zoomInFromPoint {
+  animation: zoomInFromPoint 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.animate-scroll {
+  animation: scrollHorizontal 80s linear infinite;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.animate-slide-out {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+/* ── Accessibility overrides ── */
+.high-contrast {
+  --background: 0 0% 0% !important; /* Black */
+  --foreground: 0 0% 100% !important; /* White */
+  --primary: 60 100% 50% !important; /* Yellow */
+  --primary-foreground: 0 0% 0% !important; /* Black */
+  --secondary: 0 0% 0% !important;
+  --secondary-foreground: 60 100% 50% !important;
+  --muted: 0 0% 10% !important;
+  --muted-foreground: 0 0% 90% !important;
+  --accent: 0 0% 0% !important;
+  --accent-foreground: 60 100% 50% !important;
+  --card: 0 0% 0% !important;
+  --card-foreground: 0 0% 100% !important;
+  --border: 0 0% 30% !important; /* Charcoal */
+  --input: 0 0% 30% !important;
+  --ring: 60 100% 50% !important;
+}
+
+/* Recursive override for high contrast */
+.high-contrast,
+.high-contrast body,
+.high-contrast header,
+.high-contrast nav,
+.high-contrast footer,
+.high-contrast section,
+.high-contrast div,
+.high-contrast p,
+.high-contrast span,
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6,
+.high-contrast ul,
+.high-contrast li,
+.high-contrast a,
+.high-contrast button,
+.high-contrast label,
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #4D4D4D !important;
+  text-shadow: none !important;
+}
+
+/* Keep primary items and buttons highlighted in yellow */
+.high-contrast a,
+.high-contrast button,
+.high-contrast a *,
+.high-contrast button * {
+  color: #FFFF00 !important;
+  border-color: #FFFF00 !important;
+}
+
+.readable-font, .readable-font * {
+  font-family: 'Arial', sans-serif !important;
+}
+
+.disable-animations *, .disable-animations *::before, .disable-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-text-size="1"] {
+  font-size: 110% !important;
+}
+html[data-text-size="2"] {
+  font-size: 120% !important;
+}
+html[data-text-size="3"] {
+  font-size: 130% !important;
+}
+
+.large-cursor, .large-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0,0 L0,22 L6,16 L13,30 L17,28 L10,14 L18,14 Z' fill='black' stroke='white' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
+}
+
+.highlight-links a,
+.highlight-links a * {
+  text-decoration: underline !important;
+  background-color: #FFFF00 !important;
+  color: #000000 !important;
+  font-weight: bold !important;
 }

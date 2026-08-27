@@ -2,31 +2,33 @@ import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
 import Script from 'next/script';
-import { Assistant, Amatic_SC, Frank_Ruhl_Libre } from 'next/font/google';
+import { Rubik, Nunito, Amatic_SC } from 'next/font/google';
 import { headers } from 'next/headers';
 import { UnderConstructionPage } from '@/components/shared/UnderConstructionPage';
 
 import type { Metadata } from 'next';
 import './globals.css';
 
-const assistant = Assistant({
+const rubik = Rubik({
   subsets: ['latin', 'hebrew'],
-  weight: ['200', '300', '400', '500', '600', '700', '800'],
-  variable: '--font-assistant',
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-rubik',
   display: 'swap',
 });
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-nunito',
+  display: 'swap',
+});
+
+
 
 const amaticSC = Amatic_SC({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-amatic',
-  display: 'swap',
-});
-
-const frankRuhlLibre = Frank_Ruhl_Libre({
-  subsets: ['latin', 'hebrew'],
-  weight: ['300', '400', '500', '700', '900'],
-  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -36,6 +38,7 @@ import { FloatingWhatsApp } from '@/components/shared/FloatingWhatsApp';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { PreviewModeBanner } from '@/components/shared/PreviewModeBanner';
 import { CookieConsent } from '@/components/shared/CookieConsent';
+import { AccessibilityWidget } from '@/components/shared/AccessibilityWidget';
 
 async function getInitialData() {
   return getDbInitialData();
@@ -105,13 +108,35 @@ export default async function RootLayout({
 
   if (isUnderConstruction && !isAdminRoute) {
     return (
-      <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable, frankRuhlLibre.variable)}>
+      <html lang="he" dir="rtl" suppressHydrationWarning className={cn(rubik.variable, nunito.variable, amaticSC.variable)}>
         <head>
           <meta name="google-site-verification" content="uZtRayPCUnA35YVD2gPquUAz34V0WlSF1jaUI3kYYnM" />
           <meta name="google-site-verification" content="Z7Bp-hEfMFwQYW9oYF0qdSdhJumMFlhsp246MOYQFP0" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  try {
+                    var contrast = localStorage.getItem('acc-contrast');
+                    if (contrast === 'true') document.documentElement.classList.add('high-contrast');
+                    var font = localStorage.getItem('acc-font');
+                    if (font === 'true') document.documentElement.classList.add('readable-font');
+                    var anim = localStorage.getItem('acc-anim');
+                    if (anim === 'true') document.documentElement.classList.add('disable-animations');
+                    var cursor = localStorage.getItem('acc-cursor');
+                    if (cursor === 'true') document.documentElement.classList.add('large-cursor');
+                    var links = localStorage.getItem('acc-links');
+                    if (links === 'true') document.documentElement.classList.add('highlight-links');
+                    var size = localStorage.getItem('acc-size');
+                    if (size) document.documentElement.setAttribute('data-text-size', size);
+                  } catch (e) {}
+                })();
+              `
+            }}
+          />
         </head>
         <body className={cn(
-          "font-body antialiased bg-stone-50 text-foreground selection:bg-primary/20 overflow-x-hidden",
+          "font-body antialiased bg-background text-foreground overflow-x-hidden",
           SITE_THEME === 'masculine' && "theme-masculine"
         )}>
           <UnderConstructionPage globalData={initialData?.global} />
@@ -121,10 +146,32 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(assistant.variable, amaticSC.variable, frankRuhlLibre.variable)}>
+    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(rubik.variable, nunito.variable, amaticSC.variable)}>
       <head>
         <meta name="google-site-verification" content="uZtRayPCUnA35YVD2gPquUAz34V0WlSF1jaUI3kYYnM" />
         <meta name="google-site-verification" content="Z7Bp-hEfMFwQYW9oYF0qdSdhJumMFlhsp246MOYQFP0" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var contrast = localStorage.getItem('acc-contrast');
+                  if (contrast === 'true') document.documentElement.classList.add('high-contrast');
+                  var font = localStorage.getItem('acc-font');
+                  if (font === 'true') document.documentElement.classList.add('readable-font');
+                  var anim = localStorage.getItem('acc-anim');
+                  if (anim === 'true') document.documentElement.classList.add('disable-animations');
+                  var cursor = localStorage.getItem('acc-cursor');
+                  if (cursor === 'true') document.documentElement.classList.add('large-cursor');
+                  var links = localStorage.getItem('acc-links');
+                  if (links === 'true') document.documentElement.classList.add('highlight-links');
+                  var size = localStorage.getItem('acc-size');
+                  if (size) document.documentElement.setAttribute('data-text-size', size);
+                } catch (e) {}
+              })();
+            `
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -149,7 +196,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={cn(
-        "font-body antialiased bg-background text-foreground selection:bg-primary/20 overflow-x-hidden pt-[56px] xl:pt-[80px]",
+        "font-body antialiased bg-background text-foreground overflow-x-hidden pt-[56px] xl:pt-[80px]",
         SITE_THEME === 'masculine' && "theme-masculine"
       )}>
         <InitialDataProvider initialData={initialData}>
@@ -158,6 +205,7 @@ export default async function RootLayout({
           <ScrollToTop />
           <PreviewModeBanner />
           <CookieConsent />
+          <AccessibilityWidget />
         </InitialDataProvider>
         <Toaster />
       </body>
