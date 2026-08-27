@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useAuth, initializeFirebase } from '@/firebase';
@@ -24,6 +24,12 @@ export default function AdminLoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!auth.loading && auth.user) {
+      router.replace('/admin/dashboard');
+    }
+  }, [auth.user, auth.loading, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
