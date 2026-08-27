@@ -148,9 +148,6 @@ export function Footer() {
                 ? globalSettings.navItems
                 : [
                     { label: 'בית', href: '/' },
-                    { label: 'אודות', href: '/about' },
-                    { label: 'התהליך שלנו', href: '/process' },
-                    { label: 'בלוג', href: '/blog' },
                     { label: 'צור קשר', href: '/contact' },
                   ]
               ).map((item: { label: string; href: string }) => (
@@ -173,12 +170,7 @@ export function Footer() {
             <nav className="flex flex-col gap-3">
               {(globalSettings?.footerItems?.length > 0
                 ? globalSettings.footerItems
-                : [
-                    { label: 'משכנתא לדירה ראשונה', href: '/first-apartment' },
-                    { label: 'מחזור משכנתא', href: '/refinance' },
-                    { label: 'משכנתא לדירה שנייה', href: '/second-apartment' },
-                    { label: 'ייעוץ לזכאים', href: '/eligible' },
-                  ]
+                : []
               ).map((item: { label: string; href: string }) => (
                 <Link
                   key={item.href}
@@ -244,9 +236,6 @@ export function Footer() {
           <p>© {year} {globalSettings?.siteName || 'יאיר כהן יועץ משכנתאות'} — כל הזכויות שמורות</p>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            <Link href="/privacy" className="hover:text-white transition-colors">מדיניות פרטיות</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">תנאי שימוש</Link>
-            <Link href="/accessibility" className="hover:text-white transition-colors">נגישות</Link>
             <Link
               href="/admin/login"
               className="flex items-center gap-1.5 hover:text-white transition-colors"

@@ -82,19 +82,7 @@ export function CookieConsent() {
         </>
       )}
 
-      {/* Cookie Preferences Floating Trigger Button */}
-      {!showBanner && (
-        <button
-          onClick={() => {
-            setShowBanner(true);
-            setShowSettings(true);
-          }}
-          className="fixed bottom-6 right-6 xl:right-8 z-50 p-3.5 bg-slate-900/90 text-white rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:bg-slate-800 border border-slate-700/50 transition-all duration-300 group hover:scale-110 flex items-center justify-center"
-          aria-label="הגדרות עוגיות ופרטיות"
-        >
-          <Cookie className="size-6 text-primary group-hover:rotate-12 transition-transform duration-300" />
-        </button>
-      )}
+
 
       {/* Slide-up Banner */}
       {showBanner && (

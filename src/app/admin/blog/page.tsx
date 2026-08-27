@@ -507,7 +507,7 @@ export default function BlogManagementPage() {
                     {autoSaveStatus === 'saving' ? 'שומר אוטומטית...' : autoSaveStatus === 'saved' ? 'נשמר אוטומטית ✓' : '⚠ שגיאה בשמירה'}
                   </div>
                 )}
-                <Button disabled={isSaving || autoSaveStatus === 'saving'} className="bg-primary text-white boutique-label h-14 w-full rounded-none">
+                <Button disabled={isSaving || autoSaveStatus === 'saving'} className="bg-primary !text-white boutique-label h-14 w-full rounded-none">
                   {isSaving ? <><Loader2 className="animate-spin mr-2" /> שומר...</> : (editingId ? "עדכון ידני" : "פרסום")}
                 </Button>
               </form>

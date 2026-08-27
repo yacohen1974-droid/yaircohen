@@ -44,9 +44,6 @@ export function Navbar() {
 
   const defaultNavItems = [
     { label: 'בית', href: '/' },
-    { label: 'אודות', href: '/about' },
-    { label: 'התהליך', href: '/practice' },
-    { label: 'בלוג', href: '/blog' },
     { label: 'צור קשר', href: '/contact' },
   ];
 

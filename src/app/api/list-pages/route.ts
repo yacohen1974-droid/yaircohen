@@ -5,6 +5,7 @@ import path from 'path';
 export async function GET() {
   try {
     const appPath = path.join(process.cwd(), 'src/app');
+    const siteDataPath = path.join(process.cwd(), 'src/content/site-data.json');
     
     async function findPages(dir: string, base: string = ''): Promise<string[]> {
       const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -31,9 +32,22 @@ export async function GET() {
       return results;
     }
 
-    const pages = await findPages(appPath);
+    const filePages = await findPages(appPath);
+    
+    let dbPages: string[] = [];
+    try {
+      const content = await fs.readFile(siteDataPath, 'utf8');
+      const data = JSON.parse(content);
+      if (data.pages) {
+        dbPages = Object.keys(data.pages);
+      }
+    } catch (e) {
+      console.error('Error reading site-data.json in list-pages API:', e);
+    }
+    
+    const uniquePages = Array.from(new Set([...filePages, ...dbPages]));
       
-    return NextResponse.json({ pages });
+    return NextResponse.json({ pages: uniquePages });
   } catch (error) {
     console.error('List pages error:', error);
     return NextResponse.json({ error: 'Failed to list pages' }, { status: 500 });

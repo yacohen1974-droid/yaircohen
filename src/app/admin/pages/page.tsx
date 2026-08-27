@@ -68,17 +68,7 @@ const QUILL_FORMATS = [
 
 const DEFAULT_PAGES = [
   { id: 'home', name: '🏠 ראשי' },
-  { id: 'services', name: '💼 שירותים' },
-  { id: 'about', name: '👤 אודות' },
   { id: 'contact', name: '📩 צור קשר' },
-  { id: 'blog', name: '📝 בלוג' },
-  { id: 'first-apartment', name: '🔑 דירה ראשונה' },
-  { id: 'refinancing', name: '🔄 מחזור משכנתא' },
-  { id: 'investment', name: '📈 נדל"ן להשקעה' },
-  { id: 'faq-mortgage', name: '❓ שאלות נפוצות' },
-  { id: 'privacy', name: '📄 מדיניות פרטיות' },
-  { id: 'terms', name: '⚖️ תנאי שימוש' },
-  { id: 'accessibility', name: '♿ נגישות' },
 ];
 
 const ICON_OPTIONS = [
@@ -2154,7 +2144,7 @@ export default function AdminPages() {
                 </div>
               )}
               <div className="p-3 md:p-4">
-                <Button type="submit" disabled={isSaving || autoSaveStatus === 'saving'} className="w-full bg-primary hover:bg-accent h-13 text-white text-base boutique-label rounded-none shadow-xl flex items-center justify-center gap-3">
+                <Button type="submit" disabled={isSaving || autoSaveStatus === 'saving'} className="w-full bg-primary hover:bg-accent h-13 !text-white text-base boutique-label rounded-none shadow-xl flex items-center justify-center gap-3">
                   {isSaving ? (
                     <><Loader2 className="animate-spin size-4" /> שומר...</>
                   ) : (

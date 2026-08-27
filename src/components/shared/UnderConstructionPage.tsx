@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Hammer, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, MessageSquare } from 'lucide-react';
+import { Hammer, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, MessageSquare, Lock } from 'lucide-react';
 import { ContentState } from '@/config/page-defaults';
 
 interface UnderConstructionPageProps {
@@ -157,9 +157,13 @@ export function UnderConstructionPage({ globalData }: UnderConstructionPageProps
       </div>
 
       {/* Footer copyright */}
-      <p className="mt-8 text-xs text-stone-400 font-light relative z-10">
-        © {new Date().getFullYear()} {siteName}. כל הזכויות שמורות.
-      </p>
+      <div className="mt-8 flex flex-col items-center gap-2 text-xs text-stone-400 font-light relative z-10">
+        <p>© {new Date().getFullYear()} {siteName}. כל הזכויות שמורות.</p>
+        <a href="/admin/login" className="hover:text-primary transition-colors flex items-center gap-1.5 opacity-60 hover:opacity-100 mt-1">
+          <Lock size={10} />
+          <span>כניסת מנהל</span>
+        </a>
+      </div>
     </div>
   );
 }
