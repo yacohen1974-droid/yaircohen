@@ -1,7 +1,44 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "WebFetch(domain:mym.co.il)",
+      "Bash(grep -n \"SECTION_BG_OPTIONS\\\\|TitleEditor\\\\|section.bg\\\\|onChange\\({ ...section, bg\" /Users/amireyal/yaircohen/src/app/admin/pages/page.tsx)",
+      "Bash(curl -sf http://localhost:9002)",
+      "Bash(curl -s -i http://localhost:9002/api/list-pages)",
+      "Bash(curl -s \"http://localhost:9002/api/get-content?pageId=home\" -o /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/home-content.json)",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -X POST http://localhost:9002/api/admin/save-draft -H \"Content-Type: application/json\" --data-binary @/private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/test-draft.json)",
+      "Bash(node -e \"require.resolve\\('playwright'\\)\")",
+      "Bash(timeout 90 npx --yes playwright@latest install --with-deps chromium)",
+      "Bash(npx --yes playwright@latest install chromium)",
+      "Bash(npm install *)",
+      "Bash(node verify.mjs)",
+      "Bash(node debug.mjs)",
+      "Bash(node debug2.mjs)",
+      "Bash(curl -s http://localhost:9002/api/admin/preview-draft)",
+      "Bash(node verify2.mjs)",
+      "Bash(node verify3.mjs)",
+      "Bash(rm -rf /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/node_modules /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/package*.json /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/*.mjs /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/*.png /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad/*.json)",
+      "Bash(git commit -m ' *)",
+      "Bash(curl -s http://localhost:9002/api/admin/publish-history)",
+      "Bash(mkdir -p /private/tmp/claude-501/-Users-amireyal-yaircohen/6a793446-7773-405b-af75-a90c8a74c986/scratchpad)",
+      "Bash(node -e \"require.resolve\\('sharp'\\)\")",
+      "Bash(node -e \"try { require.resolve\\('sharp'\\); console.log\\('FOUND'\\); } catch\\(e\\) { console.log\\('NOT_FOUND'\\); }\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('\\\\n'.join\\(sorted\\(list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)+list\\(d.get\\('devDependencies',{}\\).keys\\(\\)\\)\\)\\)\\)\")",
+      "Bash(curl -s -X POST http://localhost:9002/api/admin/upload -F \"file=@/tmp/big-test-logo.png;type=image/png\" -F \"type=partner-logo\")",
+      "Bash(curl -s \"http://localhost:9002/api/get-content?pageId=home\")",
+      "Bash(node mobile-check.mjs)",
+      "Bash(node mobile-check2.mjs)",
+      "Bash(node mobile-measure.mjs)",
+      "Bash(node mobile-contact3.mjs)",
+      "Bash(node contact-page.mjs)",
+      "Bash(node contact-debug.mjs)",
+      "Bash(node contact-debug2.mjs)",
+      "Bash(node contact-debug3.mjs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9002/yair-portrait.png)",
+      "Bash(curl -s -D - http://localhost:9002/yair-portrait.png -o /tmp/check-portrait.png)",
+      "Bash(git pull *)"
     ]
   }
 }
