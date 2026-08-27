@@ -91,8 +91,7 @@ export function UnderConstructionPage({ globalData }: UnderConstructionPageProps
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md text-sm md:text-base whitespace-nowrap"
             >
               <Phone size={18} />
-              <span>התקשרו אלינו: </span>
-              <span dir="ltr">{sitePhone}</span>
+              <span>התקשרו אלינו: <bdi>{sitePhone}</bdi></span>
             </a>
           </div>
         )}
