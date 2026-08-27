@@ -80,7 +80,7 @@ export function UnderConstructionPage({ globalData }: UnderConstructionPageProps
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md text-sm md:text-base cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md text-sm md:text-base cursor-pointer whitespace-nowrap"
               >
                 <MessageSquare size={20} className="fill-current" />
                 שיחה בוואטסאפ
@@ -88,10 +88,11 @@ export function UnderConstructionPage({ globalData }: UnderConstructionPageProps
             )}
             <a
               href={`tel:${sitePhone}`}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md text-sm md:text-base"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-md text-sm md:text-base whitespace-nowrap"
             >
               <Phone size={18} />
-              התקשרו אלינו: {sitePhone}
+              <span>התקשרו אלינו: </span>
+              <span dir="ltr">{sitePhone}</span>
             </a>
           </div>
         )}
@@ -100,7 +101,7 @@ export function UnderConstructionPage({ globalData }: UnderConstructionPageProps
         <div className="pt-2 max-w-md mx-auto">
           <a
             href="/admin/login"
-            className="w-full inline-flex items-center justify-center gap-2 border border-stone-200 hover:border-primary hover:bg-stone-50 text-stone-500 hover:text-primary font-medium py-2.5 px-6 rounded-lg transition-all text-xs"
+            className="w-full inline-flex items-center justify-center gap-2 border border-stone-200 hover:border-primary hover:bg-stone-50 text-stone-500 hover:text-primary font-medium py-2.5 px-6 rounded-lg transition-all text-xs whitespace-nowrap"
           >
             <Lock size={13} />
             כניסת מנהל
@@ -111,20 +112,14 @@ export function UnderConstructionPage({ globalData }: UnderConstructionPageProps
         <div className="border-t border-stone-200/60 my-6" />
 
         {/* Contact Info list */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto text-right text-xs md:text-sm text-stone-600">
-          {siteEmail && (
-            <div className="flex items-center gap-3 bg-stone-50/50 p-3 rounded-lg border border-stone-100 justify-end">
-              <span className="font-medium text-stone-700 truncate select-all">{siteEmail}</span>
+        {siteEmail && (
+          <div className="max-w-md mx-auto text-xs md:text-sm text-stone-600">
+            <div className="flex items-center justify-center gap-3 bg-stone-50/50 p-3 rounded-lg border border-stone-100">
               <Mail size={16} className="text-gold shrink-0" />
+              <span className="font-medium text-stone-700 select-all truncate">{siteEmail}</span>
             </div>
-          )}
-          {siteAddress && (
-            <div className="flex items-center gap-3 bg-stone-50/50 p-3 rounded-lg border border-stone-100 justify-end">
-              <span className="font-medium text-stone-700 truncate">{siteAddress}</span>
-              <MapPin size={16} className="text-gold shrink-0" />
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Social Media Links */}
         {(globalData?.facebookLink || globalData?.instagramLink || globalData?.linkedinLink) && (
