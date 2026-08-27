@@ -217,12 +217,7 @@ export default function AdminLoginPage() {
                 <span>התחברות מהירה עם גוגל</span>
               </Button>
             </form>
-            
-            <div className="mt-8 pt-8 border-t border-stone-100 text-center">
-              <p className="text-xs text-stone-400 font-light">
-                הגישה מיועדת ליאיר כהן בלבד. אין אפשרות להרשמה עצמית.
-              </p>
-            </div>
+
           </CardContent>
         </Card>
       </section>
