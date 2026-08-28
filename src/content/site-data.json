@@ -373,13 +373,6 @@
             "fontFamily": "font-headline"
           },
           "type": "contact"
-        },
-        {
-          "id": "yw2qu3a9p",
-          "type": "text",
-          "content": "",
-          "title": "",
-          "bg": "white"
         }
       ],
       "sectionOrder": [
@@ -404,8 +397,8 @@
     "siteName": "יאיר כהן",
     "siteSubtitle": "יועץ משכנתאות ופיננסים",
     "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
-    "siteEmail": "yairmashkantaot@gmail.com",
-    "sitePhone": "050-628-5476",
+    "siteEmail": "mashkantaot@yair-cohen.co.il",
+    "sitePhone": "050-9922018",
     "siteAddress": "נס עמים",
     "facebookLink": "https://www.facebook.com",
     "instagramLink": "https://www.instagram.com/yair_cohen_44",
@@ -439,7 +432,7 @@
     "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
     "pageId": "global",
     "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
-    "underConstruction": true,
+    "underConstruction": false,
     "siteLogo": "/logo.png",
     "siteFavicon": "/favicon.ico"
   },
