@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { ToastAction } from '@/components/ui/toast';
 import { UploadCloud, Trash2, Loader2, AlertCircle, Eye, Smartphone } from 'lucide-react';
 import { hasDraftChanges, getDraftData, clearDraftData, summarizeChanges } from '@/lib/cms-draft';
+import { getAdminIdToken } from '@/firebase';
 
-export function PublishBanner() {
+export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
   const [hasChanges, setHasChanges] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
@@ -48,9 +49,10 @@ export function PublishBanner() {
 
     setIsPublishing(true);
     try {
+      const idToken = await getAdminIdToken();
       const res = await fetch('/api/admin/publish', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
         body: JSON.stringify(draft)
       });
       const data = await res.json();
@@ -93,15 +95,16 @@ export function PublishBanner() {
 
     setIsPreviewing(true);
     try {
+      const idToken = await getAdminIdToken();
       const res = await fetch('/api/admin/save-draft', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
         body: JSON.stringify(draft)
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
 
-      const url = `${window.location.origin}/api/admin/preview`;
+      const url = `${window.location.origin}/api/admin/preview?path=${encodeURIComponent(currentPath || '/')}`;
       if (device === 'mobile') {
         window.open(url, '_blank', 'noopener,width=390,height=844');
       } else {

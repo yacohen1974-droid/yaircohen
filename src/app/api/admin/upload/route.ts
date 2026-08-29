@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { requireAdmin } from '@/lib/verify-admin';
 
 const ALLOWED_TYPES = ['logo', 'favicon', 'partner-logo'] as const;
 type UploadType = (typeof ALLOWED_TYPES)[number];
@@ -101,6 +102,10 @@ async function commitToGitHub(repoFilePath: string, buffer: Buffer, message: str
 
 export async function POST(request: Request) {
   try {
+    if (!(await requireAdmin(request))) {
+      return NextResponse.json({ success: false, error: 'לא מורשה' }, { status: 401 });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file');
     const type = formData.get('type');

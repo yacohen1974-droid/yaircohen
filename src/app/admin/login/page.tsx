@@ -36,22 +36,6 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      // Fallback/Mock check
-      const isValidAmir = email === 'amirher@gmail.com' && password === 'amir147+';
-      const isValidYair = email === 'yairmashkantaot@gmail.com' && password === 'Yc147258@';
-
-      if (isValidAmir || isValidYair) {
-        localStorage.setItem('is_mock_logged_in', 'true');
-        localStorage.setItem('mock_user_email', email);
-        toast({
-          title: "התחברת בהצלחה (Mock)",
-          description: "ברוך הבא לממשק הניהול.",
-        });
-        router.push('/admin/dashboard');
-        return;
-      }
-
-      // Actual Firebase Auth email login
       const { auth: firebaseAuth } = initializeFirebase();
       if (firebaseAuth) {
         await signInWithEmailAndPassword(firebaseAuth, email, password);

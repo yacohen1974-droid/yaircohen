@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 import { commitDraftSiteData } from '@/firebase/db-actions';
+import { requireAdmin } from '@/lib/verify-admin';
 
 export async function POST(request: Request) {
   try {
+    if (!(await requireAdmin(request))) {
+      return NextResponse.json({ success: false, error: 'לא מורשה' }, { status: 401 });
+    }
+
     const data = await request.json();
     if (!data || typeof data !== 'object') {
       return NextResponse.json({ success: false, error: 'Invalid payload' }, { status: 400 });

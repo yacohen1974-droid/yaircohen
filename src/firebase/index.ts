@@ -9,6 +9,17 @@ export function initializeFirebase() {
   return { app, firestore: db, auth: authInstance };
 }
 
+/** ID token for the signed-in admin, to send as `Authorization: Bearer <token>` on admin API calls. */
+export async function getAdminIdToken(): Promise<string | null> {
+  const user = authInstance.currentUser;
+  if (!user) return null;
+  try {
+    return await user.getIdToken();
+  } catch {
+    return null;
+  }
+}
+
 export const useFirestore = () => db;
 
 export const useAuth = () => {
@@ -16,19 +27,6 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMock = false;
-    if (typeof window !== 'undefined') {
-      const isMockLoggedIn = window.localStorage.getItem('is_mock_logged_in') === 'true';
-      const mockEmail = window.localStorage.getItem('mock_user_email');
-      if (isMockLoggedIn && mockEmail) {
-        setUser({ email: mockEmail, isMock: true });
-        setLoading(false);
-        isMock = true;
-      }
-    }
-
-    if (isMock) return;
-
     return authInstance.onAuthStateChanged((usr) => {
       setUser(usr);
       setLoading(false);
@@ -37,10 +35,6 @@ export const useAuth = () => {
 
   const signOut = async () => {
     try {
-      if (typeof window !== 'undefined') {
-        window.localStorage.removeItem('is_mock_logged_in');
-        window.localStorage.removeItem('mock_user_email');
-      }
       await fbSignOut(authInstance);
       if (typeof window !== 'undefined') {
         window.location.href = '/admin/login';

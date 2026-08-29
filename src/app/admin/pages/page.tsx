@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/firebase';
+import { useUser, getAdminIdToken } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
 import { PublishBanner } from '@/components/admin/PublishBanner';
@@ -284,7 +284,12 @@ function LogoPicker({ value, onChange, availableLogos, onUploaded }: {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('type', 'partner-logo');
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const idToken = await getAdminIdToken();
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
+        body: formData
+      });
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
       onChange(data.path);
@@ -1398,7 +1403,11 @@ export default function AdminPages() {
       const dateStr = new Date(previous.date).toLocaleString('he-IL', { dateStyle: 'medium', timeStyle: 'short' });
       if (!window.confirm(`לשחזר את האתר לגרסה מתאריך ${dateStr}?\n\nהפעולה תפרסם מחדש את התוכן שהיה קיים לפני הפרסום האחרון. אפשר לבטל את זה בכל עת על ידי פרסום מחדש.`)) return;
 
-      const res = await fetch('/api/admin/revert-last-publish', { method: 'POST' });
+      const idToken = await getAdminIdToken();
+      const res = await fetch('/api/admin/revert-last-publish', {
+        method: 'POST',
+        headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
+      });
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
 
@@ -1452,7 +1461,12 @@ export default function AdminPages() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('type', type);
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const idToken = await getAdminIdToken();
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
+        body: formData
+      });
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
       set(type === 'logo' ? { siteLogo: data.path } : { siteFavicon: data.path });
@@ -1621,7 +1635,7 @@ export default function AdminPages() {
 
   return (
     <main className="min-h-screen bg-stone-50 text-right pb-44">
-      <PublishBanner />
+      <PublishBanner currentPath={selectedPage === 'home' ? '/' : selectedPage === 'global' || selectedPage === 'custom' ? '/' : `/${selectedPage}`} />
       <Navbar />
       <section className="pt-28 md:pt-48 px-4 md:px-6 max-w-5xl mx-auto">
 

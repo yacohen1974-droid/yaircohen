@@ -3,11 +3,16 @@ import { revalidateTag } from 'next/cache';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { SITE_CONTENT_CACHE_TAG } from '@/firebase/db-actions';
+import { requireAdmin } from '@/lib/verify-admin';
 
 export async function POST(request: Request) {
   try {
+    if (!(await requireAdmin(request))) {
+      return NextResponse.json({ success: false, error: 'לא מורשה' }, { status: 401 });
+    }
+
     const data = await request.json();
-    
+
     // Validate request body
     if (!data || typeof data !== 'object') {
       return NextResponse.json({ success: false, error: 'Invalid payload' }, { status: 400 });
