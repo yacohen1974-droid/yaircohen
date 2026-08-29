@@ -131,22 +131,67 @@ Firestore כבר מותקן ומאותחל בפרויקט (`src/firebase/`) — 
 
 ---
 
-## 4. סדר עדיפויות
+## 4. סטטוס עדיפויות
 
-| # | פעולה | ערך | סיכון | מתי |
+| # | פעולה | ערך | סיכון | סטטוס |
 |---|---|---|---|---|
-| 1 | מיגרציית נתונים + הסרת קוד מת (שלב 1) | גבוה | נמוך | מיד |
-| 2 | הסרת `fs.writeFile` | גבוה | נמוך | מיד |
-| 3 | דיאלוג "עמוד חדש" מאוחד (11) | גבוה | נמוך | מיד |
-| 4 | מעבר ל‑Firestore (שלב 2) | קריטי | בינוני | הצעד הגדול |
-| 5 | פיצול הקומפוננטה (12–13) | בינוני | בינוני | אחרי Firestore |
-| 6 | בדיקות + ולידציה (שלב 4) | גבוה | נמוך | לאורך הדרך |
+| 1 | ✅ מיגרציית נתונים + הסרת קוד מת (שלב 1) | גבוה | נמוך | COMPLETE |
+| 2 | ✅ הסרת `fs.writeFile` | גבוה | נמוך | COMPLETE |
+| 3 | ✅ דיאלוג "עמוד חדש" (11) | גבוה | נמוך | COMPLETE |
+| 4 | ✅ מעבר ל‑Firestore (שלב 2.5) | קריטי | בינוני | COMPLETE (code) |
+| 5 | ⏳ Seed Firestore + deploy rules | קריטי | בינוני | NEXT |
+| 6 | ⏳ פיצול הקומפוננטה (שלב 3) | בינוני | בינוני | AFTER FIRESTORE |
+| 7 | ⏳ בדיקות + ולידציה (שלב 4) | גבוה | נמוך | לאורך הדרך |
 
-**המלצה:** לבצע 1–3 עכשיו (יום עבודה, סיכון נמוך, שקט מיידי), ואז להיכנס ל‑Firestore כפרויקט ממוקד. פיצול הקומפוננטה **אחרי** Firestore — אין טעם לארגן מחדש קוד שעומד להימחק.
+**מצב כללי**: Stages 1 + 2.5 תוכן בקוד. Firestore מוכן להפעלה. הצעד הבא: seed + deploy.
 
 ---
 
-## 5. מה כבר תוקן בסבב הזה
+## 5. מה כבר תוקן — STAGE 1 (סיום)
+
+### שלב 1 - ייצוב מיידי:
+- ✅ מיגרציית נתונים חד־פעמית ל-`site-data.json` (הסרת fields גלובליים, מחיקת שיכפול)
+- ✅ הסרת קוד מת (`savePageContent`, `deletePageContent`, וכו')
+- ✅ הסרת `fs.writeFile` מ-publish/db-actions (GitHub זה SSoT)
+- ✅ נעילת הסכימה: `pages[id]` בלבד
+- ✅ פיתוח NewPageDialog (דיאלוג אחיד ליצירת עמוד)
+- ✅ מחיקת `manage-pages` (consolidated into admin/pages)
+- ✅ תיקון publish-status endpoint (קרא מGitHub, לא מדיסק)
+
+### שלב 2.5 - Firestore Migration (COMPLETE)
+
+#### 2.5.1: Design ✅
+- `FIRESTORE_SCHEMA.md` — סכימה מלאה + Security Rules
+
+#### 2.5.2-2.5.5: Implementation ✅
+- `src/firebase/firestore-cms.ts` — read/write functions
+  - `readPublishedSiteData()` → published collection
+  - `readDraftSiteData()` → draft collection
+  - `publishSiteData()` → atomic draft→published
+  - `saveDraftSiteData()` → save in-progress edits
+
+- `src/firebase/db-actions.ts` — wrapper layer
+  - `readSiteData()` → calls readPublishedSiteData()
+  - `writeSiteData()` → calls publishSiteData()
+  - Removed all GitHub commit logic
+  - Removed draft branch management
+
+- API Routes updated:
+  - `publish/route.ts` — writes to Firestore + revalidates
+  - `save-draft/route.ts` — saves to Firestore draft
+  - `publish-status/route.ts` — reads both versions from Firestore
+  - `list-pages/route.ts` — lists from Firestore
+
+#### 2.5.6: Seeding + Deployment (READY)
+- `FIRESTORE_SEED.md` — setup instructions (manual + automated)
+- `scripts/seed-firestore.ts` — one-time migration script
+
+**Status**: Code complete, build passes, ready for deployment.
+**Next**: Run seed script in production, deploy Security Rules, verify.
+
+---
+
+## 6. מה כבר תוקן בסבב הזה
 
 - `publish-status` קורא מ‑GitHub ולא מדיסק מקומי → הבאנר לא משקר יותר.
 - כפתור עריכה בכל דף ב‑`manage-pages` + תמיכה ב‑`?page=<id>`.
