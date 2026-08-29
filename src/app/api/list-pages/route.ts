@@ -41,6 +41,38 @@ export async function GET() {
       if (data.pages) {
         dbPages = Object.keys(data.pages);
       }
+      
+      // Extract pages from global menus
+      if (data.global) {
+        const menuKeys = ['navItems', 'footerItems', 'legalItems'];
+        menuKeys.forEach((key) => {
+          const items = data.global[key];
+          if (Array.isArray(items)) {
+            items.forEach((item: any) => {
+              let href = item?.href;
+              if (typeof href === 'string') {
+                href = href.trim();
+                // Ignore external links, anchor links, mail/phone links and default routes
+                if (
+                  !href.startsWith('http') &&
+                  !href.startsWith('#') &&
+                  !href.startsWith('tel:') &&
+                  !href.startsWith('mailto:') &&
+                  href !== '/' &&
+                  href !== '/contact' &&
+                  href !== '/blog' &&
+                  href !== ''
+                ) {
+                  const cleanId = href.startsWith('/') ? href.slice(1) : href;
+                  if (/^[a-zA-Z0-9-]+$/.test(cleanId)) {
+                    dbPages.push(cleanId);
+                  }
+                }
+              }
+            });
+          }
+        });
+      }
     } catch (e) {
       console.error('Error reading site-data.json in list-pages API:', e);
     }

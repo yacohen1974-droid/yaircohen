@@ -31,12 +31,18 @@ export default function ManagePagesPage() {
       const res = await fetch('/api/list-pages');
       const data = await res.json();
       if (data.pages) {
-        let list = data.pages;
+        const combined = [...data.pages];
         const draft = getDraftData();
         if (draft && draft.pages) {
-          list = list.filter((p: string) => draft.pages[p] !== undefined);
+          Object.keys(draft.pages).forEach((p: string) => {
+            if (!combined.includes(p)) {
+              combined.push(p);
+            }
+          });
         }
-        setPages(list);
+        // Filter out default pages that shouldn't be deleted here
+        const deletablePages = combined.filter(p => p !== 'home' && p !== 'contact');
+        setPages(deletablePages);
       }
     } catch (e) {
       console.error(e);

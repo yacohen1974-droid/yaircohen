@@ -1476,11 +1476,58 @@ export default function AdminPages() {
       const data = await res.json();
       if (data.pages) {
         const combined = [...DEFAULT_PAGES];
+        
+        // 1. Add server pages
         data.pages.forEach((p: string) => {
           if (!combined.find(cp => cp.id === p)) {
             combined.push({ id: p, name: `📄 ${p}` });
           }
         });
+
+        // 2. Add local draft custom pages & page URLs referenced in menus
+        const draft = getDraftData();
+        if (draft) {
+          if (draft.pages) {
+            Object.keys(draft.pages).forEach((p: string) => {
+              if (!combined.find(cp => cp.id === p)) {
+                combined.push({ id: p, name: `📄 ${p} (טיוטה)` });
+              }
+            });
+          }
+
+          if (draft.global) {
+            const menuKeys = ['navItems', 'footerItems', 'legalItems'];
+            menuKeys.forEach((key) => {
+              const items = draft.global[key];
+              if (Array.isArray(items)) {
+                items.forEach((item: any) => {
+                  let href = item?.href;
+                  if (typeof href === 'string') {
+                    href = href.trim();
+                    if (
+                      !href.startsWith('http') &&
+                      !href.startsWith('#') &&
+                      !href.startsWith('tel:') &&
+                      !href.startsWith('mailto:') &&
+                      href !== '/' &&
+                      href !== '/contact' &&
+                      href !== '/blog' &&
+                      href !== ''
+                    ) {
+                      const cleanId = href.startsWith('/') ? href.slice(1) : href;
+                      if (/^[a-zA-Z0-9-]+$/.test(cleanId)) {
+                        if (!combined.find(cp => cp.id === cleanId)) {
+                          combined.push({ id: cleanId, name: `📄 ${cleanId} (מתוך תפריט)` });
+                        }
+                      }
+                    }
+                  }
+                });
+              }
+            });
+          }
+        }
+
         setAllPages(combined);
       }
     } catch (e) {
