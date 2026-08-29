@@ -79,7 +79,7 @@
             "fontSize": "text-4xl"
           },
           "type": "intro",
-          "content": "<p class=\"ql-align-right ql-direction-rtl\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-align-right ql-direction-rtl\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-align-right ql-direction-rtl\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
+          "content": "<p class=\"ql-direction-rtl ql-align-right\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-direction-rtl ql-align-right\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-direction-rtl ql-align-right\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
           "portraitShape": "square",
           "id": "intro-main",
           "portraitImageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784359520/%D7%99%D7%90%D7%99%D7%A8_%D7%9B%D7%94%D7%9F_ofg8qo.webp",
@@ -440,51 +440,6 @@
       "ctaLabel": "לייעוץ ראשוני חינם",
       "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
       "pageId": "about-yaira",
-      "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
-    },
-    "about-yair-": {
-      "underConstruction": false,
-      "primaryColor": "220 60% 18%",
-      "siteName": "יאיר כהן",
-      "siteSubtitle": "יועץ משכנתאות ופיננסים",
-      "siteDescription": "",
-      "siteEmail": "",
-      "sitePhone": "",
-      "siteAddress": "",
-      "siteLogo": "/logo.png",
-      "siteFavicon": "/favicon.ico",
-      "facebookLink": "",
-      "instagramLink": "",
-      "linkedinLink": "",
-      "navItems": [],
-      "footerItems": [],
-      "legalItems": [],
-      "metaTitle": "יאיר כהן – יועץ משכנתאות | ייעוץ ראשוני ללא התחייבות ",
-      "metaDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של 15 שנה. חיסכון של עשרות אלפי שקלים. קבל ייעוץ ראשוני חינם.",
-      "blocks": [
-        {
-          "id": "482tugpjh",
-          "type": "intro",
-          "title": "אודות",
-          "content": "",
-          "portraitPosition": "left",
-          "bg": "white"
-        }
-      ],
-      "sectionOrder": [
-        "hero",
-        "stats",
-        "intro",
-        "features",
-        "video",
-        "testimonials",
-        "faqs",
-        "cta",
-        "contact"
-      ],
-      "ctaLabel": "לייעוץ ראשוני חינם",
-      "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
-      "pageId": "about-yair-",
       "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
     }
   },
