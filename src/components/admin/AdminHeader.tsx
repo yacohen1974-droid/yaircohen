@@ -3,7 +3,7 @@
 import React from 'react';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileText, Newspaper, HelpCircle, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, Newspaper, HelpCircle, LogOut, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/firebase';
 
@@ -54,6 +54,13 @@ export function AdminHeader() {
       </div>
 
       <div className="flex items-center gap-4 shrink-0">
+        <NextLink
+          href="/"
+          className="flex items-center gap-1.5 text-xs text-stone-300 hover:text-white hover:bg-stone-800/80 px-2.5 py-1.5 rounded border border-stone-700/50 transition-colors"
+        >
+          <Globe size={14} />
+          <span>מעבר לאתר</span>
+        </NextLink>
         {auth.user?.email && (
           <span className="hidden sm:inline text-xs text-stone-400 truncate max-w-[160px]" dir="ltr">
             {auth.user.email}

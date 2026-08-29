@@ -85,6 +85,23 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
     handleChange('footerItems', items);
   };
 
+  const handleLegalItemChange = (index: number, field: string, value: string) => {
+    const items = [...(settings.legalItems || [])];
+    items[index] = { ...items[index], [field]: value };
+    handleChange('legalItems', items);
+  };
+
+  const handleAddLegalItem = () => {
+    const items = [...(settings.legalItems || [])];
+    items.push({ label: '', href: '' });
+    handleChange('legalItems', items);
+  };
+
+  const handleRemoveLegalItem = (index: number) => {
+    const items = (settings.legalItems || []).filter((_: any, i: number) => i !== index);
+    handleChange('legalItems', items);
+  };
+
   const handleSocialChange = (key: string, value: string) => {
     const social = { ...settings.socialLinks };
     if (value) social[key] = value;
@@ -252,6 +269,42 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
           ))}
           <Button variant="outline" onClick={handleAddFooterItem} className="w-full">
             הוסף קישור
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Legal Links */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">קישורים משפטיים (תחתית האתר)</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {(settings.legalItems || []).map((item: any, idx: number) => (
+            <div key={idx} className="flex gap-2">
+              <Input
+                value={item.label}
+                onChange={(e) => handleLegalItemChange(idx, 'label', e.target.value)}
+                placeholder="שם הקישור (למשל: תנאי שימוש)"
+              />
+              <Select value={item.href} onValueChange={(v) => handleLegalItemChange(idx, 'href', v)}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="בחר דף" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availablePages.map((page) => (
+                    <SelectItem key={page.id} value={`/${page.id}`}>
+                      {page.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button variant="ghost" size="sm" onClick={() => handleRemoveLegalItem(idx)}>
+                מחק
+              </Button>
+            </div>
+          ))}
+          <Button variant="outline" onClick={handleAddLegalItem} className="w-full">
+            הוסף קישור משפטי
           </Button>
         </CardContent>
       </Card>
