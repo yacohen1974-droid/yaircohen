@@ -9,15 +9,42 @@
  *   npx tsx scripts/seed-firestore.ts
  */
 
-import { db } from '../src/firebase/init';
+import { db, authInstance } from '../src/firebase/init';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { writeBatch, doc } from 'firebase/firestore';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as readline from 'readline';
 
 const SITE_ID = 'default';
 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+function prompt(question: string): Promise<string> {
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      resolve(answer.trim());
+    });
+  });
+}
+
 async function seedFirestore() {
   try {
+    console.log('🔐 Authenticating to Firebase...');
+    const email = await prompt('Enter admin email (default: amirher@gmail.com): ') || 'amirher@gmail.com';
+    const password = await prompt('Enter password: ');
+    
+    if (!password) {
+      console.error('❌ Password is required.');
+      process.exit(1);
+    }
+
+    await signInWithEmailAndPassword(authInstance, email, password);
+    console.log('✅ Authenticated successfully!\n');
+
     // Read site-data.json
     const jsonPath = path.join(process.cwd(), 'src/content/site-data.json');
     const jsonContent = await fs.readFile(jsonPath, 'utf-8');
@@ -76,8 +103,10 @@ async function seedFirestore() {
     console.log('\n✅ Firestore seeding complete!');
     console.log('   Firestore is now the single source of truth.');
     console.log('   site-data.json is kept for reference only.');
+    rl.close();
   } catch (error) {
     console.error('❌ Seeding failed:', error);
+    rl.close();
     process.exit(1);
   }
 }
