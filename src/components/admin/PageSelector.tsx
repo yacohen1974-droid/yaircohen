@@ -182,7 +182,10 @@ export function PageSelector({
         isLoading={isCreatingPage}
       />
 
-      <ConfirmDialog {...confirmState} />
+      <ConfirmDialog
+        state={confirmState}
+        onOpenChange={(open) => !open && setConfirmState(CONFIRM_DIALOG_CLOSED)}
+      />
     </>
   );
 }
