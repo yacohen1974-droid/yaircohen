@@ -11,6 +11,7 @@ import { listAllPages, DEFAULT_PAGES } from '@/lib/cms-pages';
 import { slugifyPageId, pageIdToHref } from '@/lib/slug';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
+import { NewPageDialog } from '@/components/admin/NewPageDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -1451,7 +1452,6 @@ export default function AdminPages() {
 
   const [mounted, setMounted] = useState(false);
   const [selectedPage, setSelectedPage] = useState('home');
-  const [customPageId, setCustomPageId] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [content, setContent] = useState<ContentState>(EMPTY_CONTENT);
@@ -1461,6 +1461,8 @@ export default function AdminPages() {
   const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [isReverting, setIsReverting] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>(CONFIRM_DIALOG_CLOSED);
+  const [isNewPageDialogOpen, setIsNewPageDialogOpen] = useState(false);
+  const [isCreatingPage, setIsCreatingPage] = useState(false);
 
   const executeRevert = async (dateStr: string) => {
     setIsReverting(true);
@@ -1516,6 +1518,55 @@ export default function AdminPages() {
       setAllPages(await listAllPages());
     } catch (e) {
       console.error("Error loading pages:", e);
+    }
+  };
+
+  const handleCreateNewPage = async (pageId: string, addToNav: boolean) => {
+    setIsCreatingPage(true);
+    try {
+      let draft = getDraftData();
+      if (!draft) {
+        draft = await initializeDraft();
+      }
+
+      // Create empty page
+      if (!draft.pages) draft.pages = {};
+      if (!draft.pages[pageId]) {
+        draft.pages[pageId] = {
+          primaryColor: draft.global?.primaryColor || '35 40% 45%',
+          metaTitle: '',
+          metaDescription: '',
+          blocks: [],
+          pageId
+        };
+      }
+
+      // Add to nav if requested
+      if (addToNav) {
+        if (!draft.global) draft.global = {};
+        if (!draft.global.navItems) draft.global.navItems = [];
+        const exists = draft.global.navItems.some((item: any) => item.href === `/${pageId}`);
+        if (!exists) {
+          draft.global.navItems.push({ label: pageId, href: `/${pageId}` });
+        }
+      }
+
+      saveDraftData(draft);
+      await loadAllPages();
+      setSelectedPage(pageId);
+
+      toast({
+        title: '✅ עמוד חדש נוצר!',
+        description: `העמוד "${pageId}" נוצר בהצלחה.${addToNav ? ' הוא נוסף לתפריט הראשי.' : ''}`
+      });
+    } catch (err: any) {
+      toast({
+        variant: 'destructive',
+        title: '❌ יצירה נכשלה',
+        description: err.message
+      });
+    } finally {
+      setIsCreatingPage(false);
     }
   };
 
@@ -1638,11 +1689,10 @@ export default function AdminPages() {
   // autosave below — both just persist the current content into the local
   // draft; only the loading indicator and the confirmation toast differ.
   const persistDraft = async (opts: { silent: boolean }) => {
-    const rawId = selectedPage === 'custom' ? customPageId : selectedPage;
-    const targetId = selectedPage === 'custom' ? slugifyPageId(rawId) : rawId;
+    const targetId = selectedPage;
 
-    if (!targetId) {
-      if (!opts.silent) toast({ variant: 'destructive', title: 'אנא הזינו מזהה עמוד (Slug)' });
+    if (!targetId || targetId === 'custom') {
+      if (!opts.silent) toast({ variant: 'destructive', title: 'בחרו דף לשמירה' });
       return;
     }
 
@@ -1691,7 +1741,6 @@ export default function AdminPages() {
           title: '💾 טיוטה נשמרה בהצלחה!',
           description: `התוכן נשמר כטיוטה מקומית בדפדפן. יש ללחוץ על "פרסם שינויים" בראש המסך כדי להעלותם לאתר החי.`
         });
-        if (selectedPage === 'custom') setSelectedPage(targetId);
       }
     } catch (err: any) {
       if (opts.silent) setAutoSaveStatus('error');
@@ -1797,7 +1846,7 @@ export default function AdminPages() {
     return <div className="min-h-screen flex items-center justify-center bg-stone-50"><Loader2 className="animate-spin text-primary size-12" /></div>;
   }
 
-  const currentPath = selectedPage === 'home' ? '/' : selectedPage === 'global' || selectedPage === 'custom' ? '/' : `/${selectedPage}`;
+  const currentPath = selectedPage === 'home' || selectedPage === 'global' ? '/' : `/${selectedPage}`;
 
   return (
     <AdminShell currentPath={currentPath}>
@@ -1834,36 +1883,39 @@ export default function AdminPages() {
                     <SelectContent>
                       <SelectItem value="global" className="font-bold text-primary">⚙️ הגדרות כלליות, תפריטים ופוטר</SelectItem>
                       {allPages.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
-                      <SelectItem value="custom" className="italic text-stone-400">✚ עמוד חדש</SelectItem>
                     </SelectContent>
                   </Select>
                 </Field>
               </div>
-              <button 
-                type="button" 
-                onClick={loadAllPages} 
-                className="mt-7 text-stone-400 hover:text-primary transition-colors p-2"
-              >
-                <RefreshCcw size={16} />
-              </button>
+              <div className="flex gap-2 mt-7">
+                <button
+                  type="button"
+                  onClick={() => setIsNewPageDialogOpen(true)}
+                  className="px-3 py-2 text-sm font-medium bg-primary text-white hover:bg-accent rounded-none transition-colors"
+                  title="עמוד חדש"
+                >
+                  ✚
+                </button>
+                <button
+                  type="button"
+                  onClick={loadAllPages}
+                  className="text-stone-400 hover:text-primary transition-colors p-2"
+                >
+                  <RefreshCcw size={16} />
+                </button>
+              </div>
             </div>
-            {(selectedPage === 'custom' || (selectedPage !== 'global' && selectedPage !== 'custom')) && (
+            {selectedPage !== 'global' && (
               <Field label="כתובת העמוד באתר">
                 <Input
-                  value={selectedPage === 'custom' ? customPageId : customPageId || selectedPage}
-                  onChange={e => setCustomPageId(e.target.value)}
-                  placeholder="my-new-page"
-                  className="bg-white h-12"
+                  value={selectedPage}
+                  readOnly
+                  className="bg-stone-100 h-12"
                   dir="ltr"
                 />
-                {selectedPage === 'custom' && customPageId && (
-                  <p className="text-xs text-stone-400 mt-1" dir="ltr">
-                    יישמר בפועל בתור: <code className="text-primary">{pageIdToHref(slugifyPageId(customPageId))}</code>
-                  </p>
-                )}
               </Field>
             )}
-            {selectedPage !== 'global' && selectedPage !== 'custom' && (
+            {selectedPage !== 'global' && (
               <button 
                 type="button" 
                 onClick={handleDeletePage} 
@@ -2366,6 +2418,12 @@ export default function AdminPages() {
       <ConfirmDialog
         state={confirmDialog}
         onOpenChange={(open) => !open && setConfirmDialog(CONFIRM_DIALOG_CLOSED)}
+      />
+      <NewPageDialog
+        open={isNewPageDialogOpen}
+        onOpenChange={setIsNewPageDialogOpen}
+        onCreate={handleCreateNewPage}
+        isLoading={isCreatingPage}
       />
     </AdminShell>
   );
