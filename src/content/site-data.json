@@ -41,7 +41,7 @@
           "title": "משכנתא חכמה מתחילה בשיחה עם יאיר כהן"
         },
         {
-          "statsBg": "white",
+          "statsBg": "navy",
           "type": "stats",
           "id": "stats-main",
           "stats": [
@@ -65,8 +65,7 @@
               "value": "100%",
               "label": "ייעוץ בלתי תלוי"
             }
-          ],
-          "statsFontSize": "text-5xl"
+          ]
         },
         {
           "title": "יאיר כהן  יועץ המשכנתאות שלכם",
@@ -79,10 +78,10 @@
             "fontSize": "text-4xl"
           },
           "type": "intro",
-          "content": "<p class=\"ql-direction-rtl ql-align-right\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-direction-rtl ql-align-right\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-direction-rtl ql-align-right\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
-          "portraitShape": "square",
+          "content": "<p class=\"ql-align-right ql-direction-rtl\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-align-right ql-direction-rtl\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-align-right ql-direction-rtl\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
+          "portraitShape": "rectangle",
           "id": "intro-main",
-          "portraitImageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784359520/%D7%99%D7%90%D7%99%D7%A8_%D7%9B%D7%94%D7%9F_ofg8qo.webp",
+          "portraitImageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784306511/%D7%99%D7%90%D7%99%D7%A8_%D7%9B%D7%94%D7%9F_skiai5.webp",
           "portraitPosition": "right",
           "bg": "bg-[hsl(213,30%,97%)]"
         },
@@ -175,40 +174,40 @@
         {
           "logos": [
             {
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992405/mizrahi-y6oi_emjdtq.svg",
+              "imageUrl": "/logos/leumi.svg",
               "id": "yjoucv37w"
             },
             {
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992400/bankigud-ui96-1pvl_tqtdtk.svg",
+              "imageUrl": "",
               "id": "bcx2mx4sp"
             },
             {
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992403/leumi-ofjm_dxddy5.svg",
+              "imageUrl": "",
               "id": "96sp5j0sd"
             },
             {
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992398/bank5-p5fl_wju1pq.svg",
+              "imageUrl": "",
               "id": "djf3u5l98"
             },
             {
               "id": "rnzzqfrwg",
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992404/jerusalem_ohzrjh.webp"
+              "imageUrl": ""
             },
             {
               "id": "bzuzvgwim",
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992398/bank3_n0wmeb.svg"
+              "imageUrl": ""
             },
             {
               "id": "8jn5252nj",
-              "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1787992402/discount-vhq1_tg8x5s.svg"
+              "imageUrl": ""
             }
           ],
           "titleSettings": {
             "color": "text-accent",
             "fontFamily": "font-headline",
             "fontSize": "text-2xl",
-            "subtitle": "על מנת להשיג לכם את התנאים הטובים ביותר ",
-            "text": "אני עובד עם  כל הבנקים ",
+            "subtitle": "",
+            "text": "עובדים מול כל הבנקים",
             "align": "center"
           },
           "type": "logos",
@@ -397,7 +396,7 @@
   "global": {
     "primaryColor": "213 75% 35%",
     "siteName": "יאיר כהן",
-    "siteSubtitle": "יאיר כהן יועץ משכנתאות",
+    "siteSubtitle": "יועץ משכנתאות ופיננסים",
     "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
     "siteEmail": "mashkantaot@yair-cohen.co.il",
     "sitePhone": "050-9922018",
@@ -409,10 +408,6 @@
       {
         "label": "ראשי",
         "href": "/"
-      },
-      {
-        "label": "מי אני",
-        "href": "/about"
       },
       {
         "label": "צור קשר",
@@ -438,28 +433,10 @@
     "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
     "pageId": "global",
     "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
-    "underConstruction": false,
+    "underConstruction": true,
     "siteLogo": "/logo.png",
     "siteFavicon": "/favicon.ico",
-    "youtubeLink": "https://www.youtube.com/@%D7%99%D7%90%D7%99%D7%A8%D7%9B%D7%94%D7%9F%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA",
-    "legalItems": [
-      {
-        "label": "מדיניות פרטיות",
-        "href": "/privacy-policy"
-      },
-      {
-        "label": "תנאי שימוש",
-        "href": "/terms-of-use"
-      },
-      {
-        "label": "הצהרת נגישות",
-        "href": "/accessibility"
-      },
-      {
-        "label": "גילוי נאות",
-        "href": "/disclaimer"
-      }
-    ]
+    "legalItems": []
   },
   "home": {
     "primaryColor": "213 75% 35%",
