@@ -21,7 +21,29 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
   };
 
   useEffect(() => {
-    checkDraft();
+    const syncAndCheckDraft = async () => {
+      const draft = getDraftData();
+      if (draft) {
+        try {
+          const backupRes = await fetch('/api/admin/get-backup-data');
+          const backupData = await backupRes.json();
+          if (backupData.success && backupData.data) {
+            const { labels } = summarizeChanges(backupData.data, draft);
+            if (labels.length === 0) {
+              // Draft is identical to live data (e.g. because changes were pushed or published elsewhere)
+              clearDraftData();
+              setHasChanges(false);
+              return;
+            }
+          }
+        } catch (e) {
+          console.error("Error auto-syncing draft with live content:", e);
+        }
+      }
+      setHasChanges(hasDraftChanges());
+    };
+
+    syncAndCheckDraft();
     window.addEventListener('cms_draft_updated', checkDraft);
     return () => {
       window.removeEventListener('cms_draft_updated', checkDraft);
