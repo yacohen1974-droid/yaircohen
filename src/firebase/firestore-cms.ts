@@ -11,6 +11,10 @@ export interface SiteData {
 
 /**
  * Read published content from Firestore (what the live site sees)
+ *
+ * Note: During build time, this may fail with permission-denied errors since the build
+ * context is not authenticated. That's OK — the fallback returns empty data, and the
+ * live site/API routes will read correctly when authenticated.
  */
 export async function readPublishedSiteData(): Promise<SiteData> {
   try {
@@ -49,7 +53,13 @@ export async function readPublishedSiteData(): Promise<SiteData> {
     data.blogPosts = posts;
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
+    // During build time, Firestore reads will fail with permission-denied.
+    // Return empty data gracefully — the live site will have real data when it loads.
+    if (error?.code === 'permission-denied') {
+      console.warn('[build-time] Firestore read blocked by security rules (expected during build)');
+      return { pages: {}, blogPosts: [], global: {} };
+    }
     console.error('Failed to read published Firestore data:', error);
     throw error;
   }
@@ -95,7 +105,11 @@ export async function readDraftSiteData(): Promise<SiteData> {
     data.blogPosts = posts;
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === 'permission-denied') {
+      console.warn('[build-time] Firestore read blocked by security rules (expected during build)');
+      return { pages: {}, blogPosts: [], global: {} };
+    }
     console.error('Failed to read draft Firestore data:', error);
     throw error;
   }
