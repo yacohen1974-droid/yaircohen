@@ -49,6 +49,8 @@ export type DynamicSection = {
   heroHeight?: string;
   heroTextAlign?: string;
   heroCloudiness?: number;
+  heroImagePosition?: string;
+  heroImagePositionMobile?: string;
   portraitImageUrl?: string;
   portraitShape?: string;
   portraitPosition?: string;
@@ -62,6 +64,7 @@ export type DynamicSection = {
   videoColumns?: string;
   stats?: { value: string; label: string; prefix?: string; suffix?: string }[];
   statsBg?: 'navy' | 'white' | 'blue';
+  statsFontSize?: string;
   /* ── Insight card ─────────────────────────────────────────── */
   insightPoints?: { text: string; type: 'negative' | 'positive' | 'neutral' }[];
   insightConclusion?: string;

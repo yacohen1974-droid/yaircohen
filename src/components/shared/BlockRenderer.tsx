@@ -21,8 +21,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 /* ── Animated counter for stats ─────────────────────────────── */
-function StatItem({ prefix = '', value, suffix = '', label, light = true }: {
-  prefix?: string; value: string; suffix?: string; label: string; light?: boolean;
+function StatItem({ prefix = '', value, suffix = '', label, light = true, fontSize }: {
+  prefix?: string; value: string; suffix?: string; label: string; light?: boolean; fontSize?: string;
 }) {
   const numeric = parseInt(value.replace(/\D/g, ''), 10);
   const isNumeric = !isNaN(numeric) && numeric > 0 && value === String(numeric);
@@ -59,9 +59,11 @@ function StatItem({ prefix = '', value, suffix = '', label, light = true }: {
     <div ref={ref} className="text-center pop-in">
       <div className={cn(
         "font-bold leading-none mb-3 tabular-nums whitespace-nowrap",
-        fullText.length > 8 ? "text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl" :
-        fullText.length > 5 ? "text-3xl sm:text-5xl md:text-6xl" :
-        "text-4xl sm:text-5xl md:text-6xl",
+        fontSize && fontSize !== 'auto' ? fontSize : (
+          fullText.length > 8 ? "text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl" :
+          fullText.length > 5 ? "text-3xl sm:text-5xl md:text-6xl" :
+          "text-4xl sm:text-5xl md:text-6xl"
+        ),
         light ? 'text-white finance-3d-text-light' : 'text-primary finance-3d-text'
       )}>
         {prefix}{display}{suffix}
@@ -548,6 +550,7 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                           suffix={stat.suffix}
                           label={stat.label}
                           light={!block.statsBg || block.statsBg !== 'white'}
+                          fontSize={block.statsFontSize}
                         />
                       </div>
                     ))}

@@ -1197,16 +1197,34 @@ function DynamicSectionEditor({ section, onChange, onRemove, onMoveUp, onMoveDow
         {section.type === 'stats' && (
           <div className="md:col-span-2 space-y-6">
             <TitleEditor label="כותרת הקטע (אופציונלי)" settings={section.titleSettings} onChange={s => onChange({ ...section, titleSettings: s })} />
-            <Field label="צבע רקע">
-              <Select value={section.statsBg || 'navy'} onValueChange={v => onChange({ ...section, statsBg: v })}>
-                <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="navy">כחול נייבי (ברירת מחדל)</SelectItem>
-                  <SelectItem value="blue">כחול בהיר</SelectItem>
-                  <SelectItem value="white">לבן</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="צבע רקע">
+                <Select value={section.statsBg || 'navy'} onValueChange={v => onChange({ ...section, statsBg: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="navy">כחול נייבי (ברירת מחדל)</SelectItem>
+                    <SelectItem value="blue">כחול בהיר</SelectItem>
+                    <SelectItem value="white">לבן</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="גודל גופן של המספרים">
+                <Select value={section.statsFontSize || 'auto'} onValueChange={v => onChange({ ...section, statsFontSize: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="auto">אוטומטי (ברירת מחדל)</SelectItem>
+                    <SelectItem value="text-2xl">קטן מאוד (2xl)</SelectItem>
+                    <SelectItem value="text-3xl">קטן (3xl)</SelectItem>
+                    <SelectItem value="text-4xl">בינוני קטן (4xl)</SelectItem>
+                    <SelectItem value="text-5xl">בינוני (5xl)</SelectItem>
+                    <SelectItem value="text-6xl">גדול (6xl)</SelectItem>
+                    <SelectItem value="text-7xl">ענק (7xl)</SelectItem>
+                    <SelectItem value="text-8xl">ענק ביותר (8xl)</SelectItem>
+                    <SelectItem value="text-9xl">מקסימלי (9xl)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </div>
             <Label className="boutique-label">מספרים / סטטיסטיקות</Label>
             <div className="space-y-3">
               {(section.stats || []).map((s: any, idx: number) => (
@@ -2194,7 +2212,7 @@ export default function AdminPages() {
                       type="button"
                       onClick={() => {
                         const id = Math.random().toString(36).substr(2, 9);
-                        const next = [...(content.blocks || []), { id, type: 'stats', stats: [{value: '', label: '', prefix: '', suffix: ''}], statsBg: 'navy' }];
+                        const next = [...(content.blocks || []), { id, type: 'stats', stats: [{value: '', label: '', prefix: '', suffix: ''}], statsBg: 'navy', statsFontSize: 'auto' }];
                         set({ blocks: next as any });
                       }}
                       className="h-24 border-2 border-primary/20 border-dashed rounded-sm text-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 font-bold"
