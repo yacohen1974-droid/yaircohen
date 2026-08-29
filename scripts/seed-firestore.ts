@@ -33,17 +33,22 @@ function prompt(question: string): Promise<string> {
 
 async function seedFirestore() {
   try {
-    console.log('🔐 Authenticating to Firebase...');
-    const email = await prompt('Enter admin email (default: amirher@gmail.com): ') || 'amirher@gmail.com';
-    const password = await prompt('Enter password: ');
-    
-    if (!password) {
-      console.error('❌ Password is required.');
-      process.exit(1);
+    console.log('🔐 Authenticating to Firebase (Optional)...');
+    const email = await prompt('Enter admin email (default: amirher@gmail.com, press Enter to skip auth): ');
+    let authenticated = false;
+
+    if (email) {
+      const password = await prompt('Enter password: ');
+      if (password) {
+        await signInWithEmailAndPassword(authInstance, email, password);
+        console.log('✅ Authenticated successfully!\n');
+        authenticated = true;
+      }
     }
 
-    await signInWithEmailAndPassword(authInstance, email, password);
-    console.log('✅ Authenticated successfully!\n');
+    if (!authenticated) {
+      console.log('⚠ Running unauthenticated. Make sure your Firestore security rules temporarily allow public writes.\n');
+    }
 
     // Read site-data.json
     const jsonPath = path.join(process.cwd(), 'src/content/site-data.json');
