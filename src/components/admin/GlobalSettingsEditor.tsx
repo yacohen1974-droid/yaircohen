@@ -380,18 +380,11 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
                 onChange={(e) => handleLegalItemChange(idx, 'label', e.target.value)}
                 placeholder="שם הקישור (למשל: תנאי שימוש)"
               />
-              <Select value={item.href} onValueChange={(v) => handleLegalItemChange(idx, 'href', v)}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="בחר דף" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availablePages.map((page) => (
-                    <SelectItem key={page.id} value={`/${page.id}`}>
-                      {page.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                value={item.href}
+                onChange={(e) => handleLegalItemChange(idx, 'href', e.target.value)}
+                placeholder="נתיב (למשל: /privacy)"
+              />
               <div className="flex gap-0.5 shrink-0">
                 <Button
                   variant="ghost"
