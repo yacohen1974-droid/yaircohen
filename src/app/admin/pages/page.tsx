@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useUser, getAdminIdToken } from '@/firebase';
-import { getDraftData, saveDraftData, initializeDraft, hasDraftChanges } from '@/lib/cms-draft';
+import { getDraftData, saveDraftData, initializeDraft, hasDraftChanges, savePublishedBase } from '@/lib/cms-draft';
 import { listAllPages } from '@/lib/cms-pages';
 import { hrefToPageId } from '@/lib/slug';
 import { publishSiteData } from '@/firebase/firestore-cms';
@@ -130,6 +130,10 @@ export default function AdminPages() {
         body: JSON.stringify({ revalidateOnly: true })
       });
       if (res.ok) {
+        const published = getDraftData();
+        if (published) {
+          savePublishedBase(published);
+        }
         toast({ description: '✅ פורסם בהצלחה!' });
         setIsDraft(false);
       } else {

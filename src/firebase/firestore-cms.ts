@@ -17,17 +17,27 @@ export interface SiteData {
  * live site/API routes will read correctly when authenticated.
  */
 export async function readPublishedSiteData(): Promise<SiteData> {
-  try {
-    const data: SiteData = { pages: {}, blogPosts: [], global: {} };
+  const data: SiteData = { pages: {}, blogPosts: [], global: {} };
+  const errors: string[] = [];
 
-    // Read global published
+  // Read global published (single doc, cheap)
+  try {
     const globalRef = doc(db, `sites/${SITE_ID}/global/settings`);
     const globalSnap = await getDoc(globalRef);
     if (globalSnap.exists() && globalSnap.data().published) {
       data.global = globalSnap.data().published;
     }
+  } catch (error: any) {
+    if (error?.code === 'permission-denied') {
+      console.warn('[read global] Permission denied (expected at build time)');
+    } else {
+      console.error('[read global] Failed:', error.message);
+      errors.push(`global: ${error.message}`);
+    }
+  }
 
-    // Read all published pages
+  // Read all published pages (collection, needs list permission)
+  try {
     const pagesRef = collection(db, `sites/${SITE_ID}/pages`);
     const pagesSnap = await getDocs(pagesRef);
     pagesSnap.forEach((doc) => {
@@ -35,8 +45,17 @@ export async function readPublishedSiteData(): Promise<SiteData> {
         data.pages[doc.id] = doc.data().published;
       }
     });
+  } catch (error: any) {
+    if (error?.code === 'permission-denied') {
+      console.warn('[read pages] Permission denied (expected at build time)');
+    } else {
+      console.error('[read pages] Failed:', error.message);
+      errors.push(`pages: ${error.message}`);
+    }
+  }
 
-    // Read all published blog posts
+  // Read all published blog posts
+  try {
     const postsRef = collection(db, `sites/${SITE_ID}/blogPosts`);
     const postsSnap = await getDocs(postsRef);
     const posts: any[] = [];
@@ -51,18 +70,16 @@ export async function readPublishedSiteData(): Promise<SiteData> {
       return dateB.localeCompare(dateA);
     });
     data.blogPosts = posts;
-
-    return data;
   } catch (error: any) {
-    // During build time, Firestore reads will fail with permission-denied.
-    // Return empty data gracefully — the live site will have real data when it loads.
     if (error?.code === 'permission-denied') {
-      console.warn('[build-time] Firestore read blocked by security rules (expected during build)');
-      return { pages: {}, blogPosts: [], global: {} };
+      console.warn('[read blogPosts] Permission denied (expected at build time)');
+    } else {
+      console.error('[read blogPosts] Failed:', error.message);
+      errors.push(`blogPosts: ${error.message}`);
     }
-    console.error('Failed to read published Firestore data:', error);
-    throw error;
   }
+
+  return data;
 }
 
 /**

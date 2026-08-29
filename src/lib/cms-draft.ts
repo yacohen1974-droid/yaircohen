@@ -1,4 +1,5 @@
 const DRAFT_KEY = 'yaircohen_draft_site_data';
+const PUBLISHED_BASE_KEY = 'yaircohen_published_base';
 
 export interface SiteData {
   pages: Record<string, any>;
@@ -30,9 +31,27 @@ export function saveDraftData(data: SiteData) {
   window.dispatchEvent(new Event('cms_draft_updated'));
 }
 
+export function savePublishedBase(data: SiteData) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(PUBLISHED_BASE_KEY, JSON.stringify(canonicalize(data)));
+}
+
 export function hasDraftChanges(): boolean {
   if (typeof window === 'undefined') return false;
-  return localStorage.getItem(DRAFT_KEY) !== null;
+
+  const draft = getDraftData();
+  if (!draft) return false;
+
+  const publishedBaseStr = localStorage.getItem(PUBLISHED_BASE_KEY);
+  if (!publishedBaseStr) return true; // If no base recorded, assume there are changes
+
+  try {
+    const draftCanon = JSON.stringify(canonicalize(draft));
+    return draftCanon !== publishedBaseStr;
+  } catch (e) {
+    console.error('Failed to compare draft vs published:', e);
+    return true;
+  }
 }
 
 export function clearDraftData() {
@@ -157,11 +176,12 @@ export async function initializeDraft(force = false): Promise<SiteData> {
   }
 
   const liveData: SiteData = responseData.data || { pages: {}, blogPosts: [] };
-  
+
   // Ensure basic structure exists
   if (!liveData.pages) liveData.pages = {};
   if (!liveData.blogPosts) liveData.blogPosts = [];
-  
+
   saveDraftData(liveData);
+  savePublishedBase(liveData);
   return liveData;
 }
