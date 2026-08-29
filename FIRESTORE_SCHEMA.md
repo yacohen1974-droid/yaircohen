@@ -51,7 +51,7 @@ service cloud.firestore {
       allow write: if request.auth != null && isAdmin(request.auth.uid);
     }
     
-    match /sites/{siteId}/global {
+    match /sites/{siteId}/global/{documentId} {
       allow read: if resource.data.published != null;
       allow read: if request.auth != null && isAdmin(request.auth.uid);
       allow write: if request.auth != null && isAdmin(request.auth.uid);
