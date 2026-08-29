@@ -28,7 +28,7 @@ export default function ManagePagesPage() {
 
   const fetchPages = async () => {
     try {
-      const res = await fetch('/api/list-pages');
+      const res = await fetch('/api/list-pages', { cache: 'no-store' });
       const data = await res.json();
       if (data.pages) {
         const combined = [...data.pages];

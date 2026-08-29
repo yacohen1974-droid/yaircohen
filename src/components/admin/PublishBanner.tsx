@@ -5,7 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { ToastAction } from '@/components/ui/toast';
 import { UploadCloud, Trash2, Loader2, AlertCircle, Eye, Smartphone } from 'lucide-react';
-import { getDraftData, clearDraftData, summarizeChanges } from '@/lib/cms-draft';
+import { getDraftData, clearDraftData, summarizeChanges, contentHash } from '@/lib/cms-draft';
 import { getAdminIdToken } from '@/firebase';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 
@@ -82,6 +82,11 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
           const { labels } = summarizeChanges(statusData.data, draft);
           if (labels.length === 0) {
             // Content now matches live, publish complete
+            const currentDraft = getDraftData();
+            if (currentDraft && contentHash(currentDraft) === contentHash(draft)) {
+              clearDraftData();
+            }
+
             toast({
               title: "✅ האתר עודכן!",
               description: "הפרסום הושלם והאתר החי תואם לגרסה החדשה.",
@@ -135,7 +140,6 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
       const data = await res.json();
 
       if (data.success) {
-        clearDraftData();
         const linkPath = changedPagePaths.length === 1 ? changedPagePaths[0] : '/';
         setPublishedDraft(draft);
         setPublishStartTime(Date.now());
