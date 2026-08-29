@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useUser, getAdminIdToken } from '@/firebase';
 import { getDraftData, saveDraftData, initializeDraft, hasDraftChanges } from '@/lib/cms-draft';
 import { listAllPages } from '@/lib/cms-pages';
+import { hrefToPageId } from '@/lib/slug';
 import { publishSiteData } from '@/firebase/firestore-cms';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { GlobalSettingsEditor } from '@/components/admin/GlobalSettingsEditor';
@@ -187,7 +188,36 @@ export default function AdminPages() {
   if (!auth.user) return <AdminShell><div className="text-center">טוען...</div></AdminShell>;
   if (!content) return <AdminShell><div className="flex items-center justify-center gap-2"><Loader2 className="animate-spin size-5" /> טוען...</div></AdminShell>;
 
-  const availablePages = pages.map(p => ({ id: p.id, name: p.name || p.id }));
+  const getPageDisplayName = (id: string, name: string) => {
+    if (id === 'home') return '🏠 ראשי';
+    if (id === 'contact') return '📩 צור קשר';
+    if (id === 'global') return '⚙️ הגדרות כלליות';
+
+    const globalSettings = content?.global;
+    if (globalSettings) {
+      const menuKeys = ['navItems', 'footerItems', 'legalItems'];
+      for (const key of menuKeys) {
+        const items = globalSettings[key];
+        if (Array.isArray(items)) {
+          const match = items.find((item: any) => {
+            const rawId = typeof item?.href === 'string' ? hrefToPageId(item.href) : null;
+            return rawId?.toLowerCase() === id;
+          });
+          if (match && match.label) {
+            const suffix = name.includes('(טיוטה)') ? ' (טיוטה)' : '';
+            return `📄 ${match.label}${suffix}`;
+          }
+        }
+      }
+    }
+
+    return name;
+  };
+
+  const availablePages = pages.map(p => ({
+    id: p.id,
+    name: getPageDisplayName(p.id, p.name)
+  }));
 
   return (
     <AdminShell>

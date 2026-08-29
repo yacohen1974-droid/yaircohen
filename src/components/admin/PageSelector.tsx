@@ -79,13 +79,29 @@ export function PageSelector({
           <label className="block text-sm font-medium">בחר דף</label>
           <div className="flex gap-2">
             <Select value={selectedPageId || ''} onValueChange={onSelectPage}>
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="בחר דף לעריכה" />
+              <SelectTrigger className="flex-1 h-12">
+                <SelectValue placeholder="בחר דף לעריכה">
+                  {selectedPage ? (
+                    <div className="flex items-center gap-2 text-right">
+                      <span className="font-medium text-sm">{selectedPage.name}</span>
+                      <span className="text-xs text-stone-400 font-mono" dir="ltr">
+                        {selectedPage.id === 'home' ? '(/)' : selectedPage.id === 'global' ? '' : `(/${selectedPage.id})`}
+                      </span>
+                    </div>
+                  ) : null}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {pages.map((page) => (
                   <SelectItem key={page.id} value={page.id}>
-                    {page.name}
+                    <div className="flex flex-col text-right items-start py-0.5 select-none">
+                      <span className="font-medium text-sm">{page.name}</span>
+                      {page.id !== 'global' && (
+                        <span className="text-[10px] text-stone-400 font-mono mt-0.5" dir="ltr">
+                          {page.id === 'home' ? '/' : `/${page.id}`}
+                        </span>
+                      )}
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>
