@@ -29,7 +29,7 @@
           },
           "heroCloudiness": 10,
           "id": "hero-main",
-          "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362002/homepage_pc.png",
+          "imageUrl": "https://www.google.com/maps/place/%D7%99%D7%90%D7%99%D7%A8+%D7%9B%D7%94%D7%9F+%D7%99%D7%95%D7%A2%D7%A5+%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA%E2%80%AD/@32.9650199,35.1217591,3a,75y,90t/data=!3m8!1e2!3m6!1sCIABIhCkYGVV_oDWherQKUvz15uh!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAHRPTWnTOcoD8lZOU09ABYcg5t-CxhBQGFD6TSpfVIrJ73m9lyn3mxrEp-e45ovl-1hp_IF-ogP8NJXg1rfGYI9eqRZmSqX57pL0VEJcsxnr5_VR-rTVMoxtOpKaIa-SNRMy6y2jr2aYgiqlZeYE%3Dw129-h86-k-no!7i6000!8i4000!4m7!3m6!1s0xa8c2759bb148a2a1:0x653e16b142ee884!8m2!3d32.9650689!4d35.1217597!10e5!16s%2Fg%2F11xn7d12st?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D",
           "imageUrlMobile": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362983/homepage-mobile.png",
           "titleSettings": {
             "fontSize": "text-5xl sm:text-7xl lg:text-8xl",
