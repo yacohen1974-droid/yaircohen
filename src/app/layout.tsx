@@ -1,6 +1,7 @@
 import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
+import { headers, cookies } from 'next/headers';
 import { Rubik, Amatic_SC } from 'next/font/google';
 
 import type { Metadata } from 'next';
@@ -27,6 +28,7 @@ import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { PreviewModeBanner } from '@/components/shared/PreviewModeBanner';
 import { CookieConsent } from '@/components/shared/CookieConsent';
 import { AccessibilityWidget } from '@/components/shared/AccessibilityWidget';
+import { UnderConstructionPage } from '@/components/shared/UnderConstructionPage';
 
 async function getInitialData() {
   return getDbInitialData();
@@ -87,6 +89,11 @@ export default async function RootLayout({
 }>) {
   const initialData = await getInitialData();
 
+  const pathname = (await headers()).get('x-pathname') || '';
+  const isPreview = (await cookies()).get('cms_preview')?.value === '1';
+  const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api') || isPreview;
+  const isUnderConstruction = !!initialData?.global?.underConstruction && !isAdminRoute;
+
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning className={cn(rubik.variable, amaticSC.variable)}>
       <head>
@@ -142,12 +149,18 @@ export default async function RootLayout({
         SITE_THEME === 'masculine' && "theme-masculine"
       )}>
         <InitialDataProvider initialData={initialData}>
-          {children}
-          <FloatingWhatsApp />
-          <ScrollToTop />
-          <PreviewModeBanner />
-          <CookieConsent />
-          <AccessibilityWidget />
+          {isUnderConstruction ? (
+            <UnderConstructionPage globalData={initialData?.global} />
+          ) : (
+            <>
+              {children}
+              <FloatingWhatsApp />
+              <ScrollToTop />
+              <PreviewModeBanner />
+              <CookieConsent />
+              <AccessibilityWidget />
+            </>
+          )}
         </InitialDataProvider>
         <Toaster />
       </body>

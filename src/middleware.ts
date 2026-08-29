@@ -1,24 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import siteData from './content/site-data.json';
 
+// Under-construction mode is decided at request time in the root layout
+// (which reads live Firestore data) instead of here, since middleware can
+// only see data bundled at build time and would otherwise go stale as soon
+// as an admin toggles the setting without a full redeploy.
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const isUnderConstruction = !!(siteData as any)?.global?.underConstruction;
-  const isPreview = request.cookies.get('cms_preview')?.value === '1';
-  const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api') || pathname.startsWith('/under-construction') || isPreview;
-
-  if (isUnderConstruction && !isAdminRoute) {
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-pathname', '/under-construction');
-    return NextResponse.rewrite(new URL('/under-construction', request.url), {
-      request: { headers: requestHeaders },
-    });
-  }
-
-  if (!isUnderConstruction && pathname === '/under-construction') {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-pathname', pathname);
