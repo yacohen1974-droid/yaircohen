@@ -390,7 +390,8 @@
       "pageId": "home",
       "siteLogo": "/logo.png",
       "siteFavicon": "/favicon.ico",
-      "underConstruction": false
+      "underConstruction": false,
+      "legalItems": []
     }
   },
   "global": {
@@ -418,24 +419,7 @@
         "href": "/contact"
       }
     ],
-    "footerItems": [
-      {
-        "label": "מדיניות פרטיות",
-        "href": "/privacy-policy"
-      },
-      {
-        "label": "תנאי שימוש",
-        "href": "/terms-of-use"
-      },
-      {
-        "label": "הצהרת נגישות",
-        "href": "/accessibility"
-      },
-      {
-        "label": "גילוי נאות",
-        "href": "/disclaimer"
-      }
-    ],
+    "footerItems": [],
     "metaTitle": "יאיר כהן – יועץ משכנתאות מוסמך",
     "metaDescription": "יועץ משכנתאות בלתי תלוי | 15+ שנות ניסיון | ייעוץ ראשוני חינם | חיסכון של עשרות אלפי שקלים",
     "blocks": [],
@@ -457,7 +441,25 @@
     "underConstruction": false,
     "siteLogo": "/logo.png",
     "siteFavicon": "/favicon.ico",
-    "youtubeLink": "https://www.youtube.com/@%D7%99%D7%90%D7%99%D7%A8%D7%9B%D7%94%D7%9F%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA"
+    "youtubeLink": "https://www.youtube.com/@%D7%99%D7%90%D7%99%D7%A8%D7%9B%D7%94%D7%9F%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA",
+    "legalItems": [
+      {
+        "label": "מדיניות פרטיות",
+        "href": "/privacy-policy"
+      },
+      {
+        "label": "תנאי שימוש",
+        "href": "/terms-of-use"
+      },
+      {
+        "label": "הצהרת נגישות",
+        "href": "/accessibility"
+      },
+      {
+        "label": "גילוי נאות",
+        "href": "/disclaimer"
+      }
+    ]
   },
   "home": {
     "primaryColor": "213 75% 35%",
