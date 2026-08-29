@@ -55,7 +55,7 @@ export function AdminHeader() {
 
       <div className="flex items-center gap-4 shrink-0">
         <NextLink
-          href="/"
+          href="/api/admin/preview?path=/"
           className="flex items-center gap-1.5 text-xs text-stone-300 hover:text-white hover:bg-stone-800/80 px-2.5 py-1.5 rounded border border-stone-700/50 transition-colors"
         >
           <Globe size={14} />

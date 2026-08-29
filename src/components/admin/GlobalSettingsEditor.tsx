@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, Instagram, Linkedin, Youtube, ChevronUp, ChevronDown } from 'lucide-react';
+import { Mail, Phone, Instagram, Linkedin, Youtube, ChevronUp, ChevronDown, Facebook, Music } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface GlobalSettings {
@@ -20,12 +20,11 @@ interface GlobalSettings {
   footerItems?: Array<{ label: string; href: string }>;
   contactEmail?: string;
   contactPhone?: string;
-  socialLinks?: {
-    instagram?: string;
-    linkedin?: string;
-    youtube?: string;
-    [key: string]: string | undefined;
-  };
+  facebookLink?: string;
+  instagramLink?: string;
+  linkedinLink?: string;
+  youtubeLink?: string;
+  tiktokLink?: string;
   [key: string]: any;
 }
 
@@ -110,12 +109,6 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
     handleChange('legalItems', items);
   };
 
-  const handleSocialChange = (key: string, value: string) => {
-    const social = { ...settings.socialLinks };
-    if (value) social[key] = value;
-    else delete social[key];
-    handleChange('socialLinks', social);
-  };
 
   const handleMoveNavItemUp = (index: number) => {
     if (index === 0) return;
@@ -458,14 +451,27 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
+            <Label htmlFor="facebook">Facebook</Label>
+            <div className="flex gap-2">
+              <Facebook size={18} className="text-stone-400 mt-2" />
+              <Input
+                id="facebook"
+                value={settings.facebookLink || ''}
+                onChange={(e) => handleChange('facebookLink', e.target.value)}
+                placeholder="https://www.facebook.com/profile"
+              />
+            </div>
+          </div>
+
+          <div>
             <Label htmlFor="instagram">Instagram</Label>
             <div className="flex gap-2">
               <Instagram size={18} className="text-stone-400 mt-2" />
               <Input
                 id="instagram"
-                value={settings.socialLinks?.instagram || ''}
-                onChange={(e) => handleSocialChange('instagram', e.target.value)}
-                placeholder="@username"
+                value={settings.instagramLink || ''}
+                onChange={(e) => handleChange('instagramLink', e.target.value)}
+                placeholder="https://www.instagram.com/username"
               />
             </div>
           </div>
@@ -476,9 +482,9 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
               <Linkedin size={18} className="text-stone-400 mt-2" />
               <Input
                 id="linkedin"
-                value={settings.socialLinks?.linkedin || ''}
-                onChange={(e) => handleSocialChange('linkedin', e.target.value)}
-                placeholder="username"
+                value={settings.linkedinLink || ''}
+                onChange={(e) => handleChange('linkedinLink', e.target.value)}
+                placeholder="https://www.linkedin.com/in/username"
               />
             </div>
           </div>
@@ -489,9 +495,22 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
               <Youtube size={18} className="text-stone-400 mt-2" />
               <Input
                 id="youtube"
-                value={settings.socialLinks?.youtube || ''}
-                onChange={(e) => handleSocialChange('youtube', e.target.value)}
-                placeholder="@channel"
+                value={settings.youtubeLink || ''}
+                onChange={(e) => handleChange('youtubeLink', e.target.value)}
+                placeholder="https://www.youtube.com/channel/..."
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="tiktok">TikTok</Label>
+            <div className="flex gap-2">
+              <Music size={18} className="text-stone-400 mt-2" />
+              <Input
+                id="tiktok"
+                value={settings.tiktokLink || ''}
+                onChange={(e) => handleChange('tiktokLink', e.target.value)}
+                placeholder="https://www.tiktok.com/@username"
               />
             </div>
           </div>
