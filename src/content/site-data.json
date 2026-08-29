@@ -392,6 +392,39 @@
       "siteFavicon": "/favicon.ico",
       "underConstruction": false,
       "legalItems": []
+    },
+    "about-me": {
+      "metaTitle": "יאיר כהן – יועץ משכנתאות | ייעוץ ראשוני ללא התחייבות ",
+      "metaDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של 15 שנה. חיסכון של עשרות אלפי שקלים. קבל ייעוץ ראשוני חינם.",
+      "blocks": [
+        {
+          "id": "ayp6fj6le",
+          "type": "features",
+          "title": "יתרונות",
+          "features": [],
+          "bg": "stone-50"
+        },
+        {
+          "id": "2ldoglnb9",
+          "type": "intro",
+          "title": "אודות",
+          "content": "",
+          "portraitPosition": "left",
+          "bg": "white"
+        }
+      ],
+      "sectionOrder": [
+        "hero",
+        "stats",
+        "intro",
+        "features",
+        "video",
+        "testimonials",
+        "faqs",
+        "cta",
+        "contact"
+      ],
+      "pageId": "about-me"
     }
   },
   "global": {
@@ -413,6 +446,10 @@
       {
         "label": "צור קשר",
         "href": "/contact"
+      },
+      {
+        "label": "מי אני ",
+        "href": "about_me/"
       }
     ],
     "footerItems": [],
