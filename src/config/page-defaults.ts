@@ -111,8 +111,12 @@ export type ContentState = {
 // don't belong in any individual page's own saved content — merging them in
 // makes that page's draft permanently differ from its published version (a
 // phantom "needs publishing" diff) even when nothing page-specific changed.
+// NOTE: primaryColor is deliberately NOT in this list — it's editable per-page
+// ("צבע ראשי לעמוד זה" in each page's own SEO section), unlike the rest of
+// the "Global settings" fields, which are only ever edited under the
+// selectedPage === 'global' screen.
 export const GLOBAL_ONLY_CONTENT_FIELDS: (keyof ContentState)[] = [
-  'underConstruction', 'primaryColor', 'siteName', 'siteSubtitle', 'siteDescription',
+  'underConstruction', 'siteName', 'siteSubtitle', 'siteDescription',
   'siteEmail', 'sitePhone', 'siteAddress', 'siteLogo', 'siteFavicon',
   'facebookLink', 'instagramLink', 'linkedinLink', 'navItems', 'footerItems', 'legalItems',
 ];
