@@ -24,7 +24,7 @@ import {
   MousePointerClick, Quote, AlignLeft, AlignCenter, AlignRight, UserRound, RefreshCcw,
   ChevronRight, Monitor, Smartphone, Globe, X, Search, BookOpen, FileText, ShieldCheck, Check,
   Video, BarChart2, Mail, Phone, Lock, Instagram, Linkedin, Youtube, Music, ArrowLeftRight,
-  UploadCloud
+  UploadCloud, FolderOpen
 } from 'lucide-react';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), {
@@ -309,14 +309,27 @@ function LogoPicker({ value, onChange, availableLogos, onUploaded }: {
           <img src={value} alt="לוגו" className="max-w-full max-h-full object-contain" />
         )}
       </div>
-      <Select value={availableLogos.includes(value) ? value : undefined} onValueChange={onChange}>
-        <SelectTrigger className="flex-1 bg-stone-50 border-none h-10 text-xs font-sans">
-          <SelectValue placeholder={value || 'בחרו לוגו מהתיקייה...'} />
-        </SelectTrigger>
-        <SelectContent>
-          {availableLogos.map(f => <SelectItem key={f} value={f} className="text-xs font-sans">{f.replace('/logos/', '')}</SelectItem>)}
-        </SelectContent>
-      </Select>
+      <Input
+        value={value || ''}
+        onChange={e => onChange(e.target.value)}
+        placeholder="קישור לתמונה (https://...)"
+        className="flex-1 bg-stone-50 border-none h-10 text-xs font-sans"
+        dir="ltr"
+      />
+      {availableLogos.length > 0 && (
+        <Select value={availableLogos.includes(value) ? value : undefined} onValueChange={onChange}>
+          <SelectTrigger className="w-10 h-10 bg-stone-50 border-none flex items-center justify-center p-0 text-stone-500 hover:text-stone-900 shrink-0">
+            <FolderOpen size={16} />
+          </SelectTrigger>
+          <SelectContent>
+            {availableLogos.map(f => (
+              <SelectItem key={f} value={f} className="text-xs font-sans">
+                {f.replace('/logos/', '')}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
       <label className={cn(
         'shrink-0 h-10 px-3 flex items-center gap-1.5 text-xs font-bold cursor-pointer border border-dashed border-primary/30 text-primary hover:bg-primary/5 transition-colors',
         uploading && 'opacity-50 pointer-events-none'
