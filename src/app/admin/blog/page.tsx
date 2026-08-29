@@ -5,7 +5,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
-import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
+import { getDraftData, saveDraftData, initializeDraft, contentHash } from '@/lib/cms-draft';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -245,16 +245,20 @@ export default function BlogManagementPage() {
         if (!draft) {
           draft = await initializeDraft();
         }
-        
+
         if (!draft.blogPosts) draft.blogPosts = [];
         const idx = draft.blogPosts.findIndex((p: any) => p.id === postData.id);
-        if (idx !== -1) {
-          draft.blogPosts[idx] = postData;
-        } else {
-          draft.blogPosts.push(postData);
+        const oldPost = idx !== -1 ? draft.blogPosts[idx] : null;
+
+        // Only save if content actually changed
+        if (!oldPost || contentHash(oldPost) !== contentHash(postData)) {
+          if (idx !== -1) {
+            draft.blogPosts[idx] = postData;
+          } else {
+            draft.blogPosts.push(postData);
+          }
+          saveDraftData(draft);
         }
-        
-        saveDraftData(draft);
         
         setIsDirty(false);
         setAutoSaveStatus('saved');
@@ -292,16 +296,20 @@ export default function BlogManagementPage() {
       if (!draft) {
         draft = await initializeDraft();
       }
-      
+
       if (!draft.blogPosts) draft.blogPosts = [];
       const idx = draft.blogPosts.findIndex((p: any) => p.id === postData.id);
-      if (idx !== -1) {
-        draft.blogPosts[idx] = postData;
-      } else {
-        draft.blogPosts.push(postData);
+      const oldPost = idx !== -1 ? draft.blogPosts[idx] : null;
+
+      // Only save if content actually changed
+      if (!oldPost || contentHash(oldPost) !== contentHash(postData)) {
+        if (idx !== -1) {
+          draft.blogPosts[idx] = postData;
+        } else {
+          draft.blogPosts.push(postData);
+        }
+        saveDraftData(draft);
       }
-      
-      saveDraftData(draft);
       
       toast({ title: editingId ? "מאמר עודכן בטיוטה!" : "מאמר נוסף לטיוטה!" });
       resetForm();

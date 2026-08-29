@@ -70,8 +70,32 @@ const PAGE_LABELS: Record<string, string> = {
   accessibility: 'נגישות',
 };
 
+function canonicalize(obj: any): any {
+  if (obj === null || obj === undefined) return null;
+  if (typeof obj !== 'object') return obj;
+  if (obj === '') return null;
+  if (Array.isArray(obj)) {
+    return obj.map(canonicalize).filter((v) => v !== null && v !== undefined);
+  }
+  const sorted: Record<string, any> = {};
+  Object.keys(obj)
+    .sort()
+    .forEach((key) => {
+      const val = canonicalize(obj[key]);
+      if (val !== null && val !== undefined && val !== '') {
+        sorted[key] = val;
+      }
+    });
+  return Object.keys(sorted).length === 0 ? null : sorted;
+}
+
+export function contentHash(data: any): string {
+  const canonical = canonicalize(data);
+  return JSON.stringify(canonical);
+}
+
 function deepEqual(a: any, b: any): boolean {
-  return JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+  return JSON.stringify(canonicalize(a ?? null)) === JSON.stringify(canonicalize(b ?? null));
 }
 
 export interface ChangeSummary {

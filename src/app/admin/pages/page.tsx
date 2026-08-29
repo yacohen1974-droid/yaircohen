@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useUser, getAdminIdToken } from '@/firebase';
 import { cn } from '@/lib/utils';
-import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
+import { getDraftData, saveDraftData, initializeDraft, contentHash } from '@/lib/cms-draft';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 import { Button } from '@/components/ui/button';
@@ -1618,14 +1618,24 @@ export default function AdminPages() {
       }
 
       const specialRootKeys = ['global', 'blog'];
+      let newPageData: any;
       if (specialRootKeys.includes(targetId)) {
-        draft[targetId] = { ...draft[targetId], ...content };
+        newPageData = { ...draft[targetId], ...content };
+        // Only save if content actually changed
+        if (contentHash(draft[targetId]) !== contentHash(newPageData)) {
+          draft[targetId] = newPageData;
+          saveDraftData(draft);
+        }
       } else {
         if (!draft.pages) draft.pages = {};
-        draft.pages[targetId] = { ...draft.pages[targetId], ...content };
+        newPageData = { ...draft.pages[targetId], ...content };
+        // Only save if content actually changed
+        if (contentHash(draft.pages[targetId]) !== contentHash(newPageData)) {
+          draft.pages[targetId] = newPageData;
+          saveDraftData(draft);
+        }
       }
 
-      saveDraftData(draft);
       setIsDirty(false);
       await loadAllPages();
 
