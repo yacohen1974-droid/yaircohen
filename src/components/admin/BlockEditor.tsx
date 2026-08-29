@@ -686,14 +686,14 @@ export function BlockEditor({
 
             <Field label="פריסת סרטונים (עמודות בשורה)">
               <Select 
-                value={section.videoColumns || ''} 
-                onValueChange={(v) => onChange({ ...section, videoColumns: v })}
+                value={section.videoColumns || 'default'} 
+                onValueChange={(v) => onChange({ ...section, videoColumns: v === 'default' ? '' : v })}
               >
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="סרטון אחד בשורה" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">סרטון אחד בשורה (גדול)</SelectItem>
+                  <SelectItem value="default">סרטון אחד בשורה (גדול)</SelectItem>
                   <SelectItem value="md:grid-cols-2">2 סרטונים בשורה (צמד)</SelectItem>
                   <SelectItem value="md:grid-cols-3">3 סרטונים בשורה (שלשה)</SelectItem>
                   <SelectItem value="md:grid-cols-4">4 סרטונים בשורה (רביעייה)</SelectItem>
