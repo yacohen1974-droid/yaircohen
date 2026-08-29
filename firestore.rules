@@ -6,29 +6,33 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Keep this list in sync with ALLOWED_ADMIN_EMAILS in src/lib/site-config.ts
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email in [
+        'amirher@gmail.com',
+        'yairmashkantaot@gmail.com',
+        'yacohen1974@gmail.com'
+      ];
+    }
+
     // Site data — published content is world-readable
     match /sites/{site} {
       // Global settings — public (no auth needed)
       match /global/settings {
         allow read: if true;
-        allow write: if request.auth != null && request.auth.token.email in get(/databases/$(database)/documents/sites/$(site)/admin/emails).data.list;
+        allow write: if isAdmin();
       }
 
       // Pages — public (no auth needed)
       match /pages/{pageId} {
         allow read: if true;
-        allow write: if request.auth != null && request.auth.token.email in get(/databases/$(database)/documents/sites/$(site)/admin/emails).data.list;
+        allow write: if isAdmin();
       }
 
       // Blog posts — public (no auth needed)
       match /blogPosts/{postId} {
         allow read: if true;
-        allow write: if request.auth != null && request.auth.token.email in get(/databases/$(database)/documents/sites/$(site)/admin/emails).data.list;
-      }
-
-      // Admin emails list
-      match /admin/emails {
-        allow read, write: if request.auth != null && request.auth.token.email in get(/databases/$(database)/documents/sites/$(site)/admin/emails).data.list;
+        allow write: if isAdmin();
       }
     }
   }
