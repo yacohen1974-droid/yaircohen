@@ -105,6 +105,18 @@ export type ContentState = {
   [key: string]: any;
 };
 
+// The "Global settings" fields above (site branding/contact/menus) are seeded
+// with real default values by getInitialPageContent() for every page, purely
+// so a single page's editor can render the global-settings screen too. They
+// don't belong in any individual page's own saved content — merging them in
+// makes that page's draft permanently differ from its published version (a
+// phantom "needs publishing" diff) even when nothing page-specific changed.
+export const GLOBAL_ONLY_CONTENT_FIELDS: (keyof ContentState)[] = [
+  'underConstruction', 'primaryColor', 'siteName', 'siteSubtitle', 'siteDescription',
+  'siteEmail', 'sitePhone', 'siteAddress', 'siteLogo', 'siteFavicon',
+  'facebookLink', 'instagramLink', 'linkedinLink', 'navItems', 'footerItems', 'legalItems',
+];
+
 export const DEFAULT_CONTENT_VALUES: Partial<ContentState> = {
   heroHeight: '80vh',
   heroTextAlign: 'center',

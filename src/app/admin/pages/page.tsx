@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useUser, getAdminIdToken } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { getDraftData, saveDraftData, initializeDraft, contentHash } from '@/lib/cms-draft';
+import { listAllPages, DEFAULT_PAGES } from '@/lib/cms-pages';
+import { slugifyPageId, pageIdToHref } from '@/lib/slug';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 import { Button } from '@/components/ui/button';
@@ -37,6 +39,7 @@ import {
   PAGE_FALLBACKS,
   getInitialPageContent,
   DEFAULT_CONTENT_VALUES,
+  GLOBAL_ONLY_CONTENT_FIELDS,
   TitleSettings
 } from '@/config/page-defaults';
 import { ADMIN_HELP_CONTENT } from '@/config/admin-help-content';
@@ -64,11 +67,6 @@ const QUILL_FORMATS = [
 ];
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-
-const DEFAULT_PAGES = [
-  { id: 'home', name: '🏠 ראשי' },
-  { id: 'contact', name: '📩 צור קשר' },
-];
 
 const ICON_OPTIONS = [
   { value: 'Heart', icon: <Heart size={14} /> },
@@ -1403,6 +1401,49 @@ function AdminGuide() {
   );
 }
 
+const CUSTOM_LINK_VALUE = '__custom__';
+
+// A menu-link "href" field that used to be a bare text input — meaning nothing
+// stopped it from pointing at a page id that doesn't actually match any real
+// page (e.g. a typo, or a leading "/" that gets stripped when the page itself
+// was created). Picking from the real, known page list instead makes that
+// class of mismatch impossible for internal links, while "קישור מותאם אישית"
+// still allows external URLs, #anchors, mailto:/tel: links.
+function PageLinkInput({ href, onChange, pages }: { href: string; onChange: (v: string) => void; pages: { id: string; name: string }[] }) {
+  const internalOptions = pages.map(p => ({ value: pageIdToHref(p.id), label: p.name }));
+  const isKnownInternal = href !== '' && internalOptions.some(o => o.value === href);
+
+  return (
+    <div className="space-y-1">
+      <Select
+        value={isKnownInternal ? href : CUSTOM_LINK_VALUE}
+        onValueChange={(v) => {
+          if (v === CUSTOM_LINK_VALUE) {
+            if (isKnownInternal) onChange('');
+          } else {
+            onChange(v);
+          }
+        }}
+      >
+        <SelectTrigger className="h-9 text-xs"><SelectValue placeholder="בחר דף..." /></SelectTrigger>
+        <SelectContent>
+          {internalOptions.map(o => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+          <SelectItem value={CUSTOM_LINK_VALUE}>🔗 קישור מותאם אישית / חיצוני</SelectItem>
+        </SelectContent>
+      </Select>
+      {!isKnownInternal && (
+        <Input
+          value={href}
+          onChange={e => onChange(e.target.value)}
+          placeholder="https://... / #section / mailto:..."
+          dir="ltr"
+          className="h-9 text-xs"
+        />
+      )}
+    </div>
+  );
+}
+
 export default function AdminPages() {
   const router = useRouter();
   const { user, loading: authLoading } = useUser();
@@ -1472,64 +1513,7 @@ export default function AdminPages() {
 
   const loadAllPages = async () => {
     try {
-      const res = await fetch('/api/list-pages', { cache: 'no-store' });
-      const data = await res.json();
-      if (data.pages) {
-        const combined = [...DEFAULT_PAGES];
-        
-        // 1. Add server pages
-        data.pages.forEach((p: string) => {
-          if (!combined.find(cp => cp.id === p)) {
-            combined.push({ id: p, name: `📄 ${p}` });
-          }
-        });
-
-        // 2. Add local draft custom pages & page URLs referenced in menus
-        const draft = getDraftData();
-        if (draft) {
-          if (draft.pages) {
-            Object.keys(draft.pages).forEach((p: string) => {
-              if (!combined.find(cp => cp.id === p)) {
-                combined.push({ id: p, name: `📄 ${p} (טיוטה)` });
-              }
-            });
-          }
-
-          if (draft.global) {
-            const menuKeys = ['navItems', 'footerItems', 'legalItems'];
-            menuKeys.forEach((key) => {
-              const items = draft.global[key];
-              if (Array.isArray(items)) {
-                items.forEach((item: any) => {
-                  let href = item?.href;
-                  if (typeof href === 'string') {
-                    href = href.trim();
-                    if (
-                      !href.startsWith('http') &&
-                      !href.startsWith('#') &&
-                      !href.startsWith('tel:') &&
-                      !href.startsWith('mailto:') &&
-                      href !== '/' &&
-                      href !== '/contact' &&
-                      href !== '/blog' &&
-                      href !== ''
-                    ) {
-                      const cleanId = href.startsWith('/') ? href.slice(1) : href;
-                      if (/^[a-zA-Z0-9-]+$/.test(cleanId)) {
-                        if (!combined.find(cp => cp.id === cleanId)) {
-                          combined.push({ id: cleanId, name: `📄 ${cleanId} (מתוך תפריט)` });
-                        }
-                      }
-                    }
-                  }
-                });
-              }
-            });
-          }
-        }
-
-        setAllPages(combined);
-      }
+      setAllPages(await listAllPages());
     } catch (e) {
       console.error("Error loading pages:", e);
     }
@@ -1655,7 +1639,7 @@ export default function AdminPages() {
   // draft; only the loading indicator and the confirmation toast differ.
   const persistDraft = async (opts: { silent: boolean }) => {
     const rawId = selectedPage === 'custom' ? customPageId : selectedPage;
-    const targetId = rawId.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-');
+    const targetId = selectedPage === 'custom' ? slugifyPageId(rawId) : rawId;
 
     if (!targetId) {
       if (!opts.silent) toast({ variant: 'destructive', title: 'אנא הזינו מזהה עמוד (Slug)' });
@@ -1682,7 +1666,13 @@ export default function AdminPages() {
         }
       } else {
         if (!draft.pages) draft.pages = {};
-        newPageData = { ...draft.pages[targetId], ...content };
+        // content also carries the global-settings fields (they're seeded onto
+        // every page by getInitialPageContent so this same editor can render
+        // the "global" screen too) — strip them so they don't get baked into
+        // this individual page's saved data and falsely mark it as changed.
+        const pageOnlyContent = { ...content };
+        GLOBAL_ONLY_CONTENT_FIELDS.forEach((key) => delete (pageOnlyContent as any)[key]);
+        newPageData = { ...draft.pages[targetId], ...pageOnlyContent };
         // Only save if content actually changed
         if (contentHash(draft.pages[targetId]) !== contentHash(newPageData)) {
           draft.pages[targetId] = newPageData;
@@ -1866,6 +1856,11 @@ export default function AdminPages() {
                   className="bg-white h-12"
                   dir="ltr"
                 />
+                {selectedPage === 'custom' && customPageId && (
+                  <p className="text-xs text-stone-400 mt-1" dir="ltr">
+                    יישמר בפועל בתור: <code className="text-primary">{pageIdToHref(slugifyPageId(customPageId))}</code>
+                  </p>
+                )}
               </Field>
             )}
             {selectedPage !== 'global' && selectedPage !== 'custom' && (
@@ -2012,8 +2007,8 @@ export default function AdminPages() {
                         <Input value={item.label} onChange={e => updateItem('navItems', i, 'label', e.target.value)} />
                       </div>
                       <div className="flex-1 space-y-1">
-                        <Label className="text-[10px]">קישור (Slug/URL)</Label>
-                        <Input value={item.href} onChange={e => updateItem('navItems', i, 'href', e.target.value)} />
+                        <Label className="text-[10px]">קישור</Label>
+                        <PageLinkInput href={item.href} onChange={v => updateItem('navItems', i, 'href', v)} pages={allPages} />
                       </div>
                       <MoveButtons onUp={() => moveItem('navItems', i, 'up')} onDown={() => moveItem('navItems', i, 'down')} disableUp={i === 0} disableDown={i === content.navItems.length - 1} />
                       <Button type="button" variant="ghost" onClick={() => removeItem('navItems', i)} className="text-destructive"><Trash2 size={16} /></Button>
@@ -2035,8 +2030,8 @@ export default function AdminPages() {
                         <Input value={item.label} onChange={e => updateItem('footerItems', i, 'label', e.target.value)} />
                       </div>
                       <div className="flex-1 space-y-1">
-                        <Label className="text-[10px]">קישור (Slug/URL)</Label>
-                        <Input value={item.href} onChange={e => updateItem('footerItems', i, 'href', e.target.value)} />
+                        <Label className="text-[10px]">קישור</Label>
+                        <PageLinkInput href={item.href} onChange={v => updateItem('footerItems', i, 'href', v)} pages={allPages} />
                       </div>
                       <MoveButtons onUp={() => moveItem('footerItems', i, 'up')} onDown={() => moveItem('footerItems', i, 'down')} disableUp={i === 0} disableDown={i === (content.footerItems?.length || 0) - 1} />
                       <Button type="button" variant="ghost" onClick={() => removeItem('footerItems', i)} className="text-destructive"><Trash2 size={16} /></Button>
@@ -2058,8 +2053,8 @@ export default function AdminPages() {
                         <Input value={item.label} onChange={e => updateItem('legalItems', i, 'label', e.target.value)} />
                       </div>
                       <div className="flex-1 space-y-1">
-                        <Label className="text-[10px]">קישור (Slug/URL)</Label>
-                        <Input value={item.href} onChange={e => updateItem('legalItems', i, 'href', e.target.value)} />
+                        <Label className="text-[10px]">קישור</Label>
+                        <PageLinkInput href={item.href} onChange={v => updateItem('legalItems', i, 'href', v)} pages={allPages} />
                       </div>
                       <MoveButtons onUp={() => moveItem('legalItems', i, 'up')} onDown={() => moveItem('legalItems', i, 'down')} disableUp={i === 0} disableDown={i === (content.legalItems?.length || 0) - 1} />
                       <Button type="button" variant="ghost" onClick={() => removeItem('legalItems', i)} className="text-destructive"><Trash2 size={16} /></Button>

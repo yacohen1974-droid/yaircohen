@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
+import { listAllPages } from '@/lib/cms-pages';
 
 export default function ManagePagesPage() {
   const [pages, setPages] = useState<string[]>([]);
@@ -28,22 +29,10 @@ export default function ManagePagesPage() {
 
   const fetchPages = async () => {
     try {
-      const res = await fetch('/api/list-pages', { cache: 'no-store' });
-      const data = await res.json();
-      if (data.pages) {
-        const combined = [...data.pages];
-        const draft = getDraftData();
-        if (draft && draft.pages) {
-          Object.keys(draft.pages).forEach((p: string) => {
-            if (!combined.includes(p)) {
-              combined.push(p);
-            }
-          });
-        }
-        // Filter out default pages that shouldn't be deleted here
-        const deletablePages = combined.filter(p => p !== 'home' && p !== 'contact');
-        setPages(deletablePages);
-      }
+      const allPages = await listAllPages();
+      // Filter out default pages that shouldn't be deleted here
+      const deletablePages = allPages.map(p => p.id).filter(id => id !== 'home' && id !== 'contact');
+      setPages(deletablePages);
     } catch (e) {
       console.error(e);
     } finally {
