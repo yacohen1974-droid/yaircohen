@@ -85,20 +85,28 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
     handleChange('footerItems', items);
   };
 
+  const getEffectiveLegalItems = () => {
+    return (settings.legalItems && settings.legalItems.length > 0) ? settings.legalItems : [
+      { label: 'מדיניות פרטיות', href: '/privacy' },
+      { label: 'תנאי שימוש', href: '/terms' },
+      { label: 'הצהרת נגישות', href: '/accessibility' }
+    ];
+  };
+
   const handleLegalItemChange = (index: number, field: string, value: string) => {
-    const items = [...(settings.legalItems || [])];
+    const items = [...getEffectiveLegalItems()];
     items[index] = { ...items[index], [field]: value };
     handleChange('legalItems', items);
   };
 
   const handleAddLegalItem = () => {
-    const items = [...(settings.legalItems || [])];
+    const items = [...getEffectiveLegalItems()];
     items.push({ label: '', href: '' });
     handleChange('legalItems', items);
   };
 
   const handleRemoveLegalItem = (index: number) => {
-    const items = (settings.legalItems || []).filter((_: any, i: number) => i !== index);
+    const items = getEffectiveLegalItems().filter((_: any, i: number) => i !== index);
     handleChange('legalItems', items);
   };
 
@@ -139,13 +147,13 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
 
   const handleMoveLegalItemUp = (index: number) => {
     if (index === 0) return;
-    const items = [...(settings.legalItems || [])];
+    const items = [...getEffectiveLegalItems()];
     [items[index], items[index - 1]] = [items[index - 1], items[index]];
     handleChange('legalItems', items);
   };
 
   const handleMoveLegalItemDown = (index: number) => {
-    const items = [...(settings.legalItems || [])];
+    const items = [...getEffectiveLegalItems()];
     if (index === items.length - 1) return;
     [items[index], items[index + 1]] = [items[index + 1], items[index]];
     handleChange('legalItems', items);
@@ -365,7 +373,7 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
           <CardTitle className="text-lg">קישורים משפטיים (תחתית האתר)</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {(settings.legalItems || []).map((item: any, idx: number) => (
+          {getEffectiveLegalItems().map((item: any, idx: number, arr: any[]) => (
             <div key={idx} className="flex gap-2">
               <Input
                 value={item.label}
@@ -399,7 +407,7 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
                   variant="ghost"
                   size="icon"
                   className="h-9 w-9"
-                  disabled={idx === (settings.legalItems?.length || 0) - 1}
+                  disabled={idx === arr.length - 1}
                   onClick={() => handleMoveLegalItemDown(idx)}
                   title="הזז למטה"
                 >
