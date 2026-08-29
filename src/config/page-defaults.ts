@@ -91,6 +91,7 @@ export type ContentState = {
   linkedinLink?: string;
   navItems: NavItem[];
   footerItems: NavItem[];
+  legalItems: NavItem[];
   
   // Page specific
   metaTitle: string;
@@ -115,6 +116,7 @@ export const DEFAULT_CONTENT_VALUES: Partial<ContentState> = {
   ctaAlign: 'center',
   navItems: [],
   footerItems: [],
+  legalItems: [],
   ctaButtons: [],
   features: [],
   testimonials: [],
@@ -186,6 +188,7 @@ export function getInitialPageContent(id: string): ContentState {
     linkedinLink:         fallback.linkedinLink         || '',
     navItems:             fallback.navItems             || [],
     footerItems:          fallback.footerItems          || [],
+    legalItems:           fallback.legalItems           || [],
     metaTitle:            '',
     metaDescription:      '',
     blocks:               initialBlocks,

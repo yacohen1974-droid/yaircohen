@@ -1713,7 +1713,7 @@ export default function AdminPages() {
     });
   };
 
-  const addItem = <K extends 'ctaButtons' | 'features' | 'testimonials' | 'faqs' | 'navItems' | 'footerItems' | 'journeySteps'>(
+  const addItem = <K extends 'ctaButtons' | 'features' | 'testimonials' | 'faqs' | 'navItems' | 'footerItems' | 'journeySteps' | 'legalItems'>(
     key: K, 
     item: ContentState[K] extends any[] ? ContentState[K][number] : any
   ) => {
@@ -1980,6 +1980,29 @@ export default function AdminPages() {
                   ))}
                   <Button type="button" onClick={() => addItem('footerItems', { label: '', href: '' })} variant="outline" className="w-full h-12 border-dashed">
                     <Plus className="mr-2 size-4" /> הוספת קישור לפוטר
+                  </Button>
+                </div>
+
+                {/* Global Legal Links Editor */}
+                <div className="pt-8 border-t border-stone-100 mt-8 space-y-4">
+                  <Label className="boutique-label flex items-center gap-2 text-primary">קישורים משפטיים בפוטר (Legal Links)</Label>
+                  <p className="text-xs text-stone-400">אם רשימה זו ריקה, הפוטר ישתמש אוטומטית בקישורי ברירת מחדל (מדיניות פרטיות, תנאי שימוש, נגישות).</p>
+                  {(content.legalItems || []).map((item: any, i: number) => (
+                    <div key={i} className="flex gap-2 items-end">
+                      <div className="flex-1 space-y-1">
+                        <Label className="text-[10px]">תווית</Label>
+                        <Input value={item.label} onChange={e => updateItem('legalItems', i, 'label', e.target.value)} />
+                      </div>
+                      <div className="flex-1 space-y-1">
+                        <Label className="text-[10px]">קישור (Slug/URL)</Label>
+                        <Input value={item.href} onChange={e => updateItem('legalItems', i, 'href', e.target.value)} />
+                      </div>
+                      <MoveButtons onUp={() => moveItem('legalItems', i, 'up')} onDown={() => moveItem('legalItems', i, 'down')} disableUp={i === 0} disableDown={i === (content.legalItems?.length || 0) - 1} />
+                      <Button type="button" variant="ghost" onClick={() => removeItem('legalItems', i)} className="text-destructive"><Trash2 size={16} /></Button>
+                    </div>
+                  ))}
+                  <Button type="button" onClick={() => addItem('legalItems', { label: '', href: '' })} variant="outline" className="w-full h-12 border-dashed">
+                    <Plus className="mr-2 size-4" /> הוספת קישור משפטי
                   </Button>
                 </div>
               </SectionCard>

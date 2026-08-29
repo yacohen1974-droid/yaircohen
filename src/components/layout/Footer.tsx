@@ -236,6 +236,23 @@ export function Footer() {
           <p>© {year} {globalSettings?.siteName || 'יאיר כהן יועץ משכנתאות'} — כל הזכויות שמורות</p>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {(globalSettings?.legalItems && globalSettings.legalItems.length > 0
+              ? globalSettings.legalItems
+              : [
+                  { label: 'מדיניות פרטיות', href: '/privacy' },
+                  { label: 'תנאי שימוש', href: '/terms' },
+                  { label: 'הצהרת נגישות', href: '/accessibility' }
+                ]
+            ).map((item: { label: string; href: string }) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="hover:text-white transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <span className="text-white/10 hidden sm:inline">|</span>
             <Link
               href="/admin/login"
               className="flex items-center gap-1.5 hover:text-white transition-colors"
