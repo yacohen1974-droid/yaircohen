@@ -208,7 +208,7 @@
             "fontFamily": "font-headline",
             "fontSize": "text-2xl",
             "subtitle": "על מנת להשיג לכם את התנאים הטובים ביותר ",
-            "text": "עובדים מול כל הבנקים",
+            "text": "אני עובד עם  כל הבנקים ",
             "align": "center"
           },
           "type": "logos",
@@ -390,13 +390,14 @@
       "pageId": "home",
       "siteLogo": "/logo.png",
       "siteFavicon": "/favicon.ico",
-      "underConstruction": false
+      "underConstruction": false,
+      "legalItems": []
     }
   },
   "global": {
     "primaryColor": "213 75% 35%",
     "siteName": "יאיר כהן",
-    "siteSubtitle": "יועץ משכנתאות ופיננסים",
+    "siteSubtitle": "יאיר כהן יועץ משכנתאות",
     "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
     "siteEmail": "mashkantaot@yair-cohen.co.il",
     "sitePhone": "050-9922018",
@@ -410,12 +411,15 @@
         "href": "/"
       },
       {
+        "label": "מי אני",
+        "href": "/about"
+      },
+      {
         "label": "צור קשר",
         "href": "/contact"
       }
     ],
     "footerItems": [],
-    "legalItems": [],
     "metaTitle": "יאיר כהן – יועץ משכנתאות מוסמך",
     "metaDescription": "יועץ משכנתאות בלתי תלוי | 15+ שנות ניסיון | ייעוץ ראשוני חינם | חיסכון של עשרות אלפי שקלים",
     "blocks": [],
@@ -436,7 +440,26 @@
     "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
     "underConstruction": false,
     "siteLogo": "/logo.png",
-    "siteFavicon": "/favicon.ico"
+    "siteFavicon": "/favicon.ico",
+    "youtubeLink": "https://www.youtube.com/@%D7%99%D7%90%D7%99%D7%A8%D7%9B%D7%94%D7%9F%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA",
+    "legalItems": [
+      {
+        "label": "מדיניות פרטיות",
+        "href": "/privacy-policy"
+      },
+      {
+        "label": "תנאי שימוש",
+        "href": "/terms-of-use"
+      },
+      {
+        "label": "הצהרת נגישות",
+        "href": "/accessibility"
+      },
+      {
+        "label": "גילוי נאות",
+        "href": "/disclaimer"
+      }
+    ]
   },
   "home": {
     "primaryColor": "213 75% 35%",
