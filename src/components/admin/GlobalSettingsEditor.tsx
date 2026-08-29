@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, Instagram, Linkedin, Youtube, ChevronUp, ChevronDown, Facebook, Music } from 'lucide-react';
+import { Mail, Phone, Instagram, Linkedin, Youtube, ChevronUp, ChevronDown, Facebook, Music, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface GlobalSettings {
@@ -18,8 +18,9 @@ interface GlobalSettings {
   primaryColor?: string;
   navItems?: Array<{ label: string; href: string }>;
   footerItems?: Array<{ label: string; href: string }>;
-  contactEmail?: string;
-  contactPhone?: string;
+  siteEmail?: string;
+  sitePhone?: string;
+  siteAddress?: string;
   facebookLink?: string;
   instagramLink?: string;
   linkedinLink?: string;
@@ -424,8 +425,8 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
               <Input
                 id="email"
                 type="email"
-                value={settings.contactEmail || ''}
-                onChange={(e) => handleChange('contactEmail', e.target.value)}
+                value={settings.siteEmail || ''}
+                onChange={(e) => handleChange('siteEmail', e.target.value)}
               />
             </div>
           </div>
@@ -436,8 +437,21 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
               <Phone size={18} className="text-stone-400 mt-2" />
               <Input
                 id="phone"
-                value={settings.contactPhone || ''}
-                onChange={(e) => handleChange('contactPhone', e.target.value)}
+                value={settings.sitePhone || ''}
+                onChange={(e) => handleChange('sitePhone', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="address">כתובת</Label>
+            <div className="flex gap-2">
+              <MapPin size={18} className="text-stone-400 mt-2" />
+              <Input
+                id="address"
+                value={settings.siteAddress || ''}
+                onChange={(e) => handleChange('siteAddress', e.target.value)}
+                placeholder="למשל: נס עמים"
               />
             </div>
           </div>
