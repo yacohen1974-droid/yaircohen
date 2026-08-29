@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { commitDraftSiteData } from '@/firebase/db-actions';
+import { saveDraftSiteData } from '@/firebase/firestore-cms';
 import { requireAdmin } from '@/lib/verify-admin';
 
 export async function POST(request: Request) {
@@ -13,7 +13,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Invalid payload' }, { status: 400 });
     }
 
-    await commitDraftSiteData(data);
+    // Save draft changes to Firestore (not published yet)
+    await saveDraftSiteData(data);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
