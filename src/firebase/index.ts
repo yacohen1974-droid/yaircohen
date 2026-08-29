@@ -14,7 +14,8 @@ export async function isAdminEmail(email: string): Promise<boolean> {
   try {
     const snap = await getDoc(doc(db, 'admins', email.toLowerCase()));
     return snap.exists();
-  } catch {
+  } catch (e) {
+    console.error('isAdminEmail check failed (likely a Firestore rules/permission issue, not a missing doc):', e);
     return false;
   }
 }
