@@ -392,38 +392,6 @@
       "siteFavicon": "/favicon.ico",
       "underConstruction": false,
       "legalItems": []
-    },
-    "about": {
-      "underConstruction": false,
-      "primaryColor": "35 40% 45%",
-      "siteName": "",
-      "siteSubtitle": "",
-      "siteDescription": "",
-      "siteEmail": "",
-      "sitePhone": "",
-      "siteAddress": "",
-      "siteLogo": "/logo.png",
-      "siteFavicon": "/favicon.ico",
-      "facebookLink": "",
-      "instagramLink": "",
-      "linkedinLink": "",
-      "navItems": [],
-      "footerItems": [],
-      "legalItems": [],
-      "metaTitle": "אודות יאיר כהן יועץ משכנתאות",
-      "metaDescription": "",
-      "blocks": [],
-      "sectionOrder": [
-        "hero",
-        "intro",
-        "dynamic",
-        "features",
-        "journey",
-        "testimonials",
-        "faqs",
-        "cta",
-        "contact"
-      ]
     }
   },
   "global": {
@@ -443,8 +411,8 @@
         "href": "/"
       },
       {
-        "label": "מי אני ",
-        "href": "/about"
+        "label": "מי אני",
+        "href": "/about_yair"
       },
       {
         "label": "צור קשר",
@@ -473,8 +441,7 @@
     "tiktokLink": "https://www.tiktok.com/@_yaircohen_",
     "underConstruction": false,
     "siteLogo": "/logo.png",
-    "siteFavicon": "/favicon.ico",
-    "youtubeLink": "https://www.youtube.com/channel/UCIU3xxQ5o4nDttcVD17q8QQ"
+    "siteFavicon": "/favicon.ico"
   },
   "home": {
     "primaryColor": "213 75% 35%",
