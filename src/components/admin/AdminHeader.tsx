@@ -3,14 +3,13 @@
 import React from 'react';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileText, Newspaper, FolderCog, HelpCircle, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, Newspaper, HelpCircle, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/firebase';
 
 const NAV_ITEMS = [
   { label: 'לוח בקרה', href: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'עריכת דפים', href: '/admin/pages', icon: FileText },
-  { label: 'ניהול דפים', href: '/admin/manage-pages', icon: FolderCog },
   { label: 'בלוג', href: '/admin/blog', icon: Newspaper },
   { label: 'עזרה', href: '/admin/help', icon: HelpCircle },
 ];
