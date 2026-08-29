@@ -244,6 +244,27 @@ export default function AdminPages() {
                           blocks[idx] = updated;
                           setContent({ ...content, blocks });
                         }}
+                        onRemove={() => {
+                          const blocks = [...(content.blocks || [])];
+                          blocks.splice(idx, 1);
+                          setContent({ ...content, blocks });
+                        }}
+                        onMoveUp={() => {
+                          const blocks = [...(content.blocks || [])];
+                          if (idx > 0) {
+                            [blocks[idx], blocks[idx - 1]] = [blocks[idx - 1], blocks[idx]];
+                          }
+                          setContent({ ...content, blocks });
+                        }}
+                        onMoveDown={() => {
+                          const blocks = [...(content.blocks || [])];
+                          if (idx < blocks.length - 1) {
+                            [blocks[idx], blocks[idx + 1]] = [blocks[idx + 1], blocks[idx]];
+                          }
+                          setContent({ ...content, blocks });
+                        }}
+                        isFirst={idx === 0}
+                        isLast={idx === (content.blocks?.length || 0) - 1}
                       />
                     </div>
                   ))}

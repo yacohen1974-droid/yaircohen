@@ -160,10 +160,20 @@ function AlignPicker({ value, onChange }: { value: string, onChange: (v: string)
 
 export function BlockEditor({
   section,
-  onChange
+  onChange,
+  onRemove,
+  onMoveUp,
+  onMoveDown,
+  isFirst,
+  isLast
 }: {
   section: any;
   onChange: (s: any) => void;
+  onRemove?: () => void;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  isFirst?: boolean;
+  isLast?: boolean;
 }) {
   const [availableLogos, setAvailableLogos] = useState<string[]>([]);
 
@@ -181,10 +191,10 @@ export function BlockEditor({
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-md space-y-0 mb-8 relative group hover:border-primary/40 transition-all duration-300 overflow-hidden">
       {/* Header */}
-      <div className="flex justify-between items-center border-b border-slate-700 px-6 py-4 md:px-8 md:py-5">
+      <div className="flex justify-between items-center border-b border-slate-700 bg-slate-900 px-6 py-4 md:px-8 md:py-5">
         <div className="flex items-center gap-3">
-          <div className="w-2 h-6 bg-primary rounded-full" />
-          <Label className="boutique-label text-slate-100 text-lg">
+          <div className="w-2.5 h-6 bg-primary rounded-full" />
+          <span className="font-headline font-bold text-white text-lg">
             {section.type === 'hero' ? 'כותרת גדולה (Hero)' :
              section.type === 'intro' ? 'אודות / פורטרט' :
              section.type === 'text' ? 'בלוק טקסט' :
@@ -201,7 +211,45 @@ export function BlockEditor({
              section.type === 'stats' ? 'סטטיסטיקות / מספרים' :
              section.type === 'insight' ? 'כרטיס תובנה' :
              'כותרת בלבד'}
-          </Label>
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {onMoveUp && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800"
+              disabled={isFirst}
+              onClick={onMoveUp}
+              title="הזז למעלה"
+            >
+              <ChevronUp size={16} />
+            </Button>
+          )}
+          {onMoveDown && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800"
+              disabled={isLast}
+              onClick={onMoveDown}
+              title="הזז למטה"
+            >
+              <ChevronDown size={16} />
+            </Button>
+          )}
+          {onRemove && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-950/40"
+              onClick={onRemove}
+              title="מחק בלוק"
+            >
+              <Trash2 size={16} />
+            </Button>
+          )}
         </div>
       </div>
 
