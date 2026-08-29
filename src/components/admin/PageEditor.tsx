@@ -156,42 +156,48 @@ export function PageEditor({ content, onChange, onAddBlock }: PageEditorProps) {
               {(content.blocks || []).map((block: any, idx: number) => (
                 <div
                   key={block.id || idx}
-                  className="bg-stone-50 border border-stone-200 rounded p-4 space-y-2"
+                  className="bg-stone-50 border border-stone-200 rounded p-4 flex items-center justify-between"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
                     <span className="font-medium text-sm">
-                      בלוק #{idx + 1} — {block.type}
+                      בלוק #{idx + 1} — {block.type === 'hero' ? 'כותרת (Hero)' :
+                                         block.type === 'intro' ? 'אודות / פורטרט' :
+                                         block.type === 'text' ? 'בלוק טקסט' :
+                                         block.type === 'image-text' ? 'תמונה וטקסט' :
+                                         block.type === 'features' ? 'קוביות תוכן (גריד)' :
+                                         block.type === 'testimonials' ? 'המלצות ממליצים' :
+                                         block.type === 'faqs' ? 'שאלות ותשובות' :
+                                         block.type === 'cta' ? 'כפתורי פעולה' :
+                                         block.type === 'contact' ? 'טופס יצירת קשר' :
+                                         block.type === 'map' ? 'מפת מיקום' :
+                                         block.type === 'logos' ? 'לוגואים (גריד)' :
+                                         block.type === 'video' ? 'וידאו (גריד)' :
+                                         block.type === 'blog-grid' ? 'רשימת מאמרים (Blog Grid)' :
+                                         block.type === 'stats' ? 'סטטיסטיקות / מספרים' :
+                                         block.type === 'insight' ? 'כרטיס תובנה' :
+                                         block.type}
                     </span>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleMoveBlock(idx, 'up')}
-                        disabled={idx === 0}
-                      >
-                        ↑
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleMoveBlock(idx, 'down')}
-                        disabled={idx === (content.blocks?.length || 0) - 1}
-                      >
-                        ↓
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveBlock(idx)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        מחק
-                      </Button>
-                    </div>
+                    <span className="text-xs text-stone-500 mt-1">
+                      {block.title ? `כותרת: "${block.title}"` : 'ללא כותרת'}
+                    </span>
                   </div>
-                  <p className="text-xs text-stone-500">
-                    זהו הבלוק הראשי של העמוד. לחצו על "עריכת בלוקים" בתפריט הצד להתחיל בעריכה.
-                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const el = document.getElementById(`block-editor-${block.id || idx}`);
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Add temporary highlighting effect
+                        el.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+                        setTimeout(() => {
+                          el.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+                        }, 1500);
+                      }
+                    }}
+                  >
+                    ערוך בלוק במורד העמוד
+                  </Button>
                 </div>
               ))}
             </div>

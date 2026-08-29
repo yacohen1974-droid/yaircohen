@@ -34,24 +34,32 @@ export function ConfirmDialog({
   state,
   onOpenChange,
 }: {
-  state: ConfirmDialogState;
+  state?: ConfirmDialogState;
   onOpenChange: (open: boolean) => void;
 }) {
+  const isOpen = state?.open ?? false;
+  const title = state?.title ?? '';
+  const description = state?.description ?? '';
+  const confirmLabel = state?.confirmLabel || 'אישור';
+  const cancelLabel = state?.cancelLabel || 'ביטול';
+  const destructive = state?.destructive ?? false;
+  const onConfirm = state?.onConfirm ?? (() => {});
+
   return (
-    <AlertDialog open={state.open} onOpenChange={onOpenChange}>
+    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent dir="rtl" className="text-right">
         <AlertDialogHeader>
-          <AlertDialogTitle>{state.title}</AlertDialogTitle>
-          <AlertDialogDescription className="whitespace-pre-line">{state.description}</AlertDialogDescription>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription className="whitespace-pre-line">{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="sm:justify-start">
           <AlertDialogAction
-            onClick={state.onConfirm}
-            className={state.destructive ? 'bg-red-600 hover:bg-red-700 text-white' : ''}
+            onClick={onConfirm}
+            className={destructive ? 'bg-red-600 hover:bg-red-700 text-white' : ''}
           >
-            {state.confirmLabel || 'אישור'}
+            {confirmLabel}
           </AlertDialogAction>
-          <AlertDialogCancel>{state.cancelLabel || 'ביטול'}</AlertDialogCancel>
+          <AlertDialogCancel>{cancelLabel}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -137,29 +137,34 @@ export async function publishSiteData(data: SiteData): Promise<void> {
     }
 
     // Publish pages
-    for (const [pageId, pageData] of Object.entries(data.pages)) {
-      const pageRef = doc(db, `sites/${SITE_ID}/pages/${pageId}`);
-      batch.set(
-        pageRef,
-        {
-          published: pageData,
-          updatedAt: now,
-        },
-        { merge: true }
-      );
+    if (data.pages) {
+      for (const [pageId, pageData] of Object.entries(data.pages)) {
+        const pageRef = doc(db, `sites/${SITE_ID}/pages/${pageId}`);
+        batch.set(
+          pageRef,
+          {
+            published: pageData,
+            updatedAt: now,
+          },
+          { merge: true }
+        );
+      }
     }
 
     // Publish blog posts
-    for (const post of data.blogPosts) {
-      const postRef = doc(db, `sites/${SITE_ID}/blogPosts/${post.id}`);
-      batch.set(
-        postRef,
-        {
-          published: post,
-          updatedAt: now,
-        },
-        { merge: true }
-      );
+    if (data.blogPosts) {
+      for (const post of data.blogPosts) {
+        if (!post.id) continue;
+        const postRef = doc(db, `sites/${SITE_ID}/blogPosts/${post.id}`);
+        batch.set(
+          postRef,
+          {
+            published: post,
+            updatedAt: now,
+          },
+          { merge: true }
+        );
+      }
     }
 
     await batch.commit();
@@ -192,29 +197,34 @@ export async function saveDraftSiteData(data: SiteData): Promise<void> {
     }
 
     // Save page drafts
-    for (const [pageId, pageData] of Object.entries(data.pages)) {
-      const pageRef = doc(db, `sites/${SITE_ID}/pages/${pageId}`);
-      batch.set(
-        pageRef,
-        {
-          draft: pageData,
-          updatedAt: now,
-        },
-        { merge: true }
-      );
+    if (data.pages) {
+      for (const [pageId, pageData] of Object.entries(data.pages)) {
+        const pageRef = doc(db, `sites/${SITE_ID}/pages/${pageId}`);
+        batch.set(
+          pageRef,
+          {
+            draft: pageData,
+            updatedAt: now,
+          },
+          { merge: true }
+        );
+      }
     }
 
     // Save blog post drafts
-    for (const post of data.blogPosts) {
-      const postRef = doc(db, `sites/${SITE_ID}/blogPosts/${post.id}`);
-      batch.set(
-        postRef,
-        {
-          draft: post,
-          updatedAt: now,
-        },
-        { merge: true }
-      );
+    if (data.blogPosts) {
+      for (const post of data.blogPosts) {
+        if (!post.id) continue;
+        const postRef = doc(db, `sites/${SITE_ID}/blogPosts/${post.id}`);
+        batch.set(
+          postRef,
+          {
+            draft: post,
+            updatedAt: now,
+          },
+          { merge: true }
+        );
+      }
     }
 
     await batch.commit();

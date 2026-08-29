@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { SITE_CONTENT_CACHE_TAG } from '@/firebase/db-actions';
-import { publishSiteData } from '@/firebase/firestore-cms';
 import { requireAdmin } from '@/lib/verify-admin';
 
 export async function POST(request: Request) {
@@ -16,9 +15,6 @@ export async function POST(request: Request) {
     if (!data || typeof data !== 'object') {
       return NextResponse.json({ success: false, error: 'Invalid payload' }, { status: 400 });
     }
-
-    // Publish to Firestore (now the single source of truth)
-    await publishSiteData(data);
 
     // Revalidate Next.js cache to refresh published content on the live site
     revalidateTag(SITE_CONTENT_CACHE_TAG);

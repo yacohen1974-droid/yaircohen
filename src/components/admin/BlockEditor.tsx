@@ -160,20 +160,10 @@ function AlignPicker({ value, onChange }: { value: string, onChange: (v: string)
 
 export function BlockEditor({
   section,
-  onChange,
-  onRemove,
-  onMoveUp,
-  onMoveDown,
-  isFirst,
-  isLast
+  onChange
 }: {
   section: any;
   onChange: (s: any) => void;
-  onRemove: () => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-  isFirst: boolean;
-  isLast: boolean;
 }) {
   const [availableLogos, setAvailableLogos] = useState<string[]>([]);
 
@@ -212,16 +202,6 @@ export function BlockEditor({
              section.type === 'insight' ? 'כרטיס תובנה' :
              'כותרת בלבד'}
           </Label>
-        </div>
-        <div className="flex items-center gap-3">
-          <MoveButtons onUp={onMoveUp} onDown={onMoveDown} disableUp={isFirst} disableDown={isLast} />
-          <button
-            type="button"
-            onClick={onRemove}
-            className="text-red-400 hover:text-red-300 transition-colors h-8 w-8 flex items-center justify-center"
-          >
-            <Trash2 size={16} />
-          </button>
         </div>
       </div>
 
@@ -264,20 +244,580 @@ export function BlockEditor({
           )}
         </div>
 
-        {/* Note: Full block-type-specific fields omitted for brevity in this version.
-            Production: extend with all hero/intro/features/testimonials/faqs/etc handlers */}
+        {/* Block Specific Editors */}
 
-        <div className="text-center py-8 bg-white border-2 border-dashed border-stone-200 rounded">
-          <p className="text-sm text-stone-600 font-medium">
-            ✎ פרטי הבלוק מ-{section.type}
-          </p>
-          <p className="text-xs text-stone-400 mt-2">
-            בגרסה הקלה זו, עריכת בלוקים פנימיים זמינה בקובץ admin/pages בלבד.
-          </p>
-          <p className="text-xs text-stone-400 mt-4">
-            לפרטים מלאים, ראו את DynamicSectionEditor ב-admin/pages/page.tsx
-          </p>
-        </div>
+        {/* Hero Section */}
+        {section.type === 'hero' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="כותרת הראשית (Hero Title)">
+                <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} placeholder="יועץ משכנתאות מקצועי" />
+              </Field>
+              <Field label="כותרת משנה (Hero Subtitle)">
+                <Input value={section.subtitle || ''} onChange={e => onChange({ ...section, subtitle: e.target.value })} placeholder="ליווי אישי – מהשוואת הצעות..." />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="גובה הבלוק">
+                <Select value={section.heroHeight || '70vh'} onValueChange={v => onChange({ ...section, heroHeight: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {HERO_HEIGHTS.map(o => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="קישור לתמונת רקע">
+                <Input value={section.imageUrl || ''} onChange={e => onChange({ ...section, imageUrl: e.target.value })} placeholder="/hero-bg.jpg" />
+              </Field>
+            </div>
+            <div className="space-y-2">
+              <Label className="boutique-label text-slate-700">רמת עננות/אפקט רקע ({section.heroCloudiness || 40}%)</Label>
+              <Slider
+                value={[section.heroCloudiness || 40]}
+                onValueChange={v => onChange({ ...section, heroCloudiness: v[0] })}
+                max={100}
+                step={5}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Intro/About Section */}
+        {section.type === 'intro' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="כותרת">
+                <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+              </Field>
+              <Field label="קישור לתמונת פורטרט">
+                <Input value={section.portraitImageUrl || ''} onChange={e => onChange({ ...section, portraitImageUrl: e.target.value })} placeholder="/profile.jpg" />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="מיקום התמונה">
+                <Select value={section.portraitPosition || 'left'} onValueChange={v => onChange({ ...section, portraitPosition: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="left">שמאל</SelectItem>
+                    <SelectItem value="right">ימין</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="צורת התמונה">
+                <Select value={section.portraitShape || 'circle'} onValueChange={v => onChange({ ...section, portraitShape: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="circle">עיגול</SelectItem>
+                    <SelectItem value="square">ריבוע</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </div>
+            <Field label="תוכן האודות (מעוצב)">
+              <ReactQuill
+                theme="snow"
+                value={section.content || ''}
+                onChange={v => onChange({ ...section, content: v })}
+                modules={QUILL_MODULES}
+                formats={QUILL_FORMATS}
+                className="bg-white border rounded"
+              />
+            </Field>
+          </div>
+        )}
+
+        {/* Text Section */}
+        {section.type === 'text' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            <Field label="תוכן הטקסט (מעוצב)">
+              <ReactQuill
+                theme="snow"
+                value={section.content || ''}
+                onChange={v => onChange({ ...section, content: v })}
+                modules={QUILL_MODULES}
+                formats={QUILL_FORMATS}
+                className="bg-white border rounded"
+              />
+            </Field>
+          </div>
+        )}
+
+        {/* Image & Text Section */}
+        {section.type === 'image-text' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="כותרת">
+                <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+              </Field>
+              <Field label="קישור לתמונה">
+                <Input value={section.imageUrl || ''} onChange={e => onChange({ ...section, imageUrl: e.target.value })} />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="מיקום התמונה">
+                <Select value={section.imagePosition || 'left'} onValueChange={v => onChange({ ...section, imagePosition: v })}>
+                  <SelectTrigger className="bg-stone-50 border-none h-12"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="left">שמאל (טקסט בימין)</SelectItem>
+                    <SelectItem value="right">ימין (טקסט בשמאל)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </div>
+            <Field label="תוכן (מעוצב)">
+              <ReactQuill
+                theme="snow"
+                value={section.content || ''}
+                onChange={v => onChange({ ...section, content: v })}
+                modules={QUILL_MODULES}
+                formats={QUILL_FORMATS}
+                className="bg-white border rounded"
+              />
+            </Field>
+          </div>
+        )}
+
+        {/* Features/Grid Section */}
+        {section.type === 'features' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            
+            <div className="space-y-4 mt-4">
+              <Label className="font-semibold text-stone-700 block">רשימת קוביות התוכן:</Label>
+              {(section.features || []).map((feat: any, fIdx: number) => (
+                <div key={fIdx} className="bg-white border rounded-lg p-4 space-y-3 relative shadow-sm text-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const features = [...(section.features || [])];
+                      features.splice(fIdx, 1);
+                      onChange({ ...section, features });
+                    }}
+                    className="absolute top-2 left-2 text-red-500 hover:text-red-700 text-xs font-semibold"
+                  >
+                    מחק קוביה ✕
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Field label="כותרת הקוביה">
+                      <Input value={feat.title || ''} onChange={e => {
+                        const features = [...(section.features || [])];
+                        features[fIdx] = { ...feat, title: e.target.value };
+                        onChange({ ...section, features });
+                      }} />
+                    </Field>
+                    <Field label="אייקון לקוביה">
+                      <Select value={feat.icon || 'Star'} onValueChange={v => {
+                        const features = [...(section.features || [])];
+                        features[fIdx] = { ...feat, icon: v };
+                        onChange({ ...section, features });
+                      }}>
+                        <SelectTrigger className="bg-stone-50 border-none"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {ICON_OPTIONS.map(o => <SelectItem key={o.value} value={o.value}><div className="flex items-center gap-2">{o.icon} {o.value}</div></SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </div>
+                  <Field label="תיאור הקוביה">
+                    <Textarea value={feat.description || ''} onChange={e => {
+                      const features = [...(section.features || [])];
+                      features[fIdx] = { ...feat, description: e.target.value };
+                      onChange({ ...section, features });
+                    }} rows={2} />
+                  </Field>
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={() => {
+                const features = [...(section.features || []), { title: 'קוביה חדשה', description: '', icon: 'Star' }];
+                onChange({ ...section, features });
+              }} className="w-full">
+                <Plus size={14} className="ml-1" /> הוסף קוביה חדשה
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Testimonials Section */}
+        {section.type === 'testimonials' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+
+            <div className="space-y-4 mt-4">
+              <Label className="font-semibold text-stone-700 block">רשימת המלצות:</Label>
+              {(section.testimonials || []).map((testi: any, tIdx: number) => (
+                <div key={tIdx} className="bg-white border rounded-lg p-4 space-y-3 relative shadow-sm text-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const testimonials = [...(section.testimonials || [])];
+                      testimonials.splice(tIdx, 1);
+                      onChange({ ...section, testimonials });
+                    }}
+                    className="absolute top-2 left-2 text-red-500 hover:text-red-700 text-xs font-semibold"
+                  >
+                    מחק המלצה ✕
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Field label="שם הממליץ">
+                      <Input value={testi.author || ''} onChange={e => {
+                        const testimonials = [...(section.testimonials || [])];
+                        testimonials[tIdx] = { ...testi, author: e.target.value };
+                        onChange({ ...section, testimonials });
+                      }} />
+                    </Field>
+                    <Field label="תפקיד / מקום">
+                      <Input value={testi.location || ''} onChange={e => {
+                        const testimonials = [...(section.testimonials || [])];
+                        testimonials[tIdx] = { ...testi, location: e.target.value };
+                        onChange({ ...section, testimonials });
+                      }} />
+                    </Field>
+                  </div>
+                  <Field label="תוכן ההמלצה">
+                    <Textarea value={testi.text || ''} onChange={e => {
+                      const testimonials = [...(section.testimonials || [])];
+                      testimonials[tIdx] = { ...testi, text: e.target.value };
+                      onChange({ ...section, testimonials });
+                    }} rows={3} />
+                  </Field>
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={() => {
+                const testimonials = [...(section.testimonials || []), { text: '', author: '', location: '' }];
+                onChange({ ...section, testimonials });
+              }} className="w-full">
+                <Plus size={14} className="ml-1" /> הוסף המלצה חדשה
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* FAQs Section */}
+        {section.type === 'faqs' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+
+            <div className="space-y-4 mt-4">
+              <Label className="font-semibold text-stone-700 block">רשימת שאלות ותשובות:</Label>
+              {(section.faqs || []).map((faq: any, fIdx: number) => (
+                <div key={fIdx} className="bg-white border rounded-lg p-4 space-y-3 relative shadow-sm text-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const faqs = [...(section.faqs || [])];
+                      faqs.splice(fIdx, 1);
+                      onChange({ ...section, faqs });
+                    }}
+                    className="absolute top-2 left-2 text-red-500 hover:text-red-700 text-xs font-semibold"
+                  >
+                    מחק שאלה ✕
+                  </button>
+                  <Field label="השאלה">
+                    <Input value={faq.question || ''} onChange={e => {
+                      const faqs = [...(section.faqs || [])];
+                      faqs[fIdx] = { ...faq, question: e.target.value };
+                      onChange({ ...section, faqs });
+                    }} />
+                  </Field>
+                  <Field label="התשובה">
+                    <Textarea value={faq.answer || ''} onChange={e => {
+                      const faqs = [...(section.faqs || [])];
+                      faqs[fIdx] = { ...faq, answer: e.target.value };
+                      onChange({ ...section, faqs });
+                    }} rows={3} />
+                  </Field>
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={() => {
+                const faqs = [...(section.faqs || []), { question: '', answer: '' }];
+                onChange({ ...section, faqs });
+              }} className="w-full">
+                <Plus size={14} className="ml-1" /> הוסף שאלה חדשה
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* CTA Section */}
+        {section.type === 'cta' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+
+            <div className="space-y-4 mt-4">
+              <Label className="font-semibold text-stone-700 block">רשימת כפתורי פעולה:</Label>
+              {(section.ctaButtons || []).map((btn: any, bIdx: number) => (
+                <div key={bIdx} className="bg-white border rounded-lg p-4 space-y-3 relative shadow-sm text-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const ctaButtons = [...(section.ctaButtons || [])];
+                      ctaButtons.splice(bIdx, 1);
+                      onChange({ ...section, ctaButtons });
+                    }}
+                    className="absolute top-2 left-2 text-red-500 hover:text-red-700 text-xs font-semibold"
+                  >
+                    מחק כפתור ✕
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <Field label="טקסט הכפתור">
+                      <Input value={btn.label || ''} onChange={e => {
+                        const ctaButtons = [...(section.ctaButtons || [])];
+                        ctaButtons[bIdx] = { ...btn, label: e.target.value };
+                        onChange({ ...section, ctaButtons });
+                      }} />
+                    </Field>
+                    <Field label="קישור (URL)">
+                      <Input value={btn.href || ''} onChange={e => {
+                        const ctaButtons = [...(section.ctaButtons || [])];
+                        ctaButtons[bIdx] = { ...btn, href: e.target.value };
+                        onChange({ ...section, ctaButtons });
+                      }} />
+                    </Field>
+                    <Field label="סגנון">
+                      <Select value={btn.variant || 'primary'} onValueChange={v => {
+                        const ctaButtons = [...(section.ctaButtons || [])];
+                        ctaButtons[bIdx] = { ...btn, variant: v };
+                        onChange({ ...section, ctaButtons });
+                      }}>
+                        <SelectTrigger className="bg-stone-50 border-none"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="primary">ראשי (צבע מלא)</SelectItem>
+                          <SelectItem value="outline">משני (מסגרת)</SelectItem>
+                          <SelectItem value="ghost">טקסט בלבד</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </div>
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={() => {
+                const ctaButtons = [...(section.ctaButtons || []), { label: 'כפתור חדש', href: '#', variant: 'primary', size: 'default' }];
+                onChange({ ...section, ctaButtons });
+              }} className="w-full">
+                <Plus size={14} className="ml-1" /> הוסף כפתור פעולה חדש
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Stats Section */}
+        {section.type === 'stats' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+
+            <div className="space-y-4 mt-4">
+              <Label className="font-semibold text-stone-700 block">נתונים וסטטיסטיקות:</Label>
+              {(section.stats || []).map((stat: any, sIdx: number) => (
+                <div key={sIdx} className="bg-white border rounded-lg p-4 space-y-3 relative shadow-sm text-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const stats = [...(section.stats || [])];
+                      stats.splice(sIdx, 1);
+                      onChange({ ...section, stats });
+                    }}
+                    className="absolute top-2 left-2 text-red-500 hover:text-red-700 text-xs font-semibold"
+                  >
+                    מחק נתון ✕
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Field label="מספר / ערך (למשל: 100, 95)">
+                      <Input value={stat.value || ''} onChange={e => {
+                        const stats = [...(section.stats || [])];
+                        stats[sIdx] = { ...stat, value: e.target.value };
+                        onChange({ ...section, stats });
+                      }} />
+                    </Field>
+                    <Field label="תיאור קצר (למשל: לקוחות מרוצים)">
+                      <Input value={stat.label || ''} onChange={e => {
+                        const stats = [...(section.stats || [])];
+                        stats[sIdx] = { ...stat, label: e.target.value };
+                        onChange({ ...section, stats });
+                      }} />
+                    </Field>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Field label="תחילית (למשל: +)">
+                      <Input value={stat.prefix || ''} onChange={e => {
+                        const stats = [...(section.stats || [])];
+                        stats[sIdx] = { ...stat, prefix: e.target.value };
+                        onChange({ ...section, stats });
+                      }} />
+                    </Field>
+                    <Field label="סיומת (למשל: %)">
+                      <Input value={stat.suffix || ''} onChange={e => {
+                        const stats = [...(section.stats || [])];
+                        stats[sIdx] = { ...stat, suffix: e.target.value };
+                        onChange({ ...section, stats });
+                      }} />
+                    </Field>
+                  </div>
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={() => {
+                const stats = [...(section.stats || []), { value: '', label: '', prefix: '', suffix: '' }];
+                onChange({ ...section, stats });
+              }} className="w-full">
+                <Plus size={14} className="ml-1" /> הוסף נתון חדש
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Video Section */}
+        {section.type === 'video' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            <Field label="קישור לוידאו (YouTube / Vimeo / mp4)">
+              <Input value={section.videoUrl || ''} onChange={e => onChange({ ...section, videoUrl: e.target.value })} placeholder="https://www.youtube.com/watch?v=..." />
+            </Field>
+          </div>
+        )}
+
+        {/* Contact Section */}
+        {section.type === 'contact' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} placeholder="צור קשר" />
+            </Field>
+            <Field label="הסבר קצר">
+              <Input value={section.content || ''} onChange={e => onChange({ ...section, content: e.target.value })} placeholder="נשמח לשמוע מכם..." />
+            </Field>
+          </div>
+        )}
+
+        {/* Map Section */}
+        {section.type === 'map' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            <Field label="כתובת מפה">
+              <Input value={section.mapAddress || ''} onChange={e => onChange({ ...section, mapAddress: e.target.value })} placeholder="שדרות רוטשילד 1, תל אביב" />
+            </Field>
+          </div>
+        )}
+
+        {/* Logos Section */}
+        {section.type === 'logos' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200 font-sans text-slate-800">
+            <Field label="כותרת הבלוק">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            <p className="text-xs text-stone-600 bg-white p-3 border rounded">
+              ℹ️ לוגואים מוצגים באופן אוטומטי מגלריית הלוגואים שקיימת בתיקיית האתר.
+            </p>
+          </div>
+        )}
+
+        {/* Insight Section */}
+        {section.type === 'insight' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת כרטיס תובנה">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            
+            <div className="space-y-4 mt-4">
+              <Label className="font-semibold text-stone-700 block">נקודות/תובנות:</Label>
+              {(section.insightPoints || []).map((point: any, pIdx: number) => (
+                <div key={pIdx} className="bg-white border rounded-lg p-3 space-y-2 relative shadow-sm text-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const insightPoints = [...(section.insightPoints || [])];
+                      insightPoints.splice(pIdx, 1);
+                      onChange({ ...section, insightPoints });
+                    }}
+                    className="absolute top-2 left-2 text-red-500 hover:text-red-700 text-xs font-semibold"
+                  >
+                    מחק ✕
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Field label="טקסט הנקודה">
+                      <Input value={point.text || ''} onChange={e => {
+                        const insightPoints = [...(section.insightPoints || [])];
+                        insightPoints[pIdx] = { ...point, text: e.target.value };
+                        onChange({ ...section, insightPoints });
+                      }} />
+                    </Field>
+                    <Field label="סוג הנקודה">
+                      <Select value={point.type || 'neutral'} onValueChange={v => {
+                        const insightPoints = [...(section.insightPoints || [])];
+                        insightPoints[pIdx] = { ...point, type: v };
+                        onChange({ ...section, insightPoints });
+                      }}>
+                        <SelectTrigger className="bg-stone-50 border-none"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="positive">חיובית (ירוק)</SelectItem>
+                          <SelectItem value="negative">שלילית (אדום)</SelectItem>
+                          <SelectItem value="neutral">ניטרלית (אפור)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </div>
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={() => {
+                const insightPoints = [...(section.insightPoints || []), { text: '', type: 'neutral' }];
+                onChange({ ...section, insightPoints });
+              }} className="w-full">
+                <Plus size={14} className="ml-1" /> הוסף נקודת תובנה
+              </Button>
+            </div>
+            
+            <Field label="סיכום / תובנה סופית">
+              <Input value={section.insightConclusion || ''} onChange={e => onChange({ ...section, insightConclusion: e.target.value })} />
+            </Field>
+          </div>
+        )}
+
+        {/* Title-only Section */}
+        {section.type === 'title-only' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+          </div>
+        )}
+
+        {/* Blog Grid Section */}
+        {section.type === 'blog-grid' && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת הבלוג">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            <p className="text-xs text-stone-600 bg-white p-3 border rounded">
+              ℹ️ רשימת המאמרים מוצגת באופן אוטומטי מתוך הבלוג של האתר.
+            </p>
+          </div>
+        )}
+
+        {/* Fallback for block types without specific fields or generic field editor */}
+        {!['hero', 'intro', 'text', 'image-text', 'features', 'testimonials', 'faqs', 'cta', 'stats', 'video', 'contact', 'map', 'logos', 'insight', 'title-only', 'blog-grid'].includes(section.type) && (
+          <div className="space-y-4 pt-4 border-t border-stone-200">
+            <Field label="כותרת">
+              <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
+            </Field>
+            <Field label="תוכן">
+              <Textarea value={section.content || ''} onChange={e => onChange({ ...section, content: e.target.value })} rows={4} />
+            </Field>
+          </div>
+        )}
       </div>
     </div>
   );

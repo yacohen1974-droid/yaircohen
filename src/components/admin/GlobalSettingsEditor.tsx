@@ -24,6 +24,7 @@ interface GlobalSettings {
     instagram?: string;
     linkedin?: string;
     youtube?: string;
+    [key: string]: string | undefined;
   };
   [key: string]: any;
 }

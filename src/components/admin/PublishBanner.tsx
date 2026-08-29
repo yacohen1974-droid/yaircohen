@@ -8,6 +8,7 @@ import { UploadCloud, Trash2, Loader2, AlertCircle, Eye, Smartphone } from 'luci
 import { getDraftData, clearDraftData, summarizeChanges, contentHash } from '@/lib/cms-draft';
 import { getAdminIdToken } from '@/firebase';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
+import { publishSiteData, saveDraftSiteData } from '@/firebase/firestore-cms';
 
 type PublishingStatus = 'idle' | 'publishing-request' | 'publishing-live' | 'publish-failed';
 
@@ -132,10 +133,14 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
     setPublishingStatus('publishing-request');
     try {
       const idToken = await getAdminIdToken();
+
+      // Write to Firestore directly from client side (authenticated)
+      await publishSiteData(draft);
+
       const res = await fetch('/api/admin/publish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
-        body: JSON.stringify(draft)
+        body: JSON.stringify({ revalidateOnly: true })
       });
       const data = await res.json();
 
@@ -200,14 +205,8 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
 
     setIsPreviewing(true);
     try {
-      const idToken = await getAdminIdToken();
-      const res = await fetch('/api/admin/save-draft', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
-        body: JSON.stringify(draft)
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error);
+      // Save draft directly to Firestore using client-side SDK (authenticated)
+      await saveDraftSiteData(draft);
 
       const url = `${window.location.origin}/api/admin/preview?path=${encodeURIComponent(currentPath || '/')}`;
       if (device === 'mobile') {

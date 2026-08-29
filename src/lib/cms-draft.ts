@@ -13,7 +13,11 @@ export function getDraftData(): SiteData | null {
   const val = localStorage.getItem(DRAFT_KEY);
   if (!val) return null;
   try {
-    return JSON.parse(val);
+    const data = JSON.parse(val);
+    if (data && typeof data === 'object') {
+      return data as SiteData;
+    }
+    return null;
   } catch (e) {
     console.error("Failed to parse draft from localStorage:", e);
     return null;
