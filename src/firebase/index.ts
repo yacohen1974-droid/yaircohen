@@ -2,8 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { GoogleAuthProvider, signInWithPopup, signOut as fbSignOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { app, db, authInstance } from './init';
-import { ALLOWED_ADMIN_EMAILS } from '@/lib/site-config';
+
+/**
+ * Checks the `admins/{email}` Firestore doc for the signed-in user. Admin
+ * access is granted/revoked by creating/deleting that doc in the Firebase
+ * console — no code or security-rules change needed.
+ */
+export async function isAdminEmail(email: string): Promise<boolean> {
+  try {
+    const snap = await getDoc(doc(db, 'admins', email.toLowerCase()));
+    return snap.exists();
+  } catch {
+    return false;
+  }
+}
 
 export function initializeFirebase() {
   return { app, firestore: db, auth: authInstance };
@@ -49,8 +63,7 @@ export const useAuth = () => {
     provider.setCustomParameters({ prompt: 'select_account' });
     try {
       const result = await signInWithPopup(authInstance, provider);
-      const allowedEmails = ALLOWED_ADMIN_EMAILS;
-      if (result.user && result.user.email && allowedEmails.includes(result.user.email)) {
+      if (result.user && result.user.email && await isAdminEmail(result.user.email)) {
         return result.user;
       } else {
         await fbSignOut(authInstance);

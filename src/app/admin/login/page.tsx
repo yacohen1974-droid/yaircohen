@@ -4,8 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useAuth, initializeFirebase } from '@/firebase';
-import { ALLOWED_ADMIN_EMAILS } from '@/lib/site-config';
+import { useAuth, initializeFirebase, isAdminEmail } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -39,9 +38,8 @@ export default function AdminLoginPage() {
       const { auth: firebaseAuth } = initializeFirebase();
       if (firebaseAuth) {
         await signInWithEmailAndPassword(firebaseAuth, email, password);
-        const allowedEmails = ALLOWED_ADMIN_EMAILS;
         const currentUser = firebaseAuth.currentUser;
-        if (currentUser && currentUser.email && allowedEmails.includes(currentUser.email)) {
+        if (currentUser && currentUser.email && await isAdminEmail(currentUser.email)) {
           toast({
             title: "התחברת בהצלחה",
             description: "ברוך הבא לממשק הניהול.",

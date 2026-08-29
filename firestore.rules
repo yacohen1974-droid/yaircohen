@@ -6,13 +6,20 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Keep this list in sync with ALLOWED_ADMIN_EMAILS in src/lib/site-config.ts
+    // Admin allowlist: to grant/revoke admin access, create/delete a document
+    // in the `admins` collection whose ID is the lowercase email address —
+    // via the Firestore console, no code or rules change needed. The document
+    // itself can be empty; only its existence matters.
     function isAdmin() {
-      return request.auth != null && request.auth.token.email in [
-        'amirher@gmail.com',
-        'yairmashkantaot@gmail.com',
-        'yacohen1974@gmail.com'
-      ];
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.token.email.lower()));
+    }
+
+    match /admins/{email} {
+      // A signed-in user may only check their own admin doc.
+      allow read: if request.auth != null && request.auth.token.email.lower() == email;
+      // Managed exclusively via the Firebase console (which bypasses rules).
+      allow write: if false;
     }
 
     // Site data — published content is world-readable

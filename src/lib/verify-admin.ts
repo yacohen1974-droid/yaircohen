@@ -1,11 +1,12 @@
 import { firebaseConfig } from '@/firebase/config';
-import { ALLOWED_ADMIN_EMAILS } from '@/lib/site-config';
 
 /**
- * Verifies the Firebase ID token sent as `Authorization: Bearer <token>` and
- * checks the signed-in email against the admin allowlist. Uses the Identity
- * Toolkit REST API (validated against Google, not just decoded) so this works
- * without the firebase-admin SDK / a service account.
+ * Verifies the Firebase ID token sent as `Authorization: Bearer <token>`, then
+ * checks that an `admins/{email}` document exists in Firestore for the signed-in
+ * email. Uses REST APIs (Identity Toolkit + Firestore) so this works without the
+ * firebase-admin SDK / a service account. The Firestore read is itself gated by
+ * security rules (a user may only read their own admin doc), so this can only
+ * ever confirm — never spoof — admin status.
  */
 export async function requireAdmin(request: Request): Promise<{ email: string } | null> {
   const authHeader = request.headers.get('authorization') || '';
@@ -13,7 +14,7 @@ export async function requireAdmin(request: Request): Promise<{ email: string } 
   if (!idToken) return null;
 
   try {
-    const res = await fetch(
+    const lookupRes = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseConfig.apiKey}`,
       {
         method: 'POST',
@@ -21,10 +22,17 @@ export async function requireAdmin(request: Request): Promise<{ email: string } 
         body: JSON.stringify({ idToken }),
       }
     );
-    if (!res.ok) return null;
-    const data = await res.json();
-    const email = data.users?.[0]?.email;
-    if (!email || !ALLOWED_ADMIN_EMAILS.includes(email)) return null;
+    if (!lookupRes.ok) return null;
+    const lookupData = await lookupRes.json();
+    const email: string | undefined = lookupData.users?.[0]?.email;
+    if (!email) return null;
+
+    const adminDocRes = await fetch(
+      `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/admins/${encodeURIComponent(email.toLowerCase())}`,
+      { headers: { Authorization: `Bearer ${idToken}` } }
+    );
+    if (!adminDocRes.ok) return null;
+
     return { email };
   } catch {
     return null;
