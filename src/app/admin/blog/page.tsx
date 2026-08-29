@@ -4,11 +4,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useAuth, useUser } from '@/firebase';
+import { useUser } from '@/firebase';
 import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
-import { PublishBanner } from '@/components/admin/PublishBanner';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { AdminShell } from '@/components/admin/AdminShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Plus, LogOut, ArrowRight, Monitor, Smartphone, Trash2, Edit, ChevronRight, Search, HelpCircle, X, ShieldCheck, Layout, Type, Image as ImageIcon, Box, FileText, Sparkles, MousePointerClick, Globe, Palette, BookOpen, Check } from 'lucide-react';
+import { Loader2, Plus, ArrowRight, Monitor, Smartphone, Trash2, Edit, ChevronRight, Search, HelpCircle, X, ShieldCheck, Layout, Type, Image as ImageIcon, Box, FileText, Sparkles, MousePointerClick, Globe, Palette, BookOpen, Check } from 'lucide-react';
 import { ADMIN_HELP_CONTENT } from '@/config/admin-help-content';
 
 import 'react-quill-new/dist/quill.snow.css';
@@ -383,10 +381,8 @@ export default function BlogManagementPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen bg-stone-50 text-right pb-32">
-      <PublishBanner />
-      <Navbar />
-      <section className="pt-28 md:pt-48 px-4 md:px-6 max-w-5xl mx-auto">
+    <AdminShell>
+      <section className="pt-8 px-4 md:px-6 max-w-5xl mx-auto pb-32">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
           <div className="w-full">
             <Button variant="ghost" onClick={() => router.push('/admin/dashboard')} className="mb-4 text-stone-400 p-0 hover:text-primary h-auto">
@@ -538,8 +534,7 @@ export default function BlogManagementPage() {
           )}
         </div>
       </section>
-      <Footer />
       <AdminGuide />
-    </main>
+    </AdminShell>
   );
 }

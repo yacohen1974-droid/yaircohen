@@ -164,7 +164,7 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
 
   return (
     <>
-    <div className="fixed top-0 left-0 right-0 z-[9999] bg-stone-900 text-stone-100 h-14 border-b border-amber-500/20 shadow-md flex items-center justify-between px-4 md:px-8 text-sm">
+    <div className="bg-stone-900 text-stone-100 h-14 border-b border-amber-500/20 shadow-md flex items-center justify-between px-4 md:px-8 text-sm">
       <div className="flex items-center gap-2">
         <AlertCircle className="text-amber-500 size-5 animate-pulse" />
         <span className="hidden md:inline font-medium">✏️ ישנם שינויים בטיוטה שעדיין לא פורסמו לאתר החי.</span>

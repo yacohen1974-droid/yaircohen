@@ -3,8 +3,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { AdminShell } from '@/components/admin/AdminShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,9 +42,8 @@ export default function AdminHelpPage() {
   );
 
   return (
-    <main className="min-h-screen bg-stone-50 text-right">
-      <Navbar />
-      <section className="pt-48 pb-32 px-6 max-w-5xl mx-auto">
+    <AdminShell>
+      <section className="pt-20 pb-32 px-6 max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 border-b border-stone-200 pb-10">
           <div className="space-y-4">
             <Button variant="ghost" onClick={() => router.push('/admin/dashboard')} className="text-stone-400 p-0 hover:text-primary">
@@ -139,7 +137,6 @@ export default function AdminHelpPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </main>
+    </AdminShell>
   );
 }

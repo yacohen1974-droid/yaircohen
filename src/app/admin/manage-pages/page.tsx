@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { AdminShell } from '@/components/admin/AdminShell';
+import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Trash2, Loader2, ArrowRight } from 'lucide-react';
@@ -10,12 +10,12 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
-import { PublishBanner } from '@/components/admin/PublishBanner';
 
 export default function ManagePagesPage() {
   const [pages, setPages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>(CONFIRM_DIALOG_CLOSED);
   const { toast } = useToast();
   const router = useRouter();
   const { user, loading: authLoading } = useUser();
@@ -49,9 +49,21 @@ export default function ManagePagesPage() {
     fetchPages();
   }, []);
 
-  const handleDelete = async (pageId: string) => {
-    if (!confirm(`האם אתם בטוחים שברצונכם למחוק את הדף "${pageId}"?`)) return;
-    
+  const handleDelete = (pageId: string) => {
+    setConfirmDialog({
+      open: true,
+      title: 'מחיקת עמוד',
+      description: `האם אתם בטוחים שברצונכם למחוק את הדף "${pageId}"?`,
+      confirmLabel: 'מחק',
+      destructive: true,
+      onConfirm: () => {
+        setConfirmDialog(CONFIRM_DIALOG_CLOSED);
+        executeDelete(pageId);
+      },
+    });
+  };
+
+  const executeDelete = async (pageId: string) => {
     setDeleting(pageId);
     try {
       let draft = getDraftData();
@@ -81,10 +93,8 @@ export default function ManagePagesPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen bg-slate-50 text-right">
-      <PublishBanner />
-      <Navbar />
-      <section className="pt-48 pb-32 px-6 max-w-4xl mx-auto">
+    <AdminShell>
+      <section className="pt-20 pb-32 px-6 max-w-4xl mx-auto">
         <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors mb-8 boutique-label">
            חזרה <ArrowRight size={14} />
         </button>
@@ -132,11 +142,14 @@ export default function ManagePagesPage() {
 
         <div className="mt-12 p-8 bg-amber-50 border border-amber-100 rounded-sm">
           <p className="text-amber-800 text-sm leading-relaxed">
-            <strong>אזהרה:</strong> מחיקת דף מכאן מוחקת פיזית את התיקייה שלו מהקוד שלכם. ודאו שיש לכם גיבוי או שאתם בטוחים שאינכם זקוקים לדף זה.
+            <strong>שימו לב:</strong> מחיקת דף מכאן מסירה אותו מהטיוטה הנוכחית בלבד — הוא לא יימחק סופית מהאתר החי עד שתלחצו "פרסם שינויים".
           </p>
         </div>
       </section>
-      <Footer />
-    </main>
+      <ConfirmDialog
+        state={confirmDialog}
+        onOpenChange={(open) => !open && setConfirmDialog(CONFIRM_DIALOG_CLOSED)}
+      />
+    </AdminShell>
   );
 }

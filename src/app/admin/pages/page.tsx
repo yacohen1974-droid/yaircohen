@@ -7,10 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useUser, getAdminIdToken } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
-import { PublishBanner } from '@/components/admin/PublishBanner';
+import { AdminShell } from '@/components/admin/AdminShell';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -1714,11 +1712,11 @@ export default function AdminPages() {
     return <div className="min-h-screen flex items-center justify-center bg-stone-50"><Loader2 className="animate-spin text-primary size-12" /></div>;
   }
 
+  const currentPath = selectedPage === 'home' ? '/' : selectedPage === 'global' || selectedPage === 'custom' ? '/' : `/${selectedPage}`;
+
   return (
-    <main className="min-h-screen bg-stone-50 text-right pb-44">
-      <PublishBanner currentPath={selectedPage === 'home' ? '/' : selectedPage === 'global' || selectedPage === 'custom' ? '/' : `/${selectedPage}`} />
-      <Navbar />
-      <section className="pt-28 md:pt-48 px-4 md:px-6 max-w-5xl mx-auto">
+    <AdminShell currentPath={currentPath}>
+      <section className="pt-8 pb-44 px-4 md:px-6 max-w-5xl mx-auto">
 
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
@@ -1742,7 +1740,7 @@ export default function AdminPages() {
             </button>
           </div>
 
-          <div className="w-full md:w-96 flex flex-col gap-4 md:sticky md:top-[88px] md:z-[40]">
+          <div className="w-full md:w-96 flex flex-col gap-4 md:sticky md:top-16 md:z-[40]">
             <div className="flex gap-2">
               <div className="flex-1">
                 <Field label="בחר דף לעריכה">
@@ -2252,11 +2250,10 @@ export default function AdminPages() {
           </form>
         )}
       </section>
-      <Footer />
       <ConfirmDialog
         state={confirmDialog}
         onOpenChange={(open) => !open && setConfirmDialog(CONFIRM_DIALOG_CLOSED)}
       />
-    </main>
+    </AdminShell>
   );
 }
