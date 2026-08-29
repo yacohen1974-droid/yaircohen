@@ -36,8 +36,11 @@ export async function GET() {
                 href !== '/blog' &&
                 href !== ''
               ) {
-                const cleanId = href.startsWith('/') ? href.slice(1) : href;
-                if (/^[a-zA-Z0-9-]+$/.test(cleanId)) {
+                let cleanId = href.startsWith('/') ? href.slice(1) : href;
+                try {
+                  cleanId = decodeURIComponent(cleanId);
+                } catch (e) {}
+                if (/^[a-zA-Z0-9\u0590-\u05FF-]+$/.test(cleanId)) {
                   dbPages.push(cleanId);
                 }
               }

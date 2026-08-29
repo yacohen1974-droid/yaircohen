@@ -8,7 +8,7 @@ export function slugifyPageId(raw: string): string {
     .toLowerCase()
     .trim()
     .replace(/^\/+/, '') // a leading "/" is a common typo when users think in URLs, not ids
-    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/[^\u0590-\u05FFa-z0-9-]+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 }
@@ -28,5 +28,11 @@ export function hrefToPageId(href: string): string | null {
   ) {
     return null;
   }
-  return trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
+  
+  try {
+    const decoded = decodeURIComponent(trimmed);
+    return decoded.startsWith('/') ? decoded.slice(1) : decoded;
+  } catch (e) {
+    return trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
+  }
 }

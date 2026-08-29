@@ -51,7 +51,7 @@ export async function listAllPages(): Promise<KnownPage[]> {
         items.forEach((item: any) => {
           const rawId = typeof item?.href === 'string' ? hrefToPageId(item.href) : null;
           const id = rawId?.toLowerCase();
-          if (id && id !== 'blog' && /^[a-z0-9-]+$/.test(id)) {
+          if (id && id !== 'blog' && /^[a-z0-9\u0590-\u05FF-]+$/.test(id)) {
             upsert(id, `📄 ${id} (מתוך תפריט)`, true);
           }
         });
