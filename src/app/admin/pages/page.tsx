@@ -80,7 +80,9 @@ export default function AdminPages() {
 
         // Split global/blog from page-level content before saving
         const { global, blog, ...pageData } = content;
-        draft.pages[selectedPageId] = pageData;
+        if (selectedPageId !== 'global') {
+          draft.pages[selectedPageId] = pageData;
+        }
         if (global) draft.global = global;
         if (blog) draft.blog = blog;
 
@@ -208,45 +210,46 @@ export default function AdminPages() {
 
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Global Settings (if home page) */}
-            {selectedPageId === 'home' && (
+            {selectedPageId === 'global' ? (
               <GlobalSettingsEditor
                 settings={content.global || {}}
                 onChange={(global) => setContent({ ...content, global })}
-                availablePages={availablePages}
+                availablePages={availablePages.filter(p => p.id !== 'global')}
               />
-            )}
+            ) : (
+              <>
+                {/* Page-level Settings */}
+                <PageEditor
+                  content={content}
+                  onChange={setContent}
+                  onAddBlock={(type) => {
+                    const id = Math.random().toString(36).slice(2, 9);
+                    const newBlock = { id, type, title: '', content: '' };
+                    setContent({
+                      ...content,
+                      blocks: [...(content.blocks || []), newBlock]
+                    });
+                  }}
+                />
 
-            {/* Page-level Settings */}
-            <PageEditor
-              content={content}
-              onChange={setContent}
-              onAddBlock={(type) => {
-                const id = Math.random().toString(36).slice(2, 9);
-                const newBlock = { id, type, title: '', content: '' };
-                setContent({
-                  ...content,
-                  blocks: [...(content.blocks || []), newBlock]
-                });
-              }}
-            />
-
-            {/* Block Editors */}
-            <div className="space-y-2">
-              <h3 className="font-headline text-lg">עריכת בלוקים</h3>
-              {(content.blocks || []).map((block: any, idx: number) => (
-                <div id={`block-editor-${block.id || idx}`} key={block.id || idx} className="scroll-mt-6 rounded-2xl transition-all duration-300">
-                  <BlockEditor
-                    section={block}
-                    onChange={(updated) => {
-                      const blocks = [...(content.blocks || [])];
-                      blocks[idx] = updated;
-                      setContent({ ...content, blocks });
-                    }}
-                  />
+                {/* Block Editors */}
+                <div className="space-y-2">
+                  <h3 className="font-headline text-lg">עריכת בלוקים</h3>
+                  {(content.blocks || []).map((block: any, idx: number) => (
+                    <div id={`block-editor-${block.id || idx}`} key={block.id || idx} className="scroll-mt-6 rounded-2xl transition-all duration-300">
+                      <BlockEditor
+                        section={block}
+                        onChange={(updated) => {
+                          const blocks = [...(content.blocks || [])];
+                          blocks[idx] = updated;
+                          setContent({ ...content, blocks });
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

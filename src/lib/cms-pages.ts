@@ -10,6 +10,7 @@ export interface KnownPage {
 export const DEFAULT_PAGES: KnownPage[] = [
   { id: 'home', name: '🏠 ראשי', isDraftOnly: false },
   { id: 'contact', name: '📩 צור קשר', isDraftOnly: false },
+  { id: 'global', name: '⚙️ הגדרות כלליות', isDraftOnly: false },
 ];
 
 /**

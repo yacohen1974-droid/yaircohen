@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Monitor, Plus, Box, Quote, HelpCircle, UserRound, Type, ImageIcon,
-  BarChart2, Mail, Video, Music, Sparkles, Compass
+  BarChart2, Mail, Video, Music, Sparkles, Compass, ChevronUp, ChevronDown, Trash2
 } from 'lucide-react';
 
 interface PageEditorProps {
@@ -156,10 +156,22 @@ export function PageEditor({ content, onChange, onAddBlock }: PageEditorProps) {
               {(content.blocks || []).map((block: any, idx: number) => (
                 <div
                   key={block.id || idx}
-                  className="bg-stone-50 border border-stone-200 rounded p-4 flex items-center justify-between"
+                  className="bg-stone-50 border border-stone-200 rounded p-3 pr-4 flex items-center justify-between hover:bg-stone-100/50 transition-colors"
                 >
-                  <div className="flex flex-col">
-                    <span className="font-medium text-sm">
+                  <div
+                    className="flex flex-col cursor-pointer flex-grow min-w-0"
+                    onClick={() => {
+                      const el = document.getElementById(`block-editor-${block.id || idx}`);
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+                        setTimeout(() => {
+                          el.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+                        }, 1500);
+                      }
+                    }}
+                  >
+                    <span className="font-semibold text-sm text-stone-800">
                       בלוק #{idx + 1} — {block.type === 'hero' ? 'כותרת (Hero)' :
                                          block.type === 'intro' ? 'אודות / פורטרט' :
                                          block.type === 'text' ? 'בלוק טקסט' :
@@ -177,27 +189,42 @@ export function PageEditor({ content, onChange, onAddBlock }: PageEditorProps) {
                                          block.type === 'insight' ? 'כרטיס תובנה' :
                                          block.type}
                     </span>
-                    <span className="text-xs text-stone-500 mt-1">
+                    <span className="text-xs text-stone-500 mt-1 truncate">
                       {block.title ? `כותרת: "${block.title}"` : 'ללא כותרת'}
                     </span>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const el = document.getElementById(`block-editor-${block.id || idx}`);
-                      if (el) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        // Add temporary highlighting effect
-                        el.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
-                        setTimeout(() => {
-                          el.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
-                        }, 1500);
-                      }
-                    }}
-                  >
-                    ערוך בלוק במורד העמוד
-                  </Button>
+                  
+                  <div className="flex items-center gap-1.5 shrink-0 pr-4">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-stone-500 hover:text-stone-900"
+                      disabled={idx === 0}
+                      onClick={() => handleMoveBlock(idx, 'up')}
+                      title="הזז למעלה"
+                    >
+                      <ChevronUp size={16} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-stone-500 hover:text-stone-900"
+                      disabled={idx === (content.blocks?.length || 0) - 1}
+                      onClick={() => handleMoveBlock(idx, 'down')}
+                      title="הזז למטה"
+                    >
+                      <ChevronDown size={16} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => handleRemoveBlock(idx)}
+                      title="מחק בלוק"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
