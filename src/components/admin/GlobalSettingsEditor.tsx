@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Mail, Phone, Instagram, Linkedin, Youtube, ChevronUp, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface GlobalSettings {
@@ -107,6 +107,48 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
     if (value) social[key] = value;
     else delete social[key];
     handleChange('socialLinks', social);
+  };
+
+  const handleMoveNavItemUp = (index: number) => {
+    if (index === 0) return;
+    const items = [...(settings.navItems || [])];
+    [items[index], items[index - 1]] = [items[index - 1], items[index]];
+    handleChange('navItems', items);
+  };
+
+  const handleMoveNavItemDown = (index: number) => {
+    const items = [...(settings.navItems || [])];
+    if (index === items.length - 1) return;
+    [items[index], items[index + 1]] = [items[index + 1], items[index]];
+    handleChange('navItems', items);
+  };
+
+  const handleMoveFooterItemUp = (index: number) => {
+    if (index === 0) return;
+    const items = [...(settings.footerItems || [])];
+    [items[index], items[index - 1]] = [items[index - 1], items[index]];
+    handleChange('footerItems', items);
+  };
+
+  const handleMoveFooterItemDown = (index: number) => {
+    const items = [...(settings.footerItems || [])];
+    if (index === items.length - 1) return;
+    [items[index], items[index + 1]] = [items[index + 1], items[index]];
+    handleChange('footerItems', items);
+  };
+
+  const handleMoveLegalItemUp = (index: number) => {
+    if (index === 0) return;
+    const items = [...(settings.legalItems || [])];
+    [items[index], items[index - 1]] = [items[index - 1], items[index]];
+    handleChange('legalItems', items);
+  };
+
+  const handleMoveLegalItemDown = (index: number) => {
+    const items = [...(settings.legalItems || [])];
+    if (index === items.length - 1) return;
+    [items[index], items[index + 1]] = [items[index + 1], items[index]];
+    handleChange('legalItems', items);
   };
 
   return (
@@ -232,7 +274,29 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="ghost" size="sm" onClick={() => handleRemoveNavItem(idx)}>
+              <div className="flex gap-0.5 shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  disabled={idx === 0}
+                  onClick={() => handleMoveNavItemUp(idx)}
+                  title="הזז למעלה"
+                >
+                  <ChevronUp size={16} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  disabled={idx === (settings.navItems?.length || 0) - 1}
+                  onClick={() => handleMoveNavItemDown(idx)}
+                  title="הזז למטה"
+                >
+                  <ChevronDown size={16} />
+                </Button>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => handleRemoveNavItem(idx)} className="text-red-500 hover:text-red-700 shrink-0">
                 מחק
               </Button>
             </div>
@@ -262,7 +326,29 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
                 placeholder="כתובת (URL או /)
 "
               />
-              <Button variant="ghost" size="sm" onClick={() => handleRemoveFooterItem(idx)}>
+              <div className="flex gap-0.5 shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  disabled={idx === 0}
+                  onClick={() => handleMoveFooterItemUp(idx)}
+                  title="הזז למעלה"
+                >
+                  <ChevronUp size={16} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  disabled={idx === (settings.footerItems?.length || 0) - 1}
+                  onClick={() => handleMoveFooterItemDown(idx)}
+                  title="הזז למטה"
+                >
+                  <ChevronDown size={16} />
+                </Button>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => handleRemoveFooterItem(idx)} className="text-red-500 hover:text-red-700 shrink-0">
                 מחק
               </Button>
             </div>
@@ -298,7 +384,29 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="ghost" size="sm" onClick={() => handleRemoveLegalItem(idx)}>
+              <div className="flex gap-0.5 shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  disabled={idx === 0}
+                  onClick={() => handleMoveLegalItemUp(idx)}
+                  title="הזז למעלה"
+                >
+                  <ChevronUp size={16} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  disabled={idx === (settings.legalItems?.length || 0) - 1}
+                  onClick={() => handleMoveLegalItemDown(idx)}
+                  title="הזז למטה"
+                >
+                  <ChevronDown size={16} />
+                </Button>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => handleRemoveLegalItem(idx)} className="text-red-500 hover:text-red-700 shrink-0">
                 מחק
               </Button>
             </div>
