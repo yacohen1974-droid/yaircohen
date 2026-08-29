@@ -1537,6 +1537,13 @@ export default function AdminPages() {
 
   useEffect(() => {
     loadAllPages();
+
+    // Allow deep-linking straight into a specific page's editor, e.g. from the
+    // page-management list (/admin/pages?page=some-slug).
+    const requestedPage = new URLSearchParams(window.location.search).get('page');
+    if (requestedPage) {
+      setSelectedPage(requestedPage);
+    }
   }, []);
 
   const set = (patch: Partial<ContentState>) => {

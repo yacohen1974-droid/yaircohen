@@ -5,7 +5,7 @@ import { AdminShell } from '@/components/admin/AdminShell';
 import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Trash2, Loader2, ArrowRight } from 'lucide-react';
+import { Trash2, Loader2, ArrowRight, Pencil } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/firebase';
@@ -132,15 +132,26 @@ export default function ManagePagesPage() {
                   <h3 className="text-2xl font-headline text-accent uppercase tracking-wider">{page}</h3>
                   <p className="text-sm text-slate-400">path: src/app/{page}</p>
                 </div>
-                <Button 
-                  variant="destructive" 
-                  size="icon" 
-                  onClick={() => handleDelete(page)}
-                  disabled={deleting === page}
-                  className="rounded-none bg-slate-50 text-slate-400 hover:bg-destructive hover:text-white transition-all"
-                >
-                  {deleting === page ? <Loader2 className="animate-spin size-4" /> : <Trash2 size={20} strokeWidth={1.5} />}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => router.push(`/admin/pages?page=${encodeURIComponent(page)}`)}
+                    className="rounded-none bg-slate-50 text-slate-400 hover:bg-primary hover:text-white transition-all"
+                    title="עריכת הדף"
+                  >
+                    <Pencil size={18} strokeWidth={1.5} />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => handleDelete(page)}
+                    disabled={deleting === page}
+                    className="rounded-none bg-slate-50 text-slate-400 hover:bg-destructive hover:text-white transition-all"
+                  >
+                    {deleting === page ? <Loader2 className="animate-spin size-4" /> : <Trash2 size={20} strokeWidth={1.5} />}
+                  </Button>
+                </div>
               </Card>
             ))
           )}
