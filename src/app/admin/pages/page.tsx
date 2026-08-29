@@ -134,6 +134,7 @@ export default function AdminPages() {
         if (published) {
           savePublishedBase(published);
         }
+        document.cookie = 'cms_preview=; path=/; max-age=0';
         toast({ description: '✅ פורסם בהצלחה!' });
         setIsDraft(false);
       } else {

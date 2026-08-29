@@ -145,6 +145,10 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
       const data = await res.json();
 
       if (data.success) {
+        // The published content now matches what preview mode was showing —
+        // clear it so the "preview mode" banner doesn't linger after publish.
+        document.cookie = 'cms_preview=; path=/; max-age=0';
+
         const linkPath = changedPagePaths.length === 1 ? changedPagePaths[0] : '/';
         setPublishedDraft(draft);
         setPublishStartTime(Date.now());
