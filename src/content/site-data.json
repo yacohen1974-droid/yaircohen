@@ -392,6 +392,55 @@
       "siteFavicon": "/favicon.ico",
       "underConstruction": false,
       "legalItems": []
+    },
+    "about-yaira": {
+      "underConstruction": false,
+      "primaryColor": "213 75% 35%",
+      "siteName": "יאיר כהן",
+      "siteSubtitle": "יועץ משכנתאות ופיננסים",
+      "siteDescription": "יועץ משכנתאות בלתי תלוי עם ניסיון של למעלה מ-15 שנה. ליווי אישי ומקצועי לחיסכון מרבי בריבית ובתנאי המשכנתא.",
+      "siteEmail": "mashkantaot@yair-cohen.co.il",
+      "sitePhone": "050-9922018",
+      "siteAddress": "נס עמים",
+      "siteLogo": "/logo.png",
+      "siteFavicon": "/favicon.ico",
+      "facebookLink": "https://www.facebook.com",
+      "instagramLink": "https://www.instagram.com/yair_cohen_44",
+      "linkedinLink": "",
+      "navItems": [
+        {
+          "label": "ראשי",
+          "href": "/"
+        },
+        {
+          "label": "מי אני",
+          "href": "/about_yair"
+        },
+        {
+          "label": "צור קשר",
+          "href": "/contact"
+        }
+      ],
+      "footerItems": [],
+      "legalItems": [],
+      "metaTitle": "יאיר כהן – יועץ משכנתאות מוסמך",
+      "metaDescription": "יועץ משכנתאות בלתי תלוי | 15+ שנות ניסיון | ייעוץ ראשוני חינם | חיסכון של עשרות אלפי שקלים",
+      "blocks": [],
+      "sectionOrder": [
+        "hero",
+        "stats",
+        "intro",
+        "features",
+        "video",
+        "testimonials",
+        "faqs",
+        "cta",
+        "contact"
+      ],
+      "ctaLabel": "לייעוץ ראשוני חינם",
+      "whatsappMsg": "היי יאיר, הגעתי מהאתר ומעוניין בייעוץ ראשוני בנושא משכנתא. תודה!",
+      "pageId": "about-yaira",
+      "tiktokLink": "https://www.tiktok.com/@_yaircohen_"
     }
   },
   "global": {
