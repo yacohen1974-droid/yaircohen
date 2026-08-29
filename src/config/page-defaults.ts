@@ -10,7 +10,7 @@ export type Feature = {
 };
 export type Testimonial = { text: string; author: string; location: string };
 export type Faq = { question: string; answer: string };
-export type LogoItem = { imageUrl: string; id: string };
+export type LogoItem = { imageUrl: string; id: string; link?: string };
 export type VideoItem = { id: string; url: string; title?: string };
 
 export type TitleSettings = {

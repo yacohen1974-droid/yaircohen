@@ -3,6 +3,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { cn, safeEncodeURI } from '@/lib/utils';
 import { SectionTitle } from './SectionTitle';
 import { Heart, Sparkles, Orbit, Compass, Users, Star, MessageSquare, HelpCircle } from 'lucide-react';
@@ -106,28 +107,34 @@ export function DynamicSections({ sections, className }: DynamicSectionsProps) {
                     "flex flex-1 flex-wrap items-center gap-8 md:gap-12",
                     logosJustifyClass
                   )}>
-                    {sec.logos?.map((logo, idx) => (
-                      <div
-                        key={logo.id || idx}
-                        className={cn(
-                          "relative flex items-center justify-center transition-all duration-500",
-                          sec.logoSize === 'sm' ? 'w-24 h-12 md:w-32 md:h-16' :
-                          sec.logoSize === 'lg' ? 'w-48 h-24 md:w-64 md:h-32' :
-                          'w-32 h-16 md:w-40 md:h-20',
-                          sec.logoShape === 'circle' ? 'rounded-full overflow-hidden border border-stone-100 p-2 bg-white' : ''
-                        )}
-                      >
-                        {logo.imageUrl && (
-                          <Image
-                            src={safeEncodeURI(logo.imageUrl)}
-                            alt="Client Logo"
-                            fill
-                            unoptimized
-                            className="object-contain"
-                          />
-                        )}
-                      </div>
-                    ))}
+                    {sec.logos?.map((logo, idx) => {
+                      const logoClassName = cn(
+                        "relative flex items-center justify-center transition-all duration-500",
+                        sec.logoSize === 'sm' ? 'w-24 h-12 md:w-32 md:h-16' :
+                        sec.logoSize === 'lg' ? 'w-48 h-24 md:w-64 md:h-32' :
+                        'w-32 h-16 md:w-40 md:h-20',
+                        sec.logoShape === 'circle' ? 'rounded-full overflow-hidden border border-stone-100 p-2 bg-white' : '',
+                        logo.link ? 'hover:opacity-75' : ''
+                      );
+                      const image = logo.imageUrl && (
+                        <Image
+                          src={safeEncodeURI(logo.imageUrl)}
+                          alt="Client Logo"
+                          fill
+                          unoptimized
+                          className="object-contain"
+                        />
+                      );
+                      return logo.link ? (
+                        <Link key={logo.id || idx} href={logo.link} target="_blank" rel="noopener noreferrer" className={logoClassName}>
+                          {image}
+                        </Link>
+                      ) : (
+                        <div key={logo.id || idx} className={logoClassName}>
+                          {image}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               ) : sec.type === 'features' ? (

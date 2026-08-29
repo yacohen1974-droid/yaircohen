@@ -892,9 +892,109 @@ export function BlockEditor({
             <Field label="כותרת הבלוק">
               <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
             </Field>
-            <p className="text-xs text-stone-600 bg-white p-3 border rounded">
-              ℹ️ לוגואים מוצגים באופן אוטומטי מגלריית הלוגואים שקיימת בתיקיית האתר.
-            </p>
+
+            {(section.logos || []).map((logo: any, idx: number) => (
+              <div key={logo.id || idx} className="p-4 bg-white border border-stone-200 rounded-2xl space-y-3 relative">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold text-stone-500">לוגו #{idx + 1}</span>
+                  <div className="flex gap-1 items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      disabled={idx === 0}
+                      onClick={() => {
+                        const logos = [...(section.logos || [])];
+                        [logos[idx], logos[idx - 1]] = [logos[idx - 1], logos[idx]];
+                        onChange({ ...section, logos });
+                      }}
+                    >
+                      <ChevronUp size={14} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      disabled={idx === (section.logos?.length || 0) - 1}
+                      onClick={() => {
+                        const logos = [...(section.logos || [])];
+                        [logos[idx], logos[idx + 1]] = [logos[idx + 1], logos[idx]];
+                        onChange({ ...section, logos });
+                      }}
+                    >
+                      <ChevronDown size={14} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-500 hover:text-red-700 h-7"
+                      onClick={() => {
+                        const logos = (section.logos || []).filter((_: any, i: number) => i !== idx);
+                        onChange({ ...section, logos });
+                      }}
+                    >
+                      מחק
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Field label="תמונת לוגו">
+                    <Select
+                      value={availableLogos.includes(logo.imageUrl) ? logo.imageUrl : '__custom__'}
+                      onValueChange={v => {
+                        if (v === '__custom__') return;
+                        const logos = [...(section.logos || [])];
+                        logos[idx] = { ...logos[idx], imageUrl: v };
+                        onChange({ ...section, logos });
+                      }}
+                    >
+                      <SelectTrigger className="bg-stone-50 border-none"><SelectValue placeholder="בחר מהגלריה" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__custom__">כתובת מותאמת אישית</SelectItem>
+                        {availableLogos.map(url => (
+                          <SelectItem key={url} value={url}>{url.split('/').pop()}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      className="mt-2"
+                      value={logo.imageUrl || ''}
+                      onChange={e => {
+                        const logos = [...(section.logos || [])];
+                        logos[idx] = { ...logos[idx], imageUrl: e.target.value };
+                        onChange({ ...section, logos });
+                      }}
+                      placeholder="/logos/bank.svg"
+                    />
+                  </Field>
+                  <Field label="קישור בלחיצה (אופציונלי)">
+                    <Input
+                      value={logo.link || ''}
+                      onChange={e => {
+                        const logos = [...(section.logos || [])];
+                        logos[idx] = { ...logos[idx], link: e.target.value };
+                        onChange({ ...section, logos });
+                      }}
+                      placeholder="https://example.com"
+                    />
+                  </Field>
+                </div>
+              </div>
+            ))}
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                const logos = [...(section.logos || [])];
+                const newId = Math.random().toString(36).slice(2, 9);
+                logos.push({ id: newId, imageUrl: '', link: '' });
+                onChange({ ...section, logos });
+              }}
+              className="w-full font-headline text-xs h-9"
+            >
+              <Plus size={14} className="ml-1" /> הוסף לוגו
+            </Button>
           </div>
         )}
 
