@@ -23,13 +23,13 @@
           "subtitleSettings": {
             "color": "rgba(255,255,255,0.9)",
             "fontFamily": "font-headline",
-            "fontSize": "text-4xl",
+            "fontSize": "text-base md:text-xl lg:text-2xl",
             "text": " יאיר כהן, יועץ משכנתאות ופיננסים בלתי תלוי, מוביל אתכם צעד אחר צעד עד למפתחות.",
             "align": "center"
           },
           "heroCloudiness": 10,
           "id": "hero-main",
-          "imageUrl": "https://www.google.com/maps/place/%D7%99%D7%90%D7%99%D7%A8+%D7%9B%D7%94%D7%9F+%D7%99%D7%95%D7%A2%D7%A5+%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA%E2%80%AD/@32.9650199,35.1217591,3a,75y,90t/data=!3m8!1e2!3m6!1sCIABIhCkYGVV_oDWherQKUvz15uh!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAHRPTWnTOcoD8lZOU09ABYcg5t-CxhBQGFD6TSpfVIrJ73m9lyn3mxrEp-e45ovl-1hp_IF-ogP8NJXg1rfGYI9eqRZmSqX57pL0VEJcsxnr5_VR-rTVMoxtOpKaIa-SNRMy6y2jr2aYgiqlZeYE%3Dw129-h86-k-no!7i6000!8i4000!4m7!3m6!1s0xa8c2759bb148a2a1:0x653e16b142ee884!8m2!3d32.9650689!4d35.1217597!10e5!16s%2Fg%2F11xn7d12st?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D",
+          "imageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362002/homepage_pc.png",
           "imageUrlMobile": "https://res.cloudinary.com/yda0gnga/image/upload/v1784362983/homepage-mobile.png",
           "titleSettings": {
             "fontSize": "text-5xl sm:text-7xl lg:text-8xl",
@@ -79,9 +79,9 @@
           },
           "type": "intro",
           "content": "<p class=\"ql-direction-rtl ql-align-right\">יאיר&nbsp;כהן&nbsp;הוא&nbsp;יועץ&nbsp;משכנתאות&nbsp;ופיננסים&nbsp;בלתי&nbsp;תלוי,&nbsp;בעל&nbsp;תואר&nbsp;ראשון&nbsp;בכלכלה&nbsp;ומנהל&nbsp;עסקים&nbsp;(התמחות&nbsp;מימון)&nbsp;ותואר&nbsp;שני&nbsp;במדיניות&nbsp;ציבורית&nbsp;למנהלים&nbsp;מאוניברסיטת&nbsp;תל&nbsp;אביב,&nbsp;לצד&nbsp;הכשרות&nbsp;מקצועיות&nbsp;ייעודיות&nbsp;במשכנתאות&nbsp;מורכבות&nbsp;ומשכנתאות&nbsp;למסורבי&nbsp;בנקים.</p><p class=\"ql-direction-rtl ql-align-right\">עם&nbsp;כ-15&nbsp;שנות&nbsp;ניסיון&nbsp;בעולם&nbsp;הנדל&quot;ן&nbsp;וההשקעות,&nbsp;יאיר&nbsp;הפך&nbsp;את&nbsp;האהבה&nbsp;שלו&nbsp;לנדל&quot;ן&nbsp;ולכלכלה&nbsp;למקצוע&nbsp;עם&nbsp;מטרה&nbsp;אחת&nbsp;ברורה:&nbsp;למקסם&nbsp;את&nbsp;התוצאה&nbsp;עבורכם&nbsp;–&nbsp;לא&nbsp;עבור&nbsp;הבנק.&nbsp;הוא&nbsp;פונה&nbsp;לכלל&nbsp;הבנקים&nbsp;והמלווים&nbsp;בשוק,&nbsp;משווה&nbsp;הצעות&nbsp;ומנהל&nbsp;מו&quot;מ&nbsp;מקצועי&nbsp;מטעמכם&nbsp;–&nbsp;כולל&nbsp;פתרונות&nbsp;יצירתיים&nbsp;לתיקים&nbsp;שנתקלו&nbsp;בסירוב&nbsp;בעבר.</p><p class=\"ql-direction-rtl ql-align-right\">ההבטחה&nbsp;שלי:&nbsp;אתייחס&nbsp;למשכנתא&nbsp;שלכם&nbsp;כאילו&nbsp;היא&nbsp;שלי&nbsp;–&nbsp;ליווי&nbsp;צמוד&nbsp;ושקוף&nbsp;עד&nbsp;לקבלת&nbsp;כספי&nbsp;המשכנתא,&nbsp;ולא&nbsp;רגע&nbsp;פחות.</p>",
-          "portraitShape": "rectangle",
+          "portraitShape": "square",
           "id": "intro-main",
-          "portraitImageUrl": "https://res.cloudinary.com/yda0gnga/image/upload/v1784306511/%D7%99%D7%90%D7%99%D7%A8_%D7%9B%D7%94%D7%9F_skiai5.webp",
+          "portraitImageUrl": "https://www.google.com/maps/place/%D7%99%D7%90%D7%99%D7%A8+%D7%9B%D7%94%D7%9F+%D7%99%D7%95%D7%A2%D7%A5+%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA%E2%80%AD/@32.9650199,35.1217591,3a,75y,90t/data=!3m8!1e2!3m6!1sCIABIhCkYGVV_oDWherQKUvz15uh!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAHRPTWnTOcoD8lZOU09ABYcg5t-CxhBQGFD6TSpfVIrJ73m9lyn3mxrEp-e45ovl-1hp_IF-ogP8NJXg1rfGYI9eqRZmSqX57pL0VEJcsxnr5_VR-rTVMoxtOpKaIa-SNRMy6y2jr2aYgiqlZeYE%3Dw129-h86-k-no!7i6000!8i4000!4m7!3m6!1s0xa8c2759bb148a2a1:0x653e16b142ee884!8m2!3d32.9650689!4d35.1217597!10e5!16s%2Fg%2F11xn7d12st?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D",
           "portraitPosition": "right",
           "bg": "bg-[hsl(213,30%,97%)]"
         },
