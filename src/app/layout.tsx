@@ -1,7 +1,7 @@
 import { SITE_URL, SITE_PHONE, SITE_THEME } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
 import { getDbInitialData } from '@/firebase/db-actions';
-import { Rubik, Nunito, Amatic_SC } from 'next/font/google';
+import { Rubik, Amatic_SC } from 'next/font/google';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -12,15 +12,6 @@ const rubik = Rubik({
   variable: '--font-rubik',
   display: 'swap',
 });
-
-const nunito = Nunito({
-  subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-nunito',
-  display: 'swap',
-});
-
-
 
 const amaticSC = Amatic_SC({
   subsets: ['latin'],
@@ -97,7 +88,7 @@ export default async function RootLayout({
   const initialData = await getInitialData();
 
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(rubik.variable, nunito.variable, amaticSC.variable)}>
+    <html lang="he" dir="rtl" suppressHydrationWarning className={cn(rubik.variable, amaticSC.variable)}>
       <head>
         <meta name="google-site-verification" content="uZtRayPCUnA35YVD2gPquUAz34V0WlSF1jaUI3kYYnM" />
         <meta name="google-site-verification" content="Z7Bp-hEfMFwQYW9oYF0qdSdhJumMFlhsp246MOYQFP0" />

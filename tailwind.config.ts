@@ -12,9 +12,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['var(--font-rubik)', 'sans-serif'],
-        body: ['var(--font-rubik)', 'var(--font-nunito)', 'sans-serif'],
-        headline: ['var(--font-rubik)', 'var(--font-nunito)', 'sans-serif'],
-        nunito: ['var(--font-nunito)', 'sans-serif'],
+        body: ['var(--font-rubik)', 'sans-serif'],
+        headline: ['var(--font-rubik)', 'sans-serif'],
         serif: ['var(--font-rubik)', 'sans-serif'],
         handwriting: ['var(--font-amatic)', 'cursive'],
         code: ['monospace'],

@@ -7,11 +7,13 @@ import { ToastAction } from '@/components/ui/toast';
 import { UploadCloud, Trash2, Loader2, AlertCircle, Eye, Smartphone } from 'lucide-react';
 import { hasDraftChanges, getDraftData, clearDraftData, summarizeChanges } from '@/lib/cms-draft';
 import { getAdminIdToken } from '@/firebase';
+import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 
 export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
   const [hasChanges, setHasChanges] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>(CONFIRM_DIALOG_CLOSED);
   const { toast } = useToast();
 
   const checkDraft = () => {
@@ -26,27 +28,7 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
     };
   }, []);
 
-  const handlePublish = async () => {
-    const draft = getDraftData();
-    if (!draft) return;
-
-    // Best-effort plain-language summary of what's about to go live
-    let changedPagePaths: string[] = [];
-    try {
-      const backupRes = await fetch('/api/admin/get-backup-data');
-      const backupData = await backupRes.json();
-      const published = backupData.success ? backupData.data : null;
-      const { labels, changedPagePaths: paths } = summarizeChanges(published, draft);
-      changedPagePaths = paths;
-
-      const confirmMsg = labels.length > 0
-        ? `שיניתם:\n${labels.map(l => `• ${l}`).join('\n')}\n\nלפרסם את השינויים האלה לאתר החי?`
-        : 'לפרסם את השינויים לאתר החי?';
-      if (!window.confirm(confirmMsg)) return;
-    } catch {
-      if (!window.confirm('לפרסם את השינויים לאתר החי?')) return;
-    }
-
+  const executePublish = async (draft: any, changedPagePaths: string[]) => {
     setIsPublishing(true);
     try {
       const idToken = await getAdminIdToken();
@@ -89,6 +71,38 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
     }
   };
 
+  const handlePublish = async () => {
+    const draft = getDraftData();
+    if (!draft) return;
+
+    // Best-effort plain-language summary of what's about to go live
+    let changedPagePaths: string[] = [];
+    let description = 'לפרסם את השינויים לאתר החי?';
+    try {
+      const backupRes = await fetch('/api/admin/get-backup-data');
+      const backupData = await backupRes.json();
+      const published = backupData.success ? backupData.data : null;
+      const { labels, changedPagePaths: paths } = summarizeChanges(published, draft);
+      changedPagePaths = paths;
+      if (labels.length > 0) {
+        description = `שיניתם:\n${labels.map(l => `• ${l}`).join('\n')}\n\nלפרסם את השינויים האלה לאתר החי?`;
+      }
+    } catch {
+      // fall back to the generic confirmation message above
+    }
+
+    setConfirmDialog({
+      open: true,
+      title: 'פרסום לאתר החי',
+      description,
+      confirmLabel: 'פרסם',
+      onConfirm: () => {
+        setConfirmDialog(CONFIRM_DIALOG_CLOSED);
+        executePublish(draft, changedPagePaths);
+      },
+    });
+  };
+
   const handlePreview = async (device: 'desktop' | 'mobile') => {
     const draft = getDraftData();
     if (!draft) return;
@@ -126,20 +140,30 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
   };
 
   const handleDiscard = () => {
-    if (!window.confirm("האם אתה בטוח שברצונך לבטל את כל השינויים הלא שמורים? טיוטה זו תימחק לצמיתות והאתר יחזור לגרסה המפורסמת שלו.")) return;
-    clearDraftData();
-    toast({
-      title: "הטיוטה נמחקה",
-      description: "האתר שוחזר למצב המפורסם הנוכחי שלו."
+    setConfirmDialog({
+      open: true,
+      title: 'ביטול שינויים',
+      description: 'האם אתה בטוח שברצונך לבטל את כל השינויים הלא שמורים? טיוטה זו תימחק לצמיתות והאתר יחזור לגרסה המפורסמת שלו.',
+      confirmLabel: 'בטל שינויים',
+      destructive: true,
+      onConfirm: () => {
+        setConfirmDialog(CONFIRM_DIALOG_CLOSED);
+        clearDraftData();
+        toast({
+          title: "הטיוטה נמחקה",
+          description: "האתר שוחזר למצב המפורסם הנוכחי שלו."
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
     });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
   };
 
   if (!hasChanges) return null;
 
   return (
+    <>
     <div className="fixed top-0 left-0 right-0 z-[9999] bg-stone-900 text-stone-100 h-14 border-b border-amber-500/20 shadow-md flex items-center justify-between px-4 md:px-8 text-sm">
       <div className="flex items-center gap-2">
         <AlertCircle className="text-amber-500 size-5 animate-pulse" />
@@ -206,5 +230,10 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
         </Button>
       </div>
     </div>
+    <ConfirmDialog
+      state={confirmDialog}
+      onOpenChange={(open) => !open && setConfirmDialog(CONFIRM_DIALOG_CLOSED)}
+    />
+    </>
   );
 }

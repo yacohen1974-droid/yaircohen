@@ -170,33 +170,20 @@ export async function deleteBlogPost(id: string) {
 }
 
 async function fetchDbInitialData() {
-  const pages = ['global', 'blog', 'home', 'about', 'services', 'privacy', 'terms', 'accessibility'];
-  const data: any = { pages: {} };
+  // Reads the whole file once and returns every page it finds — so a page
+  // created in the CMS gets real SSR content immediately, instead of only
+  // the handful of page IDs that used to be hardcoded here.
+  const raw = await readSiteData();
+  const data: any = { pages: { ...(raw.pages || {}) } };
+  if (raw.global) data.global = raw.global;
+  if (raw.blog) data.blog = raw.blog;
 
-  const [pageResults, posts] = await Promise.all([
-    Promise.all(pages.map(async (pageId) => {
-      try {
-        return { pageId, content: await getPageContent(pageId) };
-      } catch (e) {
-        console.warn(`Failed to fetch initial data for page ${pageId}:`, e);
-        return { pageId, content: null };
-      }
-    })),
-    getBlogPosts().catch((e) => {
-      console.warn("Failed to fetch initial blog posts:", e);
-      return [];
-    }),
-  ]);
-
-  for (const { pageId, content } of pageResults) {
-    if (!content) continue;
-    if (pageId === 'global' || pageId === 'blog') {
-      data[pageId] = content;
-    } else {
-      data.pages[pageId] = content;
-    }
-  }
-  data.blogPosts = posts || [];
+  const posts = (raw.blogPosts || []).slice().sort((a: any, b: any) => {
+    const dateA = a.createdAt || '';
+    const dateB = b.createdAt || '';
+    return dateB.localeCompare(dateA);
+  });
+  data.blogPosts = posts;
 
   return data;
 }

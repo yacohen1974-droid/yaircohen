@@ -8,6 +8,7 @@ import { useUser, getAdminIdToken } from '@/firebase';
 import { cn } from '@/lib/utils';
 import { getDraftData, saveDraftData, initializeDraft } from '@/lib/cms-draft';
 import { PublishBanner } from '@/components/admin/PublishBanner';
+import { ConfirmDialog, ConfirmDialogState, CONFIRM_DIALOG_CLOSED } from '@/components/admin/ConfirmDialog';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -1389,6 +1390,27 @@ export default function AdminPages() {
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [isReverting, setIsReverting] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>(CONFIRM_DIALOG_CLOSED);
+
+  const executeRevert = async (dateStr: string) => {
+    setIsReverting(true);
+    try {
+      const idToken = await getAdminIdToken();
+      const res = await fetch('/api/admin/revert-last-publish', {
+        method: 'POST',
+        headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      toast({ title: '↩️ שוחזר בהצלחה', description: `האתר שוחזר לגרסה מתאריך ${dateStr}.` });
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (err: any) {
+      toast({ variant: 'destructive', title: '❌ שחזור נכשל', description: err.message });
+    } finally {
+      setIsReverting(false);
+    }
+  };
 
   const handleRevertLastPublish = async () => {
     setIsReverting(true);
@@ -1401,18 +1423,17 @@ export default function AdminPages() {
       }
       const previous = histData.history[1];
       const dateStr = new Date(previous.date).toLocaleString('he-IL', { dateStyle: 'medium', timeStyle: 'short' });
-      if (!window.confirm(`לשחזר את האתר לגרסה מתאריך ${dateStr}?\n\nהפעולה תפרסם מחדש את התוכן שהיה קיים לפני הפרסום האחרון. אפשר לבטל את זה בכל עת על ידי פרסום מחדש.`)) return;
-
-      const idToken = await getAdminIdToken();
-      const res = await fetch('/api/admin/revert-last-publish', {
-        method: 'POST',
-        headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
+      setConfirmDialog({
+        open: true,
+        title: 'שחזור לגרסה קודמת',
+        description: `לשחזר את האתר לגרסה מתאריך ${dateStr}?\n\nהפעולה תפרסם מחדש את התוכן שהיה קיים לפני הפרסום האחרון. אפשר לבטל את זה בכל עת על ידי פרסום מחדש.`,
+        confirmLabel: 'שחזר',
+        destructive: true,
+        onConfirm: () => {
+          setConfirmDialog(CONFIRM_DIALOG_CLOSED);
+          executeRevert(dateStr);
+        },
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error);
-
-      toast({ title: '↩️ שוחזר בהצלחה', description: `האתר שוחזר לגרסה מתאריך ${dateStr}.` });
-      setTimeout(() => window.location.reload(), 2000);
     } catch (err: any) {
       toast({ variant: 'destructive', title: '❌ שחזור נכשל', description: err.message });
     } finally {
@@ -1483,12 +1504,27 @@ export default function AdminPages() {
     if (!authLoading && !user) router.push('/admin/login');
   }, [user, authLoading, router]);
 
-  const handlePageSelect = (newPage: string) => {
-    if (isDirty) {
-      if (!window.confirm('יש לך שינויים שלא נשמרו. האם את בטוחה שברצונך לעבור דף? השינויים יאבדו.')) return;
-    }
+  const switchToPage = (newPage: string) => {
     setSelectedPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePageSelect = (newPage: string) => {
+    if (isDirty) {
+      setConfirmDialog({
+        open: true,
+        title: 'שינויים לא שמורים',
+        description: 'עדיין שומרים אוטומטית את השינויים האחרונים שלך. האם לעבור לדף אחר בכל זאת?',
+        confirmLabel: 'עבור לדף אחר',
+        destructive: true,
+        onConfirm: () => {
+          setConfirmDialog(CONFIRM_DIALOG_CLOSED);
+          switchToPage(newPage);
+        },
+      });
+      return;
+    }
+    switchToPage(newPage);
   };
 
   useEffect(() => {
@@ -1531,24 +1567,27 @@ export default function AdminPages() {
     } 
   };
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isSaving) return;
+  // Shared by the manual "שמירת שינויים ידנית" button and the debounced
+  // autosave below — both just persist the current content into the local
+  // draft; only the loading indicator and the confirmation toast differ.
+  const persistDraft = async (opts: { silent: boolean }) => {
     const rawId = selectedPage === 'custom' ? customPageId : selectedPage;
-    let targetId = rawId.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-');
-    
+    const targetId = rawId.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-');
+
     if (!targetId) {
-      toast({ variant: 'destructive', title: 'אנא הזינו מזהה עמוד (Slug)' });
+      if (!opts.silent) toast({ variant: 'destructive', title: 'אנא הזינו מזהה עמוד (Slug)' });
       return;
     }
 
-    setIsSaving(true);
+    if (opts.silent) setAutoSaveStatus('saving');
+    else setIsSaving(true);
+
     try {
       let draft = getDraftData();
       if (!draft) {
         draft = await initializeDraft();
       }
-      
+
       const specialRootKeys = ['global', 'blog'];
       if (specialRootKeys.includes(targetId)) {
         draft[targetId] = { ...draft[targetId], ...content };
@@ -1556,43 +1595,70 @@ export default function AdminPages() {
         if (!draft.pages) draft.pages = {};
         draft.pages[targetId] = { ...draft.pages[targetId], ...content };
       }
-      
+
       saveDraftData(draft);
-      
       setIsDirty(false);
       await loadAllPages();
-      toast({ 
-        title: '💾 טיוטה נשמרה בהצלחה!', 
-        description: `התוכן נשמר כטיוטה מקומית בדפדפן. יש ללחוץ על "פרסם שינויים" בראש המסך כדי להעלותם לאתר החי.` 
-      });
-      if (selectedPage === 'custom') setSelectedPage(targetId);
+
+      if (opts.silent) {
+        setAutoSaveStatus('saved');
+        setTimeout(() => setAutoSaveStatus(prev => (prev === 'saved' ? 'idle' : prev)), 2500);
+      } else {
+        toast({
+          title: '💾 טיוטה נשמרה בהצלחה!',
+          description: `התוכן נשמר כטיוטה מקומית בדפדפן. יש ללחוץ על "פרסם שינויים" בראש המסך כדי להעלותם לאתר החי.`
+        });
+        if (selectedPage === 'custom') setSelectedPage(targetId);
+      }
     } catch (err: any) {
-      toast({ variant: 'destructive', title: '❌ שמירה נכשלה', description: err.message });
+      if (opts.silent) setAutoSaveStatus('error');
+      else toast({ variant: 'destructive', title: '❌ שמירה נכשלה', description: err.message });
     } finally {
-      setIsSaving(false);
+      if (!opts.silent) setIsSaving(false);
     }
   };
 
-  const handleDeletePage = async () => {
-    if (!selectedPage || selectedPage === 'global') return;
-    if (!window.confirm(`האם אתם בטוחים שברצונכם למחוק את הדף "${selectedPage}" מהפרויקט?`)) return;
-    
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSaving) return;
+    if (autoSaveTimer.current) {
+      clearTimeout(autoSaveTimer.current);
+      autoSaveTimer.current = null;
+    }
+    await persistDraft({ silent: false });
+  };
+
+  // Debounced autosave: ~1.5s after the admin stops typing/editing, quietly
+  // save to the local draft so work is never lost mid-session.
+  useEffect(() => {
+    if (!mounted || isFetching || !isDirty) return;
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    autoSaveTimer.current = setTimeout(() => {
+      persistDraft({ silent: true });
+    }, 1500);
+    return () => {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content, isDirty, isFetching, mounted]);
+
+  const executeDeletePage = async () => {
     setIsSaving(true);
     try {
       let draft = getDraftData();
       if (!draft) {
         draft = await initializeDraft();
       }
-      
+
       if (draft.pages?.[selectedPage]) {
         delete draft.pages[selectedPage];
       }
       if (draft[selectedPage]) {
         delete draft[selectedPage];
       }
-      
+
       saveDraftData(draft);
-      
+
       toast({ title: '✅ נמחק בהצלחה', description: `הדף ${selectedPage} הוסר מהטיוטה.` });
       await loadAllPages();
       setSelectedPage('home');
@@ -1601,6 +1667,21 @@ export default function AdminPages() {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleDeletePage = () => {
+    if (!selectedPage || selectedPage === 'global') return;
+    setConfirmDialog({
+      open: true,
+      title: 'מחיקת עמוד',
+      description: `האם אתם בטוחים שברצונכם למחוק את הדף "${selectedPage}" מהפרויקט?`,
+      confirmLabel: 'מחק',
+      destructive: true,
+      onConfirm: () => {
+        setConfirmDialog(CONFIRM_DIALOG_CLOSED);
+        executeDeletePage();
+      },
+    });
   };
 
   const addItem = <K extends 'ctaButtons' | 'features' | 'testimonials' | 'faqs' | 'navItems' | 'footerItems' | 'journeySteps'>(
@@ -2172,6 +2253,10 @@ export default function AdminPages() {
         )}
       </section>
       <Footer />
+      <ConfirmDialog
+        state={confirmDialog}
+        onOpenChange={(open) => !open && setConfirmDialog(CONFIRM_DIALOG_CLOSED)}
+      />
     </main>
   );
 }
