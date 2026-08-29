@@ -7,7 +7,7 @@ import {
   HelpCircle, MousePointerClick, AlignLeft, AlignCenter, AlignRight, UserRound, ChevronRight,
   Monitor, Smartphone, Globe, X, Search, BookOpen, FileText, ShieldCheck, Check, Video,
   BarChart2, Mail, Phone, Lock, Instagram, Linkedin, Youtube, Music, Compass, Users, Star,
-  MessageSquare, Orbit, RefreshCcw, UploadCloud, FolderOpen
+  MessageSquare, Orbit, RefreshCcw, UploadCloud, FolderOpen, ChevronUp, ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -679,13 +679,138 @@ export function BlockEditor({
 
         {/* Video Section */}
         {section.type === 'video' && (
-          <div className="space-y-4 pt-4 border-t border-stone-200">
+          <div className="space-y-6 pt-4 border-t border-stone-200">
             <Field label="כותרת הבלוק">
               <Input value={section.title || ''} onChange={e => onChange({ ...section, title: e.target.value })} />
             </Field>
-            <Field label="קישור לוידאו (YouTube / Vimeo / mp4)">
-              <Input value={section.videoUrl || ''} onChange={e => onChange({ ...section, videoUrl: e.target.value })} placeholder="https://www.youtube.com/watch?v=..." />
+
+            <Field label="פריסת סרטונים (עמודות בשורה)">
+              <Select 
+                value={section.videoColumns || ''} 
+                onValueChange={(v) => onChange({ ...section, videoColumns: v })}
+              >
+                <SelectTrigger className="bg-white">
+                  <SelectValue placeholder="סרטון אחד בשורה" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">סרטון אחד בשורה (גדול)</SelectItem>
+                  <SelectItem value="md:grid-cols-2">2 סרטונים בשורה (צמד)</SelectItem>
+                  <SelectItem value="md:grid-cols-3">3 סרטונים בשורה (שלשה)</SelectItem>
+                  <SelectItem value="md:grid-cols-4">4 סרטונים בשורה (רביעייה)</SelectItem>
+                </SelectContent>
+              </Select>
             </Field>
+
+            <div className="space-y-3">
+              <label className="text-sm font-semibold block">רשימת סרטונים</label>
+              
+              {/* Fallback to legacy single videoUrl if no videos array exists */}
+              {!section.videos && section.videoUrl && (
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800 flex flex-col gap-2">
+                  <span>נמצא סרטון ישן מוגדר. האם ברצונך להעביר אותו לרשימת הסרטונים החדשה?</span>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-fit bg-white"
+                    onClick={() => {
+                      onChange({
+                        ...section,
+                        videos: [{ id: 'legacy-1', url: section.videoUrl, title: section.title || '' }],
+                        videoUrl: '', // Clear legacy url
+                        videoTitle: ''
+                      });
+                    }}
+                  >
+                    העבר לרשימה
+                  </Button>
+                </div>
+              )}
+
+              {(section.videos || []).map((video: any, idx: number) => (
+                <div key={video.id || idx} className="p-4 bg-white border border-stone-200 rounded-2xl space-y-3 relative">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-stone-500">סרטון #{idx + 1}</span>
+                    <div className="flex gap-1 items-center">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        disabled={idx === 0}
+                        onClick={() => {
+                          const videos = [...(section.videos || [])];
+                          [videos[idx], videos[idx - 1]] = [videos[idx - 1], videos[idx]];
+                          onChange({ ...section, videos });
+                        }}
+                      >
+                        <ChevronUp size={14} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        disabled={idx === (section.videos?.length || 0) - 1}
+                        onClick={() => {
+                          const videos = [...(section.videos || [])];
+                          [videos[idx], videos[idx + 1]] = [videos[idx + 1], videos[idx]];
+                          onChange({ ...section, videos });
+                        }}
+                      >
+                        <ChevronDown size={14} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-red-500 hover:text-red-700 h-7"
+                        onClick={() => {
+                          const videos = (section.videos || []).filter((_: any, i: number) => i !== idx);
+                          onChange({ ...section, videos });
+                        }}
+                      >
+                        מחק
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Field label="כותרת סרטון (מוצג כ-Tooltip)">
+                      <Input 
+                        value={video.title || ''} 
+                        onChange={e => {
+                          const videos = [...(section.videos || [])];
+                          videos[idx] = { ...videos[idx], title: e.target.value };
+                          onChange({ ...section, videos });
+                        }} 
+                        placeholder="כותרת הסרטון"
+                      />
+                    </Field>
+                    <Field label="קישור ליוטיוב (YouTube)">
+                      <Input 
+                        value={video.url || ''} 
+                        onChange={e => {
+                          const videos = [...(section.videos || [])];
+                          videos[idx] = { ...videos[idx], url: e.target.value };
+                          onChange({ ...section, videos });
+                        }} 
+                        placeholder="https://www.youtube.com/watch?v=..."
+                      />
+                    </Field>
+                  </div>
+                </div>
+              ))}
+
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  const videos = [...(section.videos || [])];
+                  const newId = Math.random().toString(36).slice(2, 9);
+                  videos.push({ id: newId, url: '', title: '' });
+                  onChange({ ...section, videos });
+                }} 
+                className="w-full font-headline text-xs h-9"
+              >
+                הוסף סרטון וידאו
+              </Button>
+            </div>
           </div>
         )}
 
