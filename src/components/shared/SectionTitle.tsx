@@ -41,15 +41,19 @@ export function SectionTitle({
 
   return (
     <div ref={revealRef} className={cn("mb-8 sm:mb-16 flex flex-col reveal transition-all duration-1000", alignmentClass, className)}>
-      <span className={cn(
-        "boutique-label block mb-3 sm:mb-6 stagger-1 opacity-70",
-        isLight ? 'text-white/60' : 'text-primary'
-      )}>
-        {subtitle}
-      </span>
-      <h2 className={titleStyles}>
-        {title}
-      </h2>
+      {title && (
+        <h2 className={titleStyles}>
+          {title}
+        </h2>
+      )}
+      {subtitle && (
+        <span className={cn(
+          "boutique-label block mt-3 sm:mt-4 stagger-1 opacity-70",
+          isLight ? 'text-white/60' : 'text-primary'
+        )}>
+          {subtitle}
+        </span>
+      )}
       <div className={cn(
         "w-10 sm:w-16 h-[1px] mt-6 sm:mt-8 stagger-3",
         isLight ? 'bg-white/20' : 'bg-primary/20',

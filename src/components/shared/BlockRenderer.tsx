@@ -593,15 +593,15 @@ export function BlockRenderer({ blocks }: { blocks: DynamicSection[] }) {
                       {/* Title — split regular + bold italic */}
                       {(block.titleSettings?.text || block.title) && (
                         <div>
-                          {block.titleSettings?.subtitle && (
-                            <span className="boutique-label text-primary mb-2 block">{block.titleSettings.subtitle}</span>
-                          )}
                           <h2 className="text-2xl md:text-3xl font-serif font-bold text-accent leading-[1.25]">
                             {block.titleSettings?.text || block.title}
                             {block.insightTitleBold && (
                               <> <em className="not-italic text-primary font-normal">{block.insightTitleBold}</em></>
                             )}
                           </h2>
+                          {block.titleSettings?.subtitle && (
+                            <span className="boutique-label text-primary mt-2 block">{block.titleSettings.subtitle}</span>
+                          )}
                         </div>
                       )}
 
