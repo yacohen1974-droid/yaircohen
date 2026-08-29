@@ -425,7 +425,15 @@
       "legalItems": [],
       "metaTitle": "יאיר כהן – יועץ משכנתאות מוסמך",
       "metaDescription": "יועץ משכנתאות בלתי תלוי | 15+ שנות ניסיון | ייעוץ ראשוני חינם | חיסכון של עשרות אלפי שקלים",
-      "blocks": [],
+      "blocks": [
+        {
+          "id": "4k986h78z",
+          "type": "features",
+          "title": "יתרונות",
+          "features": [],
+          "bg": "stone-50"
+        }
+      ],
       "sectionOrder": [
         "hero",
         "stats",
