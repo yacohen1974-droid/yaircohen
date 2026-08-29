@@ -101,6 +101,22 @@ export function GlobalSettingsEditor({ settings, onChange, availablePages }: Glo
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
+            <Label htmlFor="underConstruction">מצב אתר בבנייה (חסימת גלישה לציבור)</Label>
+            <Select 
+              value={settings.underConstruction ? 'true' : 'false'} 
+              onValueChange={(v) => handleChange('underConstruction', v === 'true')}
+            >
+              <SelectTrigger className="bg-stone-50">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="false">🔓 לא (האתר פתוח לציבור הרחב)</SelectItem>
+                <SelectItem value="true">🔒 כן (האתר חסום לציבור ומציג דף "בבנייה")</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
             <Label htmlFor="siteName">שם האתר</Label>
             <Input
               id="siteName"
