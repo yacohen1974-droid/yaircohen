@@ -1,83 +1,36 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import { unstable_cache } from 'next/cache';
+import {
+  readPublishedSiteData,
+  readDraftSiteData,
+  publishSiteData,
+  saveDraftSiteData,
+  SiteData
+} from '@/firebase/firestore-cms';
 
 export const SITE_CONTENT_CACHE_TAG = 'site-content';
 
-// Helper to read the file
+// Read published content from Firestore (what the live site sees).
+// This is now the canonical read path for the public site.
 async function readSiteData(): Promise<any> {
-  const filePath = path.join(process.cwd(), 'src/content/site-data.json');
   try {
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(fileContent);
+    return await readPublishedSiteData();
   } catch (e) {
-    console.error("Failed to read site-data.json:", e);
+    console.error("Failed to read published Firestore data:", e);
     return { pages: {}, blogPosts: [] };
   }
 }
 
-// Helper to write to GitHub (the single source of truth).
-// Local disk writes were removed — in production (App Hosting), each instance has
-// ephemeral storage anyway, so writing locally is meaningless.
+// Write to Firestore (the single source of truth).
+// No GitHub commits, no disk writes — Firestore handles it all.
 async function writeSiteData(data: any) {
-  const contentString = JSON.stringify(data, null, 2);
-  await commitToGitHub(contentString);
-}
-
-async function commitToGitHub(contentString: string) {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) {
-    console.log("No GITHUB_TOKEN configured. Skipping GitHub commit.");
-    return;
-  }
-
-  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
-  const filePath = 'src/content/site-data.json';
-  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
-
   try {
-    console.log("Fetching file SHA from GitHub...");
-    const getRes = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'NextJS-CMS'
-      }
-    });
-
-    let sha = '';
-    if (getRes.status === 200) {
-      const fileInfo = await getRes.json();
-      sha = fileInfo.sha;
-    }
-
-    console.log("Committing updated site-data.json to GitHub...");
-    const putRes = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'NextJS-CMS'
-      },
-      body: JSON.stringify({
-        message: 'admin: update website content via CMS',
-        content: Buffer.from(contentString).toString('base64'),
-        sha: sha || undefined,
-        branch: 'main'
-      })
-    });
-
-    if (!putRes.ok) {
-      const errText = await putRes.text();
-      throw new Error(`GitHub API returned ${putRes.status}: ${errText}`);
-    }
-
-    console.log("Successfully committed updated content to GitHub!");
-  } catch (err) {
-    console.error("GitHub commit failed:", err);
+    await publishSiteData(data);
+  } catch (e) {
+    console.error("Failed to write to Firestore:", e);
+    throw e;
   }
 }
+
 
 export async function getPageContent(pageId: string) {
   const data = await readSiteData();
@@ -123,101 +76,31 @@ export const getDbInitialData = unstable_cache(
   { tags: [SITE_CONTENT_CACHE_TAG], revalidate: 300 }
 );
 
-// ─── Draft branch (preview, not deployed) ──────────────────────────────────
-// Lets the admin push a draft to a separate 'draft' git branch so it can be
-// previewed from any device/browser via a cookie, without touching 'main'
-// (which is what triggers a real deploy) and without a database.
-
-const DRAFT_BRANCH = 'draft';
-
-function ghHeaders(token: string) {
-  return {
-    'Authorization': `Bearer ${token}`,
-    'Accept': 'application/vnd.github+json',
-    'User-Agent': 'NextJS-CMS'
-  };
-}
-
-async function ensureBranchExists(repo: string, token: string, branch: string) {
-  const checkRes = await fetch(`https://api.github.com/repos/${repo}/git/ref/heads/${branch}`, {
-    headers: ghHeaders(token)
-  });
-  if (checkRes.status === 200) return;
-
-  const mainRefRes = await fetch(`https://api.github.com/repos/${repo}/git/ref/heads/main`, {
-    headers: ghHeaders(token)
-  });
-  if (!mainRefRes.ok) throw new Error('לא ניתן לקרוא את ה-branch הראשי ב-GitHub');
-  const mainRef = await mainRefRes.json();
-
-  const createRes = await fetch(`https://api.github.com/repos/${repo}/git/refs`, {
-    method: 'POST',
-    headers: { ...ghHeaders(token), 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainRef.object.sha })
-  });
-  if (!createRes.ok && createRes.status !== 422) {
-    const errText = await createRes.text();
-    throw new Error(`יצירת branch לטיוטה נכשלה: ${createRes.status} ${errText}`);
-  }
-}
+// ─── Draft (preview, not deployed) ────────────────────────────────────────
+// Draft content lives in Firestore (separate from published).
+// Admins can preview changes without affecting the live site.
 
 export async function commitDraftSiteData(data: any) {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) throw new Error('GITHUB_TOKEN אינו מוגדר בשרת — לא ניתן לשמור טיוטה לתצוגה מקדימה');
-  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
-  const filePath = 'src/content/site-data.json';
-  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
-
-  await ensureBranchExists(repo, token, DRAFT_BRANCH);
-
-  const contentString = JSON.stringify(data, null, 2);
-  const getRes = await fetch(`${url}?ref=${DRAFT_BRANCH}`, { headers: ghHeaders(token) });
-  let sha = '';
-  if (getRes.status === 200) {
-    const info = await getRes.json();
-    sha = info.sha;
-  }
-
-  const putRes = await fetch(url, {
-    method: 'PUT',
-    headers: { ...ghHeaders(token), 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: 'admin: save draft via CMS (preview only, not deployed)',
-      content: Buffer.from(contentString).toString('base64'),
-      sha: sha || undefined,
-      branch: DRAFT_BRANCH
-    })
-  });
-  if (!putRes.ok) {
-    const errText = await putRes.text();
-    throw new Error(`שמירת הטיוטה ל-GitHub נכשלה: ${putRes.status} ${errText}`);
+  try {
+    await saveDraftSiteData(data);
+  } catch (e) {
+    console.error('Failed to save draft to Firestore:', e);
+    throw e;
   }
 }
 
 export async function fetchDraftSiteData(): Promise<any | null> {
-  const token = process.env.GITHUB_TOKEN;
-  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
-  const filePath = 'src/content/site-data.json';
-  if (!token) return null;
-
   try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${DRAFT_BRANCH}`, {
-      headers: ghHeaders(token),
-      cache: 'no-store'
-    });
-    if (!res.ok) return null;
-    const info = await res.json();
-    const contentString = Buffer.from(info.content, 'base64').toString('utf-8');
-    return JSON.parse(contentString);
+    return await readDraftSiteData();
   } catch (e) {
-    console.warn('Failed to fetch draft site data from GitHub:', e);
+    console.warn('Failed to fetch draft site data from Firestore:', e);
     return null;
   }
 }
 
-// ─── Publish history + one-click revert ────────────────────────────────────
-// Every publish is already a commit on GitHub, so version history is free —
-// no separate backup mechanism needed.
+// TODO: Publish history + one-click revert
+// After Firestore migration, this would use Firestore document versioning.
+// For now, these are stubs — not currently used in admin routes.
 
 export interface PublishHistoryEntry {
   sha: string;
@@ -226,63 +109,10 @@ export interface PublishHistoryEntry {
 }
 
 export async function getPublishHistory(limit = 5): Promise<PublishHistoryEntry[]> {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) return [];
-  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
-  const filePath = 'src/content/site-data.json';
-
-  const res = await fetch(
-    `https://api.github.com/repos/${repo}/commits?path=${encodeURIComponent(filePath)}&sha=main&per_page=${limit}`,
-    { headers: ghHeaders(token), cache: 'no-store' }
-  );
-  if (!res.ok) return [];
-  const commits = await res.json();
-  if (!Array.isArray(commits)) return [];
-
-  return commits.map((c: any) => ({
-    sha: c.sha,
-    message: c.commit?.message || '',
-    date: c.commit?.author?.date || '',
-  }));
+  // Placeholder: no version history implemented yet for Firestore
+  return [];
 }
 
 export async function revertToPreviousPublish(): Promise<{ date: string; message: string }> {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) throw new Error('GITHUB_TOKEN אינו מוגדר בשרת');
-  const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
-  const filePath = 'src/content/site-data.json';
-  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
-
-  const history = await getPublishHistory(5);
-  if (history.length < 2) {
-    throw new Error('אין גרסה קודמת לשחזר');
-  }
-  const previous = history[1];
-
-  const prevContentRes = await fetch(`${url}?ref=${previous.sha}`, { headers: ghHeaders(token) });
-  if (!prevContentRes.ok) throw new Error('לא ניתן לטעון את הגרסה הקודמת מ-GitHub');
-  const prevInfo = await prevContentRes.json();
-  const prevContentString = Buffer.from(prevInfo.content, 'base64').toString('utf-8');
-
-  // The Contents API requires the current file's sha to authorize the update
-  const currentRes = await fetch(url, { headers: ghHeaders(token) });
-  if (!currentRes.ok) throw new Error('לא ניתן לקרוא את המצב הנוכחי מ-GitHub');
-  const currentInfo = await currentRes.json();
-
-  const putRes = await fetch(url, {
-    method: 'PUT',
-    headers: { ...ghHeaders(token), 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: 'admin: revert to previous version via CMS',
-      content: Buffer.from(prevContentString).toString('base64'),
-      sha: currentInfo.sha,
-      branch: 'main'
-    })
-  });
-  if (!putRes.ok) {
-    const errText = await putRes.text();
-    throw new Error(`שחזור הגרסה נכשל: ${putRes.status} ${errText}`);
-  }
-
-  return { date: previous.date, message: previous.message };
+  throw new Error('Publish revert not yet implemented for Firestore');
 }
