@@ -16,19 +16,11 @@ async function readSiteData(): Promise<any> {
   }
 }
 
-// Helper to write the file locally and to GitHub
+// Helper to write to GitHub (the single source of truth).
+// Local disk writes were removed — in production (App Hosting), each instance has
+// ephemeral storage anyway, so writing locally is meaningless.
 async function writeSiteData(data: any) {
   const contentString = JSON.stringify(data, null, 2);
-  
-  // 1. Write locally if possible
-  try {
-    const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-    await fs.writeFile(filePath, contentString, 'utf-8');
-  } catch (e) {
-    console.warn("Failed to write site-data.json locally:", e);
-  }
-
-  // 2. Commit to GitHub in production
   await commitToGitHub(contentString);
 }
 
@@ -89,84 +81,21 @@ async function commitToGitHub(contentString: string) {
 
 export async function getPageContent(pageId: string) {
   const data = await readSiteData();
-  return data.pages?.[pageId] || data[pageId] || null;
-}
-
-export async function savePageContent(pageId: string, content: any) {
-  const data = await readSiteData();
-  
-  if (!data.pages) data.pages = {};
-  
-  const specialRootKeys = ['global', 'blog', 'blogPosts'];
-  if (specialRootKeys.includes(pageId)) {
-    data[pageId] = { ...data[pageId], ...content };
-  } else {
-    data.pages[pageId] = { ...data.pages[pageId], ...content };
-  }
-
-  await writeSiteData(data);
-}
-
-export async function deletePageContent(pageId: string) {
-  const data = await readSiteData();
-  
-  if (data.pages?.[pageId]) {
-    delete data.pages[pageId];
-  }
-  if (data[pageId]) {
-    delete data[pageId];
-  }
-  
-  await writeSiteData(data);
+  return data.pages?.[pageId] || null;
 }
 
 export async function getBlogPosts() {
   const data = await readSiteData();
   const posts = data.blogPosts || [];
-  
-  // Sort by date or createdAt descending
+
+  // Sort by date descending
   posts.sort((a: any, b: any) => {
     const dateA = a.createdAt || '';
     const dateB = b.createdAt || '';
     return dateB.localeCompare(dateA);
   });
-  
+
   return posts;
-}
-
-export async function saveBlogPost(post: any) {
-  const data = await readSiteData();
-  if (!data.blogPosts) data.blogPosts = [];
-
-  let savedPost = { ...post };
-  if (!savedPost.id) {
-    savedPost.id = Math.random().toString(36).substr(2, 9);
-    savedPost.createdAt = new Date().toISOString();
-  } else {
-    if (typeof savedPost.createdAt === 'number') {
-      savedPost.createdAt = new Date(savedPost.createdAt).toISOString();
-    } else if (!savedPost.createdAt) {
-      savedPost.createdAt = new Date().toISOString();
-    }
-    savedPost.updatedAt = new Date().toISOString();
-  }
-
-  const index = data.blogPosts.findIndex((p: any) => p.id === savedPost.id);
-  if (index !== -1) {
-    data.blogPosts[index] = savedPost;
-  } else {
-    data.blogPosts.push(savedPost);
-  }
-
-  await writeSiteData(data);
-}
-
-export async function deleteBlogPost(id: string) {
-  const data = await readSiteData();
-  if (data.blogPosts) {
-    data.blogPosts = data.blogPosts.filter((p: any) => p.id !== id);
-    await writeSiteData(data);
-  }
 }
 
 async function fetchDbInitialData() {
@@ -353,14 +282,6 @@ export async function revertToPreviousPublish(): Promise<{ date: string; message
   if (!putRes.ok) {
     const errText = await putRes.text();
     throw new Error(`שחזור הגרסה נכשל: ${putRes.status} ${errText}`);
-  }
-
-  // Keep the local file (and thus this instance's SSR reads) in sync too
-  try {
-    const localPath = path.join(process.cwd(), 'src/content/site-data.json');
-    await fs.writeFile(localPath, prevContentString, 'utf-8');
-  } catch (e) {
-    console.warn('Failed to write reverted site-data.json locally:', e);
   }
 
   return { date: previous.date, message: previous.message };

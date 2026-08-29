@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import { SITE_CONTENT_CACHE_TAG } from '@/firebase/db-actions';
 import { requireAdmin } from '@/lib/verify-admin';
 
@@ -19,16 +17,8 @@ export async function POST(request: Request) {
     }
 
     const contentString = JSON.stringify(data, null, 2);
-    
-    // 1. Write locally
-    try {
-      const filePath = path.join(process.cwd(), 'src/content/site-data.json');
-      await fs.writeFile(filePath, contentString, 'utf-8');
-    } catch (e) {
-      console.warn("Failed to write site-data.json locally:", e);
-    }
 
-    // 2. Commit to GitHub in production
+    // Commit to GitHub (the single source of truth)
     const token = process.env.GITHUB_TOKEN;
     if (token) {
       const repo = process.env.GITHUB_REPO || 'yacohen1974-droid/yaircohen';
