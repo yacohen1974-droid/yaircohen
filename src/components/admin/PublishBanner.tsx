@@ -152,7 +152,7 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
           size="sm"
           onClick={handleDiscard}
           disabled={isPublishing || isPreviewing}
-          className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
+          className="bg-transparent border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
         >
           <Trash2 className="ml-1.5 size-3.5" />
           בטל שינויים
@@ -162,7 +162,7 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
           size="sm"
           onClick={() => handlePreview('desktop')}
           disabled={isPublishing || isPreviewing}
-          className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
+          className="bg-transparent border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 rounded-none text-xs"
         >
           {isPreviewing ? (
             <>
@@ -182,7 +182,7 @@ export function PublishBanner({ currentPath }: { currentPath?: string } = {}) {
           onClick={() => handlePreview('mobile')}
           disabled={isPublishing || isPreviewing}
           title="תצוגה מקדימה בגודל מסך נייד"
-          className="border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 w-9 p-0 rounded-none"
+          className="bg-transparent border-stone-700 text-stone-300 hover:bg-stone-800 hover:text-white h-9 w-9 p-0 rounded-none"
         >
           <Smartphone className="size-3.5" />
         </Button>
