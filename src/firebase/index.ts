@@ -52,6 +52,7 @@ export const useAuth = () => {
     try {
       await fbSignOut(authInstance);
       if (typeof window !== 'undefined') {
+        document.cookie = 'cms_preview=; path=/; max-age=0';
         window.location.href = '/admin/login';
       }
     } catch (e) {

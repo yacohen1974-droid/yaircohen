@@ -136,60 +136,48 @@ export async function readDraftSiteData(): Promise<SiteData> {
  * Publish draft to published (makes it live)
  */
 export async function publishSiteData(data: SiteData): Promise<void> {
-  try {
-    const batch = writeBatch(db);
-    const now = new Date().toISOString();
+  const now = new Date().toISOString();
+  const failures: string[] = [];
 
-    // Publish global
-    if (data.global) {
-      const globalRef = doc(db, `sites/${SITE_ID}/global/settings`);
-      batch.set(
-        globalRef,
-        {
-          published: data.global,
-          updatedAt: now,
-        },
-        { merge: true }
-      );
+  // Written one doc at a time (not as a single atomic batch) so that one bad
+  // document (e.g. a stale/irregular page id) can't take down every other
+  // write with the same generic "Missing or insufficient permissions" error.
+  if (data.global) {
+    try {
+      await setDoc(doc(db, `sites/${SITE_ID}/global/settings`), { published: data.global, updatedAt: now }, { merge: true });
+    } catch (error: any) {
+      console.error('[publish global] Failed:', error);
+      failures.push(`הגדרות כלליות: ${error.message || error}`);
     }
-
-    // Publish pages
-    if (data.pages) {
-      for (const [pageId, pageData] of Object.entries(data.pages)) {
-        const pageRef = doc(db, `sites/${SITE_ID}/pages/${pageId}`);
-        batch.set(
-          pageRef,
-          {
-            published: pageData,
-            updatedAt: now,
-          },
-          { merge: true }
-        );
-      }
-    }
-
-    // Publish blog posts
-    if (data.blogPosts) {
-      for (const post of data.blogPosts) {
-        if (!post.id) continue;
-        const postRef = doc(db, `sites/${SITE_ID}/blogPosts/${post.id}`);
-        batch.set(
-          postRef,
-          {
-            published: post,
-            updatedAt: now,
-          },
-          { merge: true }
-        );
-      }
-    }
-
-    await batch.commit();
-    console.log('Successfully published site data to Firestore');
-  } catch (error) {
-    console.error('Failed to publish site data:', error);
-    throw error;
   }
+
+  if (data.pages) {
+    for (const [pageId, pageData] of Object.entries(data.pages)) {
+      try {
+        await setDoc(doc(db, `sites/${SITE_ID}/pages/${pageId}`), { published: pageData, updatedAt: now }, { merge: true });
+      } catch (error: any) {
+        console.error(`[publish page:${pageId}] Failed:`, error);
+        failures.push(`עמוד "${pageId}": ${error.message || error}`);
+      }
+    }
+  }
+
+  if (data.blogPosts) {
+    for (const post of data.blogPosts) {
+      if (!post.id) continue;
+      try {
+        await setDoc(doc(db, `sites/${SITE_ID}/blogPosts/${post.id}`), { published: post, updatedAt: now }, { merge: true });
+      } catch (error: any) {
+        console.error(`[publish blogPost:${post.id}] Failed:`, error);
+        failures.push(`מאמר "${post.id}": ${error.message || error}`);
+      }
+    }
+  }
+
+  if (failures.length > 0) {
+    throw new Error(`פרסום נכשל עבור: ${failures.join('; ')}`);
+  }
+  console.log('Successfully published site data to Firestore');
 }
 
 /**

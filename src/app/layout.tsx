@@ -91,7 +91,8 @@ export default async function RootLayout({
 
   const pathname = (await headers()).get('x-pathname') || '';
   const isPreview = (await cookies()).get('cms_preview')?.value === '1';
-  const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api') || isPreview;
+  const isAdminPath = pathname.startsWith('/admin') || pathname.startsWith('/api');
+  const isAdminRoute = isAdminPath || isPreview;
   const isUnderConstruction = !!initialData?.global?.underConstruction && !isAdminRoute;
 
   return (
@@ -156,7 +157,7 @@ export default async function RootLayout({
               {children}
               <FloatingWhatsApp />
               <ScrollToTop />
-              <PreviewModeBanner />
+              {!isAdminPath && <PreviewModeBanner />}
               <CookieConsent />
               <AccessibilityWidget />
             </>
